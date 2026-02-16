@@ -1,12 +1,13 @@
 "use client";
 
 import { useMutation } from "@tanstack/react-query";
+import Link from "next/link";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { createPreview } from "@/lib/api";
 
-export default function DashboardPage() {
+export default function NewGenerationPage() {
   const [description, setDescription] = useState("");
   const [previewId, setPreviewId] = useState<string | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
@@ -34,16 +35,27 @@ export default function DashboardPage() {
 
   return (
     <div className="w-full">
+      <div className="mb-4 flex items-center gap-3">
+        <Button variant="outline" asChild>
+          <Link href="/dashboard">Back</Link>
+        </Button>
+        <h1 className="text-xl font-semibold">New image</h1>
+      </div>
       <main className="flex flex-col gap-4">
-        <Textarea
-          id="prompt"
-          rows={5}
-          placeholder="Describe the image you want to generate..."
-          value={description}
-          onChange={(e) => setDescription(e.target.value)}
-          disabled={disabled}
-          className="min-h-24 w-full"
-        />
+        <div className="flex flex-col gap-2">
+          <label htmlFor="prompt" className="text-sm font-medium leading-none">
+            Describe the image you want to generate:
+          </label>
+          <Textarea
+            id="prompt"
+            rows={5}
+            placeholder="A happy person with a dog sitting aside"
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+            disabled={disabled}
+            className="min-h-24 w-full"
+          />
+        </div>
 
         <div className="flex flex-col gap-2 sm:flex-row sm:justify-between">
           <Button variant="secondary" onClick={handleClear} disabled={disabled}>
