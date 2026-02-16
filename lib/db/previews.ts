@@ -58,3 +58,19 @@ export async function getPreviewById(
   const previewUrl = row.preview_url;
   return typeof previewUrl === "string" ? { previewUrl } : null;
 }
+
+export async function getPreviewByIdAndUserId(
+  id: string,
+  userId: string
+): Promise<{ previewUrl: string } | null> {
+  await ensureTable();
+  const db = getDb();
+  const rs = await db.execute({
+    sql: "SELECT preview_url FROM previews WHERE id = ? AND user_id = ?",
+    args: [id, userId],
+  });
+  if (rs.rows.length === 0) return null;
+  const row = rs.rows[0];
+  const previewUrl = row.preview_url;
+  return typeof previewUrl === "string" ? { previewUrl } : null;
+}

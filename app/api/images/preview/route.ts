@@ -1,10 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
+import { auth } from "@clerk/nextjs/server";
 import { insertPreview } from "@/lib/db/previews";
 import { generateImage } from "@/lib/images/generator";
 import { imageStore } from "@/lib/images/store";
 import type { CreatePreviewRequest, CreatePreviewResponse } from "@/lib/images/types";
-
-const PLACEHOLDER_USER_ID = "user123";
 
 function getCloudinaryPublicUrl(publicId: string): string {
   const cloudName = process.env.CLOUDINARY_CLOUD_NAME;
@@ -13,6 +12,11 @@ function getCloudinaryPublicUrl(publicId: string): string {
 }
 
 export async function POST(request: NextRequest) {
+  const { userId } = await auth();
+  if (!userId) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+
   try {
     const body = (await request.json()) as unknown;
     const { description } = body as Partial<CreatePreviewRequest>;
@@ -32,7 +36,7 @@ export async function POST(request: NextRequest) {
 
     await insertPreview({
       id,
-      userId: PLACEHOLDER_USER_ID,
+      userId,
       description: trimmedDescription,
       previewUrl: url,
     });
