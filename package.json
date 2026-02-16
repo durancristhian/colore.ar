@@ -11,7 +11,9 @@
   "dependencies": {
     "@clerk/nextjs": "^6.37.4",
     "@libsql/client": "^0.17.0",
+    "@openrouter/ai-sdk-provider": "^2.2.3",
     "@tanstack/react-query": "^5.90.21",
+    "ai": "^6.0.86",
     "class-variance-authority": "^0.7.1",
     "cloudinary": "^2.9.0",
     "clsx": "^2.1.1",

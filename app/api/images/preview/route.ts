@@ -44,6 +44,19 @@ export async function POST(request: NextRequest) {
     return NextResponse.json<CreatePreviewResponse>({ id, url });
   } catch (error) {
     console.error("Preview creation failed:", error);
+    const message = error instanceof Error ? error.message : String(error);
+    const isConfigError =
+      message.includes("OPEN_ROUTER") &&
+      message.includes("environment variable");
+    if (isConfigError) {
+      return NextResponse.json(
+        {
+          error: "Image generation is not configured",
+          details: message,
+        },
+        { status: 503 }
+      );
+    }
     return NextResponse.json(
       { error: "Failed to create preview" },
       { status: 500 }
