@@ -63,7 +63,7 @@ export default function DashboardPage() {
             <img
               src={previewUrl}
               alt="Generated preview"
-              className="w-full rounded-md border object-contain"
+              className="w-full rounded-md border object-contain print:block"
             />
             <Button variant="outline" onClick={handlePrint}>
               Print
