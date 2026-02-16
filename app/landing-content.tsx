@@ -1,6 +1,6 @@
 "use client";
 
-import { SignInButton, SignUpButton, SignedOut } from "@clerk/nextjs";
+import { SignInButton, SignedOut } from "@clerk/nextjs";
 import { Button } from "@/components/ui/button";
 
 export function LandingContent() {
@@ -8,14 +8,9 @@ export function LandingContent() {
     <div className="flex flex-col items-center justify-center gap-4">
       <h1 className="text-xl font-semibold">print</h1>
       <SignedOut>
-        <div className="flex gap-2">
-          <SignInButton mode="modal">
-            <Button>Sign in</Button>
-          </SignInButton>
-          <SignUpButton mode="modal">
-            <Button variant="secondary">Sign up</Button>
-          </SignUpButton>
-        </div>
+        <SignInButton mode="modal">
+          <Button>Sign in</Button>
+        </SignInButton>
       </SignedOut>
     </div>
   );
