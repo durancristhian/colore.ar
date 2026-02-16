@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { createPreview } from "@/lib/api";
 
-export default function NewGenerationPage() {
+export default function NewImagePage() {
   const [description, setDescription] = useState("");
   const [previewId, setPreviewId] = useState<string | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
@@ -37,7 +37,7 @@ export default function NewGenerationPage() {
     <div className="w-full">
       <div className="mb-4 flex items-center gap-3">
         <Button variant="outline" asChild>
-          <Link href="/dashboard">Back</Link>
+          <Link href="/images">Back</Link>
         </Button>
         <h1 className="text-xl font-semibold">New image</h1>
       </div>
