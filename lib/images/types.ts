@@ -9,6 +9,14 @@ export interface CreatePreviewResponse {
   url: string;
 }
 
+/** Item returned by GET /api/images (list) */
+export interface PreviewListItem {
+  id: string;
+  description: string;
+  previewUrl: string;
+  createdAt: string;
+}
+
 /** Error response shape */
 export interface ErrorResponse {
   error: string;

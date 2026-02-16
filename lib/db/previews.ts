@@ -26,7 +26,9 @@ export interface InsertPreviewParams {
   previewUrl: string;
 }
 
-export async function insertPreview(params: InsertPreviewParams): Promise<void> {
+export async function insertPreview(
+  params: InsertPreviewParams,
+): Promise<void> {
   await ensureTable();
   const db = getDb();
   const now = new Date().toISOString();
@@ -45,7 +47,7 @@ export async function insertPreview(params: InsertPreviewParams): Promise<void> 
 }
 
 export async function getPreviewById(
-  id: string
+  id: string,
 ): Promise<{ previewUrl: string } | null> {
   await ensureTable();
   const db = getDb();
@@ -61,7 +63,7 @@ export async function getPreviewById(
 
 export async function getPreviewByIdAndUserId(
   id: string,
-  userId: string
+  userId: string,
 ): Promise<{ previewUrl: string } | null> {
   await ensureTable();
   const db = getDb();
@@ -73,4 +75,25 @@ export async function getPreviewByIdAndUserId(
   const row = rs.rows[0];
   const previewUrl = row.preview_url;
   return typeof previewUrl === "string" ? { previewUrl } : null;
+}
+
+export async function listPreviewsByUserId(
+  userId: string,
+): Promise<
+  { id: string; description: string; previewUrl: string; createdAt: string }[]
+> {
+  await ensureTable();
+  const db = getDb();
+  const rs = await db.execute({
+    sql: `SELECT id, description, preview_url, created_at FROM previews
+          WHERE user_id = ?
+          ORDER BY created_at DESC`,
+    args: [userId],
+  });
+  return rs.rows.map((row) => ({
+    id: String(row.id),
+    description: String(row.description),
+    previewUrl: String(row.preview_url),
+    createdAt: String(row.created_at),
+  }));
 }

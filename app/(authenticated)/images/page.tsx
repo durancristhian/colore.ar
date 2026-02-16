@@ -1,7 +1,16 @@
+"use client";
+
+import { useQuery } from "@tanstack/react-query";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import { listPreviews } from "@/lib/api";
 
 export default function ImagesPage() {
+  const { data: previews, isLoading, isError } = useQuery({
+    queryKey: ["previews"],
+    queryFn: listPreviews,
+  });
+
   return (
     <div className="w-full">
       <div className="flex flex-col gap-4">
@@ -11,7 +20,44 @@ export default function ImagesPage() {
             <Link href="/images/new">New</Link>
           </Button>
         </div>
-        <p className="text-muted-foreground text-sm">No images yet.</p>
+
+        {isLoading && (
+          <p className="text-muted-foreground text-sm">Loading…</p>
+        )}
+
+        {isError && (
+          <p className="text-sm text-destructive">
+            Failed to load images. Try again.
+          </p>
+        )}
+
+        {!isLoading && !isError && (!previews || previews.length === 0) && (
+          <p className="text-muted-foreground text-sm">No images yet.</p>
+        )}
+
+        {!isLoading && !isError && previews && previews.length > 0 && (
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+            {previews.map((preview) => (
+              <article
+                key={preview.id}
+                className="flex flex-col gap-2 rounded-md border p-2"
+              >
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={preview.previewUrl}
+                  alt={preview.description}
+                  className="w-full rounded-md border object-contain"
+                />
+                <p
+                  className="line-clamp-1 text-muted-foreground text-sm"
+                  title={preview.description}
+                >
+                  {preview.description}
+                </p>
+              </article>
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );
