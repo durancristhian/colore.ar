@@ -5,11 +5,11 @@ import { Button } from "@/components/ui/button";
 
 export function LandingContent() {
   return (
-    <div className="flex flex-col items-center justify-center gap-4">
-      <h1 className="text-xl font-semibold">print</h1>
+    <div className="flex min-h-screen flex-col items-center justify-center gap-4">
+      <h1 className="text-xl font-semibold">Print</h1>
       <SignedOut>
         <SignInButton mode="modal">
-          <Button>Sign in</Button>
+          <Button>Log in</Button>
         </SignInButton>
       </SignedOut>
     </div>

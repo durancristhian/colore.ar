@@ -14,7 +14,7 @@ export default function DashboardLayout({
           href="/dashboard"
           className="text-xl font-semibold hover:underline"
         >
-          print
+          Print
         </Link>
         <SignOutButton>
           <Button variant="ghost">Log out</Button>
