@@ -1,7 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
+import { insertPreview } from "@/lib/db/previews";
 import { generateImage } from "@/lib/images/generator";
 import { imageStore } from "@/lib/images/store";
 import type { CreatePreviewRequest, CreatePreviewResponse } from "@/lib/images/types";
+
+const PLACEHOLDER_USER_ID = "user123";
 
 function getCloudinaryPublicUrl(publicId: string): string {
   const cloudName = process.env.CLOUDINARY_CLOUD_NAME;
@@ -21,9 +24,18 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const buffer = await generateImage(description.trim());
-    const id = await imageStore.save(buffer);
-    const url = getCloudinaryPublicUrl(id);
+    const trimmedDescription = description.trim();
+    const id = crypto.randomUUID();
+    const buffer = await generateImage(trimmedDescription);
+    const publicId = await imageStore.save(buffer);
+    const url = getCloudinaryPublicUrl(publicId);
+
+    await insertPreview({
+      id,
+      userId: PLACEHOLDER_USER_ID,
+      description: trimmedDescription,
+      previewUrl: url,
+    });
 
     return NextResponse.json<CreatePreviewResponse>({ id, url });
   } catch (error) {
