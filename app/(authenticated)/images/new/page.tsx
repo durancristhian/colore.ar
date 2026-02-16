@@ -35,11 +35,11 @@ export default function NewImagePage() {
 
   return (
     <div className="w-full">
-      <div className="mb-4 flex items-center gap-3">
+      <div className="mb-4 flex items-center gap-4">
         <Button variant="outline" asChild>
           <Link href="/images">Back</Link>
         </Button>
-        <h1 className="text-xl font-semibold">New image</h1>
+        <h1 className="font-semibold">New image</h1>
       </div>
       <main className="flex flex-col gap-4">
         <div className="flex flex-col gap-2">
@@ -65,7 +65,7 @@ export default function NewImagePage() {
             onClick={() => createMutation.mutate(description)}
             disabled={disabled || !description.trim()}
           >
-            {isGenerating ? "Generating…" : "Generate preview"}
+            {isGenerating ? "Generating…" : "Generate"}
           </Button>
         </div>
 
