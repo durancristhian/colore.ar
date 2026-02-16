@@ -1,62 +1,33 @@
 {
-  "info": {
-    "name": "Print API",
-    "description": "API collection for Print image preview endpoints",
-    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
-  },
-  "variable": [
-    {
-      "key": "baseUrl",
-      "value": "http://localhost:3000"
+    "info": {
+        "name": "Print API",
+        "description": "API collection for Print image preview endpoints",
+        "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
     },
-    {
-      "key": "previewId",
-      "value": ""
-    }
-  ],
-  "item": [
-    {
-      "name": "Create preview",
-      "request": {
-        "method": "POST",
-        "header": [
-          {
-            "key": "Content-Type",
-            "value": "application/json"
-          }
-        ],
-        "body": {
-          "mode": "raw",
-          "raw": "{\n  \"description\": \"a sunset over the sea\"\n}"
-        },
-        "url": "{{baseUrl}}/api/images/preview",
-        "description": "Creates a preview image from a description. Returns id and url to fetch the image."
-      },
-      "event": [
+    "variable": [
         {
-          "listen": "test",
-          "script": {
-            "exec": [
-              "if (pm.response.code === 200) {",
-              "  const json = pm.response.json();",
-              "  if (json.id) {",
-              "    pm.collectionVariables.set('previewId', json.id);",
-              "  }",
-              "}"
-            ],
-            "type": "text/javascript"
-          }
+            "key": "baseUrl",
+            "value": "http://localhost:3000"
         }
-      ]
-    },
-    {
-      "name": "Get preview image",
-      "request": {
-        "method": "GET",
-        "header": [],
-        "url": "{{baseUrl}}/api/images/preview/{{previewId}}",
-        "description": "Returns the preview image bytes (image/png) for the given id. Use previewId from Create preview response or set the collection variable manually."
-      }
-    }
-  ]
+    ],
+    "item": [
+        {
+            "name": "Create preview",
+            "request": {
+                "method": "POST",
+                "header": [
+                    {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                    }
+                ],
+                "body": {
+                    "mode": "raw",
+                    "raw": "{\n  \"description\": \"a sunset over the sea\"\n}"
+                },
+                "url": "{{baseUrl}}/api/images",
+                "description": "Creates a preview image from a description. Returns id and url to fetch the image."
+            }
+        }
+    ]
 }
