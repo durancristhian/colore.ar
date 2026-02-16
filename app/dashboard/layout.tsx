@@ -9,7 +9,7 @@ export default function DashboardLayout({
 }) {
   return (
     <div className="flex flex-col gap-4">
-      <header className="flex items-center justify-between border-b py-2">
+      <header className="flex items-center justify-between border-b pb-2">
         <Link
           href="/dashboard"
           className="text-xl font-semibold hover:underline"
@@ -17,7 +17,7 @@ export default function DashboardLayout({
           Print
         </Link>
         <SignOutButton>
-          <Button variant="ghost">Log out</Button>
+          <Button variant="outline">Log out</Button>
         </SignOutButton>
       </header>
       {children}
