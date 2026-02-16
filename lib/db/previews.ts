@@ -97,3 +97,16 @@ export async function listPreviewsByUserId(
     createdAt: String(row.created_at),
   }));
 }
+
+export async function deletePreviewByIdAndUserId(
+  id: string,
+  userId: string,
+): Promise<boolean> {
+  await ensureTable();
+  const db = getDb();
+  const rs = await db.execute({
+    sql: "DELETE FROM previews WHERE id = ? AND user_id = ?",
+    args: [id, userId],
+  });
+  return (rs.rowsAffected ?? 0) > 0;
+}

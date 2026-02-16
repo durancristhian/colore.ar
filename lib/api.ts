@@ -29,3 +29,8 @@ export async function listPreviews(): Promise<PreviewListItem[]> {
   if (!res.ok) throw new Error("Failed to list previews");
   return res.json();
 }
+
+export async function deletePreview(id: string): Promise<void> {
+  const res = await fetch(`${base}/api/images/${id}`, { method: "DELETE" });
+  if (!res.ok) throw new Error("Failed to delete preview");
+}

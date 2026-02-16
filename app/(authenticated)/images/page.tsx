@@ -1,15 +1,32 @@
 "use client";
 
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { TrashIcon } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { listPreviews } from "@/lib/api";
+import { deletePreview, listPreviews } from "@/lib/api";
 
 export default function ImagesPage() {
-  const { data: previews, isLoading, isError } = useQuery({
+  const queryClient = useQueryClient();
+  const {
+    data: previews,
+    isLoading,
+    isError,
+  } = useQuery({
     queryKey: ["previews"],
     queryFn: listPreviews,
   });
+  const deleteMutation = useMutation({
+    mutationFn: deletePreview,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["previews"] });
+    },
+  });
+
+  function handleDelete(id: string) {
+    if (!window.confirm("Are you sure you want to delete this image?")) return;
+    deleteMutation.mutate(id);
+  }
 
   return (
     <div className="w-full">
@@ -21,9 +38,7 @@ export default function ImagesPage() {
           </Button>
         </div>
 
-        {isLoading && (
-          <p className="text-muted-foreground text-sm">Loading…</p>
-        )}
+        {isLoading && <p className="text-muted-foreground text-sm">Loading…</p>}
 
         {isError && (
           <p className="text-sm text-destructive">
@@ -40,8 +55,20 @@ export default function ImagesPage() {
             {previews.map((preview) => (
               <article
                 key={preview.id}
-                className="flex flex-col gap-2 rounded-md border p-2"
+                className="relative flex flex-col gap-2 rounded-md border p-2"
               >
+                <div className="absolute right-3 top-3 m-1">
+                  <Button
+                    variant="destructive"
+                    size="icon-sm"
+                    className="size-9 p-2 hover:text-destructive"
+                    aria-label="Delete image"
+                    onClick={() => handleDelete(preview.id)}
+                    disabled={deleteMutation.isPending}
+                  >
+                    <TrashIcon className="size-4" />
+                  </Button>
+                </div>
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   src={preview.previewUrl}
