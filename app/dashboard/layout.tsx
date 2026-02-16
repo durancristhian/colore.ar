@@ -8,8 +8,8 @@ export default function DashboardLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="flex min-h-screen flex-col">
-      <header className="flex items-center justify-between border-b px-4 py-2">
+    <div className="flex flex-col gap-4">
+      <header className="flex items-center justify-between border-b py-2">
         <Link
           href="/dashboard"
           className="text-xl font-semibold hover:underline"

@@ -33,9 +33,11 @@ export default function DashboardPage() {
   }
 
   return (
-    <div className="w-full px-4 py-8">
-      <main className="mx-auto max-w-lg flex flex-col gap-6">
+    <div className="w-full">
+      <main className="flex flex-col gap-4">
         <Textarea
+          id="prompt"
+          rows={5}
           placeholder="Describe the image you want to generate..."
           value={description}
           onChange={(e) => setDescription(e.target.value)}
@@ -43,20 +45,21 @@ export default function DashboardPage() {
           className="min-h-24 w-full"
         />
 
-        <div className="flex flex-col gap-2 sm:flex-row">
+        <div className="flex flex-col gap-2 sm:flex-row sm:justify-between">
+          <Button variant="secondary" onClick={handleClear} disabled={disabled}>
+            Clear
+          </Button>
           <Button
             onClick={() => createMutation.mutate(description)}
             disabled={disabled || !description.trim()}
           >
             {isGenerating ? "Generating…" : "Generate preview"}
           </Button>
-          <Button variant="secondary" onClick={handleClear} disabled={disabled}>
-            Clear
-          </Button>
         </div>
 
         {previewUrl && (
           <div className="flex flex-col gap-4">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src={previewUrl}
               alt="Generated preview"
