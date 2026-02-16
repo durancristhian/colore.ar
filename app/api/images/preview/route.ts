@@ -3,10 +3,10 @@ import { generateImage } from "@/lib/images/generator";
 import { imageStore } from "@/lib/images/store";
 import type { CreatePreviewRequest, CreatePreviewResponse } from "@/lib/images/types";
 
-function getBaseUrl(request: NextRequest): string {
-  const host = request.headers.get("host") ?? "localhost:3000";
-  const protocol = request.headers.get("x-forwarded-proto") ?? "http";
-  return `${protocol}://${host}`;
+function getCloudinaryPublicUrl(publicId: string): string {
+  const cloudName = process.env.CLOUDINARY_CLOUD_NAME;
+  if (!cloudName) throw new Error("CLOUDINARY_CLOUD_NAME is not set");
+  return `https://res.cloudinary.com/${cloudName}/image/upload/${publicId}`;
 }
 
 export async function POST(request: NextRequest) {
@@ -23,8 +23,7 @@ export async function POST(request: NextRequest) {
 
     const buffer = await generateImage(description.trim());
     const id = await imageStore.save(buffer);
-    const baseUrl = getBaseUrl(request);
-    const url = `${baseUrl}/api/images/preview/${id}`;
+    const url = getCloudinaryPublicUrl(id);
 
     return NextResponse.json<CreatePreviewResponse>({ id, url });
   } catch (error) {

@@ -3,9 +3,10 @@ import { imageStore } from "@/lib/images/store";
 
 export async function GET(
   _request: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
+  { params }: { params: Promise<{ id: string | string[] }> }
 ) {
-  const { id } = await params;
+  const { id: rawId } = await params;
+  const id = Array.isArray(rawId) ? rawId.join("/") : rawId;
   const buffer = await imageStore.get(id);
 
   if (buffer == null) {
