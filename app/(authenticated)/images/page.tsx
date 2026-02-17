@@ -1,13 +1,12 @@
 "use client";
 
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { TrashIcon } from "lucide-react";
+import { useQuery } from "@tanstack/react-query";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { deleteImage, listImages } from "@/lib/api";
+import { DeleteImageButton } from "@/components/delete-image-button";
+import { listImages } from "@/lib/api";
 
 export default function ImagesPage() {
-  const queryClient = useQueryClient();
   const {
     data: images,
     isLoading,
@@ -16,17 +15,6 @@ export default function ImagesPage() {
     queryKey: ["images"],
     queryFn: listImages,
   });
-  const deleteMutation = useMutation({
-    mutationFn: deleteImage,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["images"] });
-    },
-  });
-
-  function handleDelete(id: string) {
-    if (!window.confirm("Are you sure you want to delete this image?")) return;
-    deleteMutation.mutate(id);
-  }
 
   return (
     <div className="w-full">
@@ -60,20 +48,7 @@ export default function ImagesPage() {
               >
                 <article className="relative flex flex-col gap-2 rounded-md border p-2">
                   <div className="absolute right-3 top-3 m-1">
-                    <Button
-                      variant="destructive"
-                      size="icon-sm"
-                      className="size-9 p-2 hover:text-destructive"
-                      aria-label="Delete image"
-                      onClick={(e) => {
-                        e.preventDefault();
-                        e.stopPropagation();
-                        handleDelete(image.id);
-                      }}
-                      disabled={deleteMutation.isPending}
-                    >
-                      <TrashIcon className="size-4" />
-                    </Button>
+                    <DeleteImageButton imageId={image.id} />
                   </div>
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img

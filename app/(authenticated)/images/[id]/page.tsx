@@ -2,7 +2,8 @@
 
 import { useQuery } from "@tanstack/react-query";
 import Link from "next/link";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
+import { DeleteImageButton } from "@/components/delete-image-button";
 import { ImagePageLayout } from "@/components/image-page-layout";
 import { ImageWithPrint } from "@/components/image-with-print";
 import { getImage } from "@/lib/api";
@@ -18,6 +19,7 @@ function formatCreatedAt(createdAt: string): string {
 
 export default function ImageDetailPage() {
   const params = useParams();
+  const router = useRouter();
   const id = typeof params.id === "string" ? params.id : "";
 
   const {
@@ -63,6 +65,12 @@ export default function ImageDetailPage() {
   return (
     <ImagePageLayout title="Image details" backHref="/images">
       <main className="flex flex-col gap-4">
+        <div className="flex justify-end">
+          <DeleteImageButton
+            imageId={image.id}
+            onSuccess={() => router.push("/images")}
+          />
+        </div>
         <div className="flex flex-col gap-1">
           <p className="text-muted-foreground text-sm">Prompt</p>
           <p className="text-sm">{image.description}</p>
