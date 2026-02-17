@@ -22,11 +22,6 @@ export default function NewImagePage() {
   const isGenerating = createMutation.isPending;
   const disabled = isGenerating;
 
-  function handleClear() {
-    setDescription("");
-    setImageUrl(null);
-  }
-
   return (
     <ImagePageLayout title="New image" backHref="/images">
       <main className="flex flex-col gap-4">
@@ -45,17 +40,15 @@ export default function NewImagePage() {
           />
         </div>
 
-        <div className="flex flex-col gap-2 sm:flex-row sm:justify-between">
-          <Button variant="secondary" onClick={handleClear} disabled={disabled}>
-            Clear
-          </Button>
+        {!imageUrl && (
           <Button
+            className="w-full"
             onClick={() => createMutation.mutate(description)}
             disabled={disabled || !description.trim()}
           >
             {isGenerating ? "Generating…" : "Generate"}
           </Button>
-        </div>
+        )}
 
         {imageUrl && <ImageWithPrint src={imageUrl} alt="Generated image" />}
 
