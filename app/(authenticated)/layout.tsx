@@ -11,7 +11,7 @@ export default function AuthenticatedLayout({
     <div className="flex flex-col gap-4">
       <header className="flex items-center justify-between border-b pb-4">
         <Link href="/images" className="text-xl font-semibold hover:underline">
-          Printar
+          Colore.ar
         </Link>
         <SignOutButton>
           <Button variant="outline">Log out</Button>

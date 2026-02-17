@@ -16,8 +16,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Printar",
-  description: "Printar",
+  title: "Colore.ar",
+  description: "Colore.ar - Generate. Print. Paint.",
 };
 
 export default function RootLayout({

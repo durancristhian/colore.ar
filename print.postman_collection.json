@@ -1,7 +1,7 @@
 {
   "info": {
-    "name": "Printar API",
-    "description": "API collection for Printar image endpoints",
+    "name": "Colore.ar API",
+    "description": "API collection for Colore.ar image endpoints",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
   "variable": [
