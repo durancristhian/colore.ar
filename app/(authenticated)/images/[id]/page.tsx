@@ -34,10 +34,12 @@ export default function ImageDetailPage() {
 
   if (!id) {
     return (
-      <ImagePageLayout title="Image" backHref="/images">
-        <p className="text-sm text-destructive">Invalid image.</p>
+      <ImagePageLayout title="Creation" backHref="/images">
+        <p className="text-sm text-destructive">
+          We didn&apos;t find the creation you&apos;re looking for.
+        </p>
         <Link href="/images" className="text-sm underline">
-          Back to images
+          Back to creations
         </Link>
       </ImagePageLayout>
     );
@@ -45,7 +47,7 @@ export default function ImageDetailPage() {
 
   if (isLoading) {
     return (
-      <ImagePageLayout title="Image" backHref="/images">
+      <ImagePageLayout title="Creation" backHref="/images">
         <p className="text-muted-foreground text-sm">Loading…</p>
       </ImagePageLayout>
     );
@@ -53,17 +55,19 @@ export default function ImageDetailPage() {
 
   if (isError || !image) {
     return (
-      <ImagePageLayout title="Image" backHref="/images">
-        <p className="text-sm text-destructive">Image not found.</p>
+      <ImagePageLayout title="Creation" backHref="/images">
+        <p className="text-sm text-destructive">
+          We didn&apos;t find the creation you&apos;re looking for.
+        </p>
         <Link href="/images" className="text-sm underline">
-          Back to images
+          Back to creations
         </Link>
       </ImagePageLayout>
     );
   }
 
   return (
-    <ImagePageLayout title="Image details" backHref="/images">
+    <ImagePageLayout title="Creation details" backHref="/images">
       <main className="flex flex-col gap-4">
         <div className="flex flex-col gap-1">
           <p className="text-muted-foreground text-sm">Prompt</p>

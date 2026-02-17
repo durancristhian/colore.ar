@@ -66,14 +66,14 @@ export async function POST(request: NextRequest) {
     if (isConfigError) {
       return NextResponse.json(
         {
-          error: "Image generation is not configured",
+          error: "Generation is not available right now.",
           details: message,
         },
         { status: 503 },
       );
     }
     return NextResponse.json(
-      { error: "Failed to create image" },
+      { error: "Something went wrong. Please try again." },
       { status: 500 },
     );
   }

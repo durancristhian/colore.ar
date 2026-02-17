@@ -20,7 +20,7 @@ export default function ImagesPage() {
     <div className="w-full">
       <div className="flex flex-col gap-4">
         <div className="flex flex-1 items-center justify-between gap-4">
-          <h1 className="font-semibold">Your images</h1>
+          <h1 className="font-semibold">Your creations</h1>
           <Button asChild>
             <Link href="/images/new">New</Link>
           </Button>
@@ -30,12 +30,12 @@ export default function ImagesPage() {
 
         {isError && (
           <p className="text-sm text-destructive">
-            Failed to load images. Try again.
+            Failed to load creations. Try again.
           </p>
         )}
 
         {!isLoading && !isError && (!images || images.length === 0) && (
-          <p className="text-muted-foreground text-sm">No images yet.</p>
+          <p className="text-muted-foreground text-sm">No creations yet.</p>
         )}
 
         {!isLoading && !isError && images && images.length > 0 && (

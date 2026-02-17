@@ -23,16 +23,16 @@ export default function NewImagePage() {
   const disabled = isGenerating;
 
   return (
-    <ImagePageLayout title="New image" backHref="/images">
+    <ImagePageLayout title="New creation" backHref="/images">
       <main className="flex flex-col gap-4">
         <div className="flex flex-col gap-2">
           <label htmlFor="prompt" className="text-sm font-medium leading-none">
-            Describe the image you want to generate:
+            Describe what you&apos;d like to create
           </label>
           <Textarea
             id="prompt"
             rows={5}
-            placeholder="A happy person with a dog sitting aside"
+            placeholder="A happy person with a dog sitting next to it. Mountains behind them."
             value={description}
             onChange={(e) => setDescription(e.target.value)}
             disabled={disabled}
@@ -50,11 +50,11 @@ export default function NewImagePage() {
           </Button>
         )}
 
-        {imageUrl && <ImageWithPrint src={imageUrl} alt="Generated image" />}
+        {imageUrl && <ImageWithPrint src={imageUrl} alt="Generated creation" />}
 
         {createMutation.isError && (
           <p className="text-sm text-destructive">
-            Failed to create image. Try again.
+            Something went wrong. Please try again.
           </p>
         )}
       </main>

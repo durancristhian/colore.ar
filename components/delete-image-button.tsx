@@ -27,7 +27,8 @@ export function DeleteImageButton({
   function handleClick(e: React.MouseEvent) {
     e.preventDefault();
     e.stopPropagation();
-    if (!window.confirm("Are you sure you want to delete this image?")) return;
+    if (!window.confirm("Are you sure you want to delete this creation?"))
+      return;
     deleteMutation.mutate(imageId);
   }
 
@@ -36,7 +37,7 @@ export function DeleteImageButton({
       variant="destructive"
       size="icon-sm"
       className="size-9 p-2 hover:text-destructive"
-      aria-label="Delete image"
+      aria-label="Delete creation"
       onClick={handleClick}
       disabled={deleteMutation.isPending}
     >
