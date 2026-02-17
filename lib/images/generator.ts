@@ -20,13 +20,24 @@ function getEnv(name: string): string {
 
 /**
  * Builds the full prompt as: optional PROMPT_PREFIX + description + optional PROMPT_SUFFIX.
- * Non-empty parts are joined with a single space.
+ * Parts are trimmed and joined with a single space.
  */
 function buildPrompt(description: string): string {
   const trimmed = description.trim();
   const prefix = process.env.PROMPT_PREFIX?.trim() ?? "";
   const suffix = process.env.PROMPT_SUFFIX?.trim() ?? "";
-  const parts = [prefix, trimmed, suffix].filter(Boolean);
+  const parts = [prefix, trimmed, suffix].map((s) => s.trim()).filter(Boolean);
+  return parts.join(" ");
+}
+
+/**
+ * Builds the prompt for image-to-image: PROMPT_IMAGE_PREFIX + PROMPT_SUFFIX joined with a space.
+ * Used when generating from an uploaded image (Pollinations image endpoint).
+ */
+function buildPromptFromImage(): string {
+  const prefix = process.env.PROMPT_IMAGE_PREFIX?.trim() ?? "";
+  const suffix = process.env.PROMPT_SUFFIX?.trim() ?? "";
+  const parts = [prefix, suffix].map((s) => s.trim()).filter(Boolean);
   return parts.join(" ");
 }
 
@@ -81,6 +92,29 @@ export async function generateImageWithPollinations(
   if (!response.ok) {
     throw new Error(
       `Pollinations image generation failed: ${response.status} ${response.statusText}`,
+    );
+  }
+  const arrayBuffer = await response.arrayBuffer();
+  return Buffer.from(arrayBuffer);
+}
+
+/**
+ * Generates an image from a source image URL using Pollinations (image-to-image).
+ * Builds prompt with buildPromptFromImage(), calls image.pollinations.ai with prompt and image query params.
+ * Requires POLLINATIONS_API_KEY.
+ */
+export async function generateImageFromImage(
+  sourceImageUrl: string,
+): Promise<Buffer> {
+  const prompt = buildPromptFromImage();
+  const apiKey = getPollinationsApiKey();
+  const url = `https://image.pollinations.ai/prompt/${encodeURIComponent(prompt)}?image=${encodeURIComponent(sourceImageUrl)}`;
+  const response = await fetch(url, {
+    headers: { Authorization: `Bearer ${apiKey}` },
+  });
+  if (!response.ok) {
+    throw new Error(
+      `Pollinations image-from-image failed: ${response.status} ${response.statusText}`,
     );
   }
   const arrayBuffer = await response.arrayBuffer();
