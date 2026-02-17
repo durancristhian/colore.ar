@@ -43,7 +43,12 @@ export default function NewImagePage() {
         {!imageUrl && (
           <Button
             className="w-full"
-            onClick={() => createMutation.mutate(description)}
+            onClick={() =>
+              createMutation.mutate({
+                description: description.trim(),
+                image: null,
+              })
+            }
             disabled={disabled || !description.trim()}
           >
             {isGenerating ? "Generating…" : "Generate"}

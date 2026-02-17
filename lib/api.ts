@@ -7,18 +7,24 @@ export type CreateImageResponse = {
 
 export type ImageListItem = {
   id: string;
-  description: string;
+  description: string | null;
   imageUrl: string;
+  sourceImageUrl?: string | null;
   createdAt: string;
 };
 
-export async function createImage(
-  description: string,
-): Promise<CreateImageResponse> {
+export async function createImage(payload: {
+  description: string;
+  image?: File | null;
+}): Promise<CreateImageResponse> {
+  const formData = new FormData();
+  formData.append("description", payload.description ?? "");
+  if (payload.image instanceof File) {
+    formData.append("image", payload.image);
+  }
   const res = await fetch(`${base}/api/images`, {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ description }),
+    body: formData,
   });
   if (!res.ok) throw new Error("Something went wrong. Please try again.");
   return res.json();
