@@ -27,7 +27,9 @@ export function ImageWithPrint({
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img src={src} alt={alt} className="border-2 rounded-md" />
       </div>
-      <Button className="w-full" onClick={onPrint}>Print</Button>
+      <Button className="w-full" onClick={onPrint}>
+        Print
+      </Button>
     </div>
   );
 }
