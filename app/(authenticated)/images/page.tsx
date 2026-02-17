@@ -46,19 +46,21 @@ export default function ImagesPage() {
                 href={`/images/${image.id}`}
                 className="block"
               >
-                <article className="relative flex flex-col gap-2 rounded-md border p-2">
-                  <div className="absolute right-3 top-3 m-1">
+                <article className="relative flex flex-col overflow-hidden rounded-md border">
+                  <div className="absolute right-1 top-1 m-1">
                     <DeleteImageButton imageId={image.id} />
                   </div>
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
                     src={image.imageUrl}
                     alt={image.description}
-                    className="w-full rounded-md border object-contain"
+                    className="w-full rounded-t-md object-contain"
                   />
-                  <p className="line-clamp-1" title={image.description}>
-                    {image.description}
-                  </p>
+                  <div className="border-t p-2">
+                    <p className="line-clamp-1" title={image.description}>
+                      {image.description}
+                    </p>
+                  </div>
                 </article>
               </Link>
             ))}
