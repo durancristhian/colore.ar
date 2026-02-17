@@ -21,9 +21,7 @@ export function ImageWithPrint({
         alt={alt}
         className="w-full rounded-md border object-contain print:block"
       />
-      <Button variant="outline" onClick={onPrint}>
-        Print
-      </Button>
+      <Button onClick={onPrint}>Print</Button>
     </div>
   );
 }
