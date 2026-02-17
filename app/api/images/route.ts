@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@clerk/nextjs/server";
 import { insertImage, listImagesByUserId } from "@/lib/db/images";
-import { generateImage } from "@/lib/images/generator";
+import { generateImageForEnv } from "@/lib/images/generator";
 import { imageStore } from "@/lib/images/store";
 import type {
   CreateImageRequest,
@@ -43,7 +43,7 @@ export async function POST(request: NextRequest) {
 
     const trimmedDescription = description.trim();
     const id = crypto.randomUUID();
-    const buffer = await generateImage(trimmedDescription);
+    const buffer = await generateImageForEnv(trimmedDescription);
     const publicId = await imageStore.save(buffer);
     const url = getCloudinaryPublicUrl(publicId);
 
@@ -59,8 +59,10 @@ export async function POST(request: NextRequest) {
     console.error("Image creation failed:", error);
     const message = error instanceof Error ? error.message : String(error);
     const isConfigError =
-      message.includes("OPEN_ROUTER") &&
-      message.includes("environment variable");
+      (message.includes("OPEN_ROUTER") &&
+        message.includes("environment variable")) ||
+      (message.includes("POLLINATIONS_API_KEY") &&
+        message.includes("environment variable"));
     if (isConfigError) {
       return NextResponse.json(
         {

@@ -50,3 +50,48 @@ export async function generateImage(description: string): Promise<Buffer> {
   }
   return Buffer.from(first.uint8Array);
 }
+
+function getPollinationsApiKey(): string {
+  const value = process.env.POLLINATIONS_API_KEY;
+  if (value == null || value.trim() === "") {
+    throw new Error(
+      "Missing or empty environment variable: POLLINATIONS_API_KEY. Required for image generation when not in production."
+    );
+  }
+  return value.trim();
+}
+
+/**
+ * Generates an image from a text description using Pollinations (flux model).
+ * Used when NODE_ENV is not production. Uses buildPrompt for PROMPT_SUFFIX consistency.
+ * Requires POLLINATIONS_API_KEY.
+ * See https://gen.pollinations.ai/
+ */
+export async function generateImageWithPollinations(
+  description: string
+): Promise<Buffer> {
+  const fullPrompt = buildPrompt(description);
+  const apiKey = getPollinationsApiKey();
+  const url = `https://gen.pollinations.ai/image/${encodeURIComponent(fullPrompt)}?model=flux`;
+  const response = await fetch(url, {
+    headers: { Authorization: `Bearer ${apiKey}` },
+  });
+  if (!response.ok) {
+    throw new Error(
+      `Pollinations image generation failed: ${response.status} ${response.statusText}`
+    );
+  }
+  const arrayBuffer = await response.arrayBuffer();
+  return Buffer.from(arrayBuffer);
+}
+
+/**
+ * Picks the image generator by NODE_ENV: production uses Open Router (generateImage),
+ * non-production uses Pollinations (generateImageWithPollinations). Same return type for both.
+ */
+export async function generateImageForEnv(description: string): Promise<Buffer> {
+  if (process.env.NODE_ENV === "production") {
+    return generateImage(description);
+  }
+  return generateImageWithPollinations(description);
+}
