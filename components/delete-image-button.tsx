@@ -36,7 +36,7 @@ export function DeleteImageButton({
     <Button
       variant="destructive"
       size="icon-sm"
-      className="size-9 p-2 hover:text-destructive"
+      className="size-9 p-2"
       aria-label="Delete creation"
       onClick={handleClick}
       disabled={deleteMutation.isPending}
