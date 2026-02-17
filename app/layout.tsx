@@ -28,7 +28,7 @@ export default function RootLayout({
     <ClerkProvider>
       <html lang="en" /* className="dark" */>
         <body
-          className={`${geistSans.variable} ${geistMono.variable} antialiased print:hidden`}
+          className={`${geistSans.variable} ${geistMono.variable} antialiased`}
         >
           <Providers>
             <div className="mx-auto w-full max-w-lg p-4">{children}</div>
