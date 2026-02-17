@@ -2,7 +2,7 @@
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
 
-@custom-variant dark (&:is(.dark *));
+/* @custom-variant dark (&:is(.dark *)); */
 
 /* 
   https://shadcnstudio.com/theme-generator
@@ -59,7 +59,7 @@
 
 }
 
-.dark {
+/* .dark {
   --background: oklch(0.27 0 0);
   --foreground: oklch(0.81 0.01 93.53);
   --card: oklch(0.27 0 0);
@@ -100,7 +100,7 @@
   --shadow-lg: 0 1px 3px 0px oklch(0.00 0 0 / 0.10), 0 4px 6px -1px oklch(0.00 0 0 / 0.10);
   --shadow-xl: 0 1px 3px 0px oklch(0.00 0 0 / 0.10), 0 8px 10px -1px oklch(0.00 0 0 / 0.10);
   --shadow-2xl: 0 1px 3px 0px oklch(0.00 0 0 / 0.25);
-}
+} */
 
 @theme inline {
   --color-background: var(--background);
@@ -159,9 +159,9 @@
 */
 
 @layer base {
-  html {
+  /* html {
     color-scheme: dark;
-  }
+  } */
 
   * {
     @apply border-border outline-ring/50;
