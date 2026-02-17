@@ -1,22 +1,21 @@
 "use client";
 
 import { useMutation } from "@tanstack/react-query";
-import Link from "next/link";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
-import { createPreview } from "@/lib/api";
+import { ImagePageLayout } from "@/components/image-page-layout";
+import { ImageWithPrint } from "@/components/image-with-print";
+import { createImage } from "@/lib/api";
 
 export default function NewImagePage() {
   const [description, setDescription] = useState("");
-  const [previewId, setPreviewId] = useState<string | null>(null);
-  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+  const [imageUrl, setImageUrl] = useState<string | null>(null);
 
   const createMutation = useMutation({
-    mutationFn: createPreview,
+    mutationFn: createImage,
     onSuccess: (data) => {
-      setPreviewId(data.id);
-      setPreviewUrl(data.url ?? null);
+      setImageUrl(data.url ?? null);
     },
   });
 
@@ -25,22 +24,11 @@ export default function NewImagePage() {
 
   function handleClear() {
     setDescription("");
-    setPreviewId(null);
-    setPreviewUrl(null);
-  }
-
-  function handlePrint() {
-    console.log("Print", { previewId, previewUrl });
+    setImageUrl(null);
   }
 
   return (
-    <div className="w-full">
-      <div className="mb-4 flex items-center gap-4">
-        <Button variant="outline" asChild>
-          <Link href="/images">Back</Link>
-        </Button>
-        <h1 className="font-semibold">New image</h1>
-      </div>
+    <ImagePageLayout title="New image" backHref="/images">
       <main className="flex flex-col gap-4">
         <div className="flex flex-col gap-2">
           <label htmlFor="prompt" className="text-sm font-medium leading-none">
@@ -69,26 +57,14 @@ export default function NewImagePage() {
           </Button>
         </div>
 
-        {previewUrl && (
-          <div className="flex flex-col gap-4">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src={previewUrl}
-              alt="Generated preview"
-              className="w-full rounded-md border object-contain print:block"
-            />
-            <Button variant="outline" onClick={handlePrint}>
-              Print
-            </Button>
-          </div>
-        )}
+        {imageUrl && <ImageWithPrint src={imageUrl} alt="Generated image" />}
 
         {createMutation.isError && (
           <p className="text-sm text-destructive">
-            Failed to load preview. Try again.
+            Failed to create image. Try again.
           </p>
         )}
       </main>
-    </div>
+    </ImagePageLayout>
   );
 }

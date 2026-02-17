@@ -1,12 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@clerk/nextjs/server";
-import { insertPreview, listPreviewsByUserId } from "@/lib/db/previews";
+import { insertImage, listImagesByUserId } from "@/lib/db/images";
 import { generateImage } from "@/lib/images/generator";
 import { imageStore } from "@/lib/images/store";
 import type {
-  CreatePreviewRequest,
-  CreatePreviewResponse,
-  PreviewListItem,
+  CreateImageRequest,
+  CreateImageResponse,
+  ImageListItem,
 } from "@/lib/images/types";
 
 function getCloudinaryPublicUrl(publicId: string): string {
@@ -20,8 +20,8 @@ export async function GET() {
   if (!userId) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
-  const previews: PreviewListItem[] = await listPreviewsByUserId(userId);
-  return NextResponse.json(previews);
+  const images: ImageListItem[] = await listImagesByUserId(userId);
+  return NextResponse.json(images);
 }
 
 export async function POST(request: NextRequest) {
@@ -32,7 +32,7 @@ export async function POST(request: NextRequest) {
 
   try {
     const body = (await request.json()) as unknown;
-    const { description } = body as Partial<CreatePreviewRequest>;
+    const { description } = body as Partial<CreateImageRequest>;
 
     if (typeof description !== "string" || description.trim() === "") {
       return NextResponse.json(
@@ -47,16 +47,16 @@ export async function POST(request: NextRequest) {
     const publicId = await imageStore.save(buffer);
     const url = getCloudinaryPublicUrl(publicId);
 
-    await insertPreview({
+    await insertImage({
       id,
       userId,
       description: trimmedDescription,
-      previewUrl: url,
+      imageUrl: url,
     });
 
-    return NextResponse.json<CreatePreviewResponse>({ id, url });
+    return NextResponse.json<CreateImageResponse>({ id, url });
   } catch (error) {
-    console.error("Preview creation failed:", error);
+    console.error("Image creation failed:", error);
     const message = error instanceof Error ? error.message : String(error);
     const isConfigError =
       message.includes("OPEN_ROUTER") &&
@@ -71,7 +71,7 @@ export async function POST(request: NextRequest) {
       );
     }
     return NextResponse.json(
-      { error: "Failed to create preview" },
+      { error: "Failed to create image" },
       { status: 500 },
     );
   }
