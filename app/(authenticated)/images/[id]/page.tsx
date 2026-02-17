@@ -65,12 +65,6 @@ export default function ImageDetailPage() {
   return (
     <ImagePageLayout title="Image details" backHref="/images">
       <main className="flex flex-col gap-4">
-        <div className="flex justify-end">
-          <DeleteImageButton
-            imageId={image.id}
-            onSuccess={() => router.push("/images")}
-          />
-        </div>
         <div className="flex flex-col gap-1">
           <p className="text-muted-foreground text-sm">Prompt</p>
           <p className="text-sm">{image.description}</p>
@@ -79,7 +73,15 @@ export default function ImageDetailPage() {
           <p className="text-muted-foreground text-sm">Created</p>
           <p className="text-sm">{formatCreatedAt(image.createdAt)}</p>
         </div>
-        <ImageWithPrint src={image.imageUrl} alt={image.description} />
+        <div className="relative">
+          <div className="absolute right-1 top-1 m-1">
+            <DeleteImageButton
+              imageId={image.id}
+              onSuccess={() => router.push("/images")}
+            />
+          </div>
+          <ImageWithPrint src={image.imageUrl} alt={image.description} />
+        </div>
       </main>
     </ImagePageLayout>
   );
