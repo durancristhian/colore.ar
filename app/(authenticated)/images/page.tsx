@@ -56,10 +56,7 @@ export default function ImagesPage() {
                     alt={image.description}
                     className="w-full rounded-md border object-contain"
                   />
-                  <p
-                    className="line-clamp-1 text-muted-foreground text-sm"
-                    title={image.description}
-                  >
+                  <p className="line-clamp-1" title={image.description}>
                     {image.description}
                   </p>
                 </article>
