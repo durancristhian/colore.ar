@@ -53,12 +53,15 @@ export default function ImagesPage() {
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
                     src={image.imageUrl}
-                    alt={image.description}
+                    alt={image.description ?? "From uploaded image"}
                     className="w-full rounded-t-md object-contain"
                   />
                   <div className="border-t p-2">
-                    <p className="line-clamp-1" title={image.description}>
-                      {image.description}
+                    <p
+                      className="line-clamp-1"
+                      title={image.description ?? undefined}
+                    >
+                      {image.description ?? "From uploaded image"}
                     </p>
                   </div>
                 </article>

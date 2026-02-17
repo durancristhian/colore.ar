@@ -71,7 +71,9 @@ export default function ImageDetailPage() {
       <main className="flex flex-col gap-4">
         <div className="flex flex-col gap-1">
           <p className="text-muted-foreground text-sm">Prompt</p>
-          <p className="text-sm">{image.description}</p>
+          <p className="text-sm">
+            {image.description ?? "From uploaded image"}
+          </p>
         </div>
         <div className="flex flex-col gap-1">
           <p className="text-muted-foreground text-sm">Created</p>
@@ -84,7 +86,10 @@ export default function ImageDetailPage() {
               onSuccess={() => router.push("/images")}
             />
           </div>
-          <ImageWithPrint src={image.imageUrl} alt={image.description} />
+          <ImageWithPrint
+            src={image.imageUrl}
+            alt={image.description ?? "From uploaded image"}
+          />
         </div>
       </main>
     </ImagePageLayout>

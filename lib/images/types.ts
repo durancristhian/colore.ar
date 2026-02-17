@@ -12,8 +12,9 @@ export interface CreateImageResponse {
 /** Item returned by GET /api/images (list) and GET /api/images/:id (single) */
 export interface ImageListItem {
   id: string;
-  description: string;
+  description: string | null;
   imageUrl: string;
+  sourceImageUrl?: string | null;
   createdAt: string;
 }
 
