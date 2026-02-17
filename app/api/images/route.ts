@@ -1,13 +1,15 @@
 import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@clerk/nextjs/server";
 import { insertImage, listImagesByUserId } from "@/lib/db/images";
-import { generateImageForEnv } from "@/lib/images/generator";
+import {
+  generateImageForEnv,
+  generateImageFromImage,
+} from "@/lib/images/generator";
 import { imageStore } from "@/lib/images/store";
-import type {
-  CreateImageRequest,
-  CreateImageResponse,
-  ImageListItem,
-} from "@/lib/images/types";
+import type { CreateImageResponse, ImageListItem } from "@/lib/images/types";
+
+const ALLOWED_IMAGE_TYPES = ["image/jpeg", "image/png", "image/webp"] as const;
+const MAX_IMAGE_SIZE_BYTES = 10 * 1024 * 1024; // 10MB
 
 function getCloudinaryPublicUrl(publicId: string): string {
   const cloudName = process.env.CLOUDINARY_CLOUD_NAME;
@@ -31,18 +33,83 @@ export async function POST(request: NextRequest) {
   }
 
   try {
-    const body = (await request.json()) as unknown;
-    const { description } = body as Partial<CreateImageRequest>;
-
-    if (typeof description !== "string" || description.trim() === "") {
+    const contentType = request.headers.get("content-type") ?? "";
+    if (!contentType.includes("multipart/form-data")) {
       return NextResponse.json(
-        { error: "description is required and must be a non-empty string" },
+        {
+          error:
+            "Content-Type must be multipart/form-data with description and optional image.",
+        },
         { status: 400 },
       );
     }
 
-    const trimmedDescription = description.trim();
+    const formData = await request.formData();
+    const description = formData.get("description");
+    const image = formData.get("image");
+
+    const hasImage =
+      image instanceof File &&
+      image.size > 0 &&
+      image.type.startsWith("image/");
+    const hasDescription =
+      typeof description === "string" && description.trim() !== "";
+
+    if (hasImage && hasDescription) {
+      return NextResponse.json(
+        { error: "Send either description or image, not both." },
+        { status: 400 },
+      );
+    }
+    if (!hasImage && !hasDescription) {
+      return NextResponse.json(
+        { error: "Either description or image is required." },
+        { status: 400 },
+      );
+    }
+
     const id = crypto.randomUUID();
+
+    if (hasImage && image instanceof File) {
+      if (
+        !ALLOWED_IMAGE_TYPES.includes(
+          image.type as (typeof ALLOWED_IMAGE_TYPES)[number],
+        )
+      ) {
+        return NextResponse.json(
+          {
+            error: `Image type must be one of: ${ALLOWED_IMAGE_TYPES.join(", ")}.`,
+          },
+          { status: 400 },
+        );
+      }
+      if (image.size > MAX_IMAGE_SIZE_BYTES) {
+        return NextResponse.json(
+          { error: "Image size must be at most 10MB." },
+          { status: 400 },
+        );
+      }
+
+      const sourceBuffer = Buffer.from(await image.arrayBuffer());
+      const sourcePublicId = await imageStore.save(sourceBuffer);
+      const sourceImageUrl = getCloudinaryPublicUrl(sourcePublicId);
+
+      const buffer = await generateImageFromImage(sourceImageUrl);
+      const publicId = await imageStore.save(buffer);
+      const url = getCloudinaryPublicUrl(publicId);
+
+      await insertImage({
+        id,
+        userId,
+        description: null,
+        imageUrl: url,
+        sourceImageUrl,
+      });
+
+      return NextResponse.json<CreateImageResponse>({ id, url });
+    }
+
+    const trimmedDescription = (description as string).trim();
     const buffer = await generateImageForEnv(trimmedDescription);
     const publicId = await imageStore.save(buffer);
     const url = getCloudinaryPublicUrl(publicId);
