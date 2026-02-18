@@ -63,34 +63,39 @@ export default function NewImagePage() {
           value={activeTab}
           onValueChange={(v) => setActiveTab(v as Tab)}
           defaultValue="image"
+          className="gap-0"
         >
-          <TabsList variant="line">
+          <TabsList className="w-full">
             <TabsTrigger value="image">Image</TabsTrigger>
             <TabsTrigger value="description">Description</TabsTrigger>
           </TabsList>
 
           <TabsContent value="image" className="flex flex-col gap-2 mt-4">
-            <label className="text-sm font-medium leading-none">
-              Choose an image to convert
-            </label>
-            <input
-              ref={fileInputRef}
-              type="file"
-              accept="image/*"
-              onChange={handleFileChange}
-              className="hidden"
-              aria-hidden
-            />
-            <Button
-              type="button"
-              variant="outline"
-              onClick={() => fileInputRef.current?.click()}
-              disabled={disabled}
-            >
-              Select image
-            </Button>
+            {!selectedFile && (
+              <>
+                <label className="text-sm font-medium leading-none">
+                  Choose an image to convert
+                </label>
+                <input
+                  ref={fileInputRef}
+                  type="file"
+                  accept="image/*"
+                  onChange={handleFileChange}
+                  className="hidden"
+                  aria-hidden
+                />
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={() => fileInputRef.current?.click()}
+                  disabled={disabled}
+                >
+                  Select image
+                </Button>
+              </>
+            )}
             {selectedFile && (
-              <div className="flex items-center gap-2 rounded-md border p-2">
+              <div className="flex items-center gap-2 rounded-md border bg-white p-2">
                 <p
                   className="min-w-0 flex-1 truncate text-sm"
                   title={selectedFile.name}
@@ -99,7 +104,7 @@ export default function NewImagePage() {
                 </p>
                 <Button
                   type="button"
-                  variant="ghost"
+                  variant="destructive"
                   size="icon"
                   onClick={clearFile}
                   disabled={disabled}
