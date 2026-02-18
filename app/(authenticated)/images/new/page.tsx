@@ -13,7 +13,7 @@ import { createImage } from "@/lib/api";
 type Tab = "image" | "description";
 
 export default function NewImagePage() {
-  const [activeTab, setActiveTab] = useState<Tab>("image");
+  const [activeTab, setActiveTab] = useState<Tab>("description");
   const [description, setDescription] = useState("");
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [imageUrl, setImageUrl] = useState<string | null>(null);
@@ -62,12 +62,14 @@ export default function NewImagePage() {
         <Tabs
           value={activeTab}
           onValueChange={(v) => setActiveTab(v as Tab)}
-          defaultValue="image"
+          defaultValue="description"
           className="gap-0"
         >
           <TabsList className="w-full">
-            <TabsTrigger value="image">Image</TabsTrigger>
-            <TabsTrigger value="description">Description</TabsTrigger>
+            <TabsTrigger value="description">From a prompt</TabsTrigger>
+            <TabsTrigger value="image" disabled>
+              From an image (Coming soon)
+            </TabsTrigger>
           </TabsList>
 
           <TabsContent value="image" className="flex flex-col gap-2 mt-4">
