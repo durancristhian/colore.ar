@@ -76,7 +76,7 @@ function getPollinationsApiKey(): string {
 
 /**
  * Generates an image from a text description using Pollinations (flux model).
- * Used when NODE_ENV is not production. Uses buildPrompt for PROMPT_PREFIX/PROMPT_SUFFIX consistency.
+ * Used when USE_OPEN_ROUTER_FOR_IMAGES is unset or false. Uses buildPrompt for PROMPT_PREFIX/PROMPT_SUFFIX consistency.
  * Requires POLLINATIONS_API_KEY.
  * See https://gen.pollinations.ai/
  */
@@ -122,13 +122,21 @@ export async function generateImageFromImage(
 }
 
 /**
- * Picks the image generator by NODE_ENV: production uses Open Router (generateImage),
- * non-production uses Pollinations (generateImageWithPollinations). Same return type for both.
+ * Whether to use Open Router for text-to-image. True only when USE_OPEN_ROUTER_FOR_IMAGES is "true" or "1" (case-insensitive). Unset or false → Pollinations.
+ */
+function shouldUseOpenRouterForImages(): boolean {
+  const raw = process.env.USE_OPEN_ROUTER_FOR_IMAGES;
+  if (raw === undefined || raw === null) return false;
+  return /^(true|1)$/i.test(raw.trim());
+}
+
+/**
+ * Picks the image generator by USE_OPEN_ROUTER_FOR_IMAGES: true → Open Router (generateImage), unset/false → Pollinations (generateImageWithPollinations). Same return type for both.
  */
 export async function generateImageForEnv(
   description: string,
 ): Promise<Buffer> {
-  if (process.env.NODE_ENV === "production") {
+  if (shouldUseOpenRouterForImages()) {
     return generateImage(description);
   }
   return generateImageWithPollinations(description);
