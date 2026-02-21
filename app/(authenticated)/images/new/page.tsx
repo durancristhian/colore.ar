@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Textarea } from "@/components/ui/textarea";
 import { ImagePageLayout } from "@/components/image-page-layout";
-import { ImageWithPrint } from "@/components/image-with-print";
+import { ImageWithActions } from "@/components/image-with-actions";
 import { createImage } from "@/lib/api";
 
 type Tab = "image" | "description";
@@ -148,7 +148,9 @@ export default function NewImagePage() {
           </Button>
         )}
 
-        {imageUrl && <ImageWithPrint src={imageUrl} alt="Generated creation" />}
+        {imageUrl && (
+          <ImageWithActions src={imageUrl} prompt="Generated creation" />
+        )}
 
         {createMutation.isError && (
           <p className="text-sm text-destructive">

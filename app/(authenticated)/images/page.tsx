@@ -3,7 +3,7 @@
 import { useQuery } from "@tanstack/react-query";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { DeleteImageButton } from "@/components/delete-image-button";
+import { ImageCard } from "@/components/image-card";
 import { listImages } from "@/lib/api";
 
 export default function ImagesPage() {
@@ -41,31 +41,12 @@ export default function ImagesPage() {
         {!isLoading && !isError && images && images.length > 0 && (
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
             {images.map((image) => (
-              <Link
+              <ImageCard
                 key={image.id}
-                href={`/images/${image.id}`}
-                className="block"
-              >
-                <article className="relative flex flex-col overflow-hidden rounded-md border">
-                  <div className="absolute right-1 top-1 m-1">
-                    <DeleteImageButton imageId={image.id} />
-                  </div>
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
-                    src={image.imageUrl}
-                    alt={image.description ?? "From uploaded image"}
-                    className="w-full rounded-t-md object-contain"
-                  />
-                  <div className="border-t p-2">
-                    <p
-                      className="line-clamp-2"
-                      title={image.description ?? undefined}
-                    >
-                      {image.description ?? "From uploaded image"}
-                    </p>
-                  </div>
-                </article>
-              </Link>
+                imageId={image.id}
+                imageUrl={image.imageUrl}
+                prompt={image.description ?? "From uploaded image"}
+              />
             ))}
           </div>
         )}

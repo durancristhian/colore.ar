@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import { DeleteImageButton } from "@/components/delete-image-button";
 import { ImagePageLayout } from "@/components/image-page-layout";
-import { ImageWithPrint } from "@/components/image-with-print";
+import { ImageWithActions } from "@/components/image-with-actions";
 import { getImage } from "@/lib/api";
 
 function formatCreatedAt(createdAt: string): string {
@@ -86,9 +86,9 @@ export default function ImageDetailPage() {
               onSuccess={() => router.push("/images")}
             />
           </div>
-          <ImageWithPrint
+          <ImageWithActions
             src={image.imageUrl}
-            alt={image.description ?? "From uploaded image"}
+            prompt={image.description ?? "From uploaded image"}
           />
         </div>
       </main>
