@@ -1,5 +1,6 @@
 "use client";
 
+import { CldImage } from "@/components/cld-image";
 import { Button } from "@/components/ui/button";
 import { buildImageDownloadFilename } from "@/utils/image-download-filename";
 import { downloadImage } from "@/utils/download-image";
@@ -19,12 +20,7 @@ export function ImageWithActions({
   return (
     <div className="flex flex-col gap-4">
       {/* Screen: styled image (hidden when printing via global print CSS) */}
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img
-        src={src}
-        alt={prompt}
-        className="w-full rounded-md border object-contain"
-      />
+      <CldImage src={src} alt={prompt} className="rounded-md border" />
       {/* Print only: clean image (hidden on screen via .print-only display: none) */}
       <div className="print-only">
         {/* eslint-disable-next-line @next/next/no-img-element */}

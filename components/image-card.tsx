@@ -1,7 +1,8 @@
 "use client";
 
-import Link from "next/link";
+import { CldImage } from "@/components/cld-image";
 import { DeleteImageButton } from "@/components/delete-image-button";
+import Link from "next/link";
 
 interface ImageCardProps {
   imageId: string;
@@ -16,12 +17,7 @@ export function ImageCard({ imageId, imageUrl, prompt }: ImageCardProps) {
         <div className="absolute right-1 top-1 m-1">
           <DeleteImageButton imageId={imageId} />
         </div>
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          src={imageUrl}
-          alt={prompt}
-          className="w-full rounded-t-md object-contain"
-        />
+        <CldImage src={imageUrl} alt={prompt} className="rounded-t-md" />
         <div className="border-t p-2">
           <p className="line-clamp-2" title={prompt}>
             {prompt}
