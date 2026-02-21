@@ -34,7 +34,7 @@ export default function ImageDetailPage() {
 
   if (!id) {
     return (
-      <ImagePageLayout title="Creation" backHref="/images">
+      <ImagePageLayout title="Creation details" backHref="/images">
         <p className="text-sm text-destructive">
           We didn&apos;t find the creation you&apos;re looking for.
         </p>
@@ -47,7 +47,7 @@ export default function ImageDetailPage() {
 
   if (isLoading) {
     return (
-      <ImagePageLayout title="Creation" backHref="/images">
+      <ImagePageLayout title="Creation details" backHref="/images">
         <p className="text-muted-foreground text-sm">Loading…</p>
       </ImagePageLayout>
     );
@@ -55,7 +55,7 @@ export default function ImageDetailPage() {
 
   if (isError || !image) {
     return (
-      <ImagePageLayout title="Creation" backHref="/images">
+      <ImagePageLayout title="Creation details" backHref="/images">
         <p className="text-sm text-destructive">
           We didn&apos;t find the creation you&apos;re looking for.
         </p>
