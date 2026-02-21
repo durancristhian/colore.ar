@@ -19,7 +19,7 @@ export function ImageCard({ imageId, imageUrl, prompt }: ImageCardProps) {
         </div>
         <CldImage src={imageUrl} alt={prompt} wrapperClassName="rounded-t-md" />
         <div className="border-t p-2">
-          <p className="line-clamp-2" title={prompt}>
+          <p className="line-clamp-1" title={prompt}>
             {prompt}
           </p>
         </div>
