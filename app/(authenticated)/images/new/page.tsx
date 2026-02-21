@@ -10,6 +10,12 @@ import { Textarea } from "@/components/ui/textarea";
 import { ImagePageLayout } from "@/components/image-page-layout";
 import { ImageWithActions } from "@/components/image-with-actions";
 import { createImage } from "@/lib/api";
+import {
+  ALLOWED_IMAGE_TYPES,
+  isImageFileValid,
+  isImageSizeValid,
+  isImageTypeAllowed,
+} from "@/lib/images/constants";
 
 type Tab = "image" | "description";
 
@@ -71,7 +77,9 @@ export default function NewImagePage() {
   };
 
   const canGenerate =
-    activeTab === "image" ? selectedFile != null : description.trim() !== "";
+    activeTab === "image"
+      ? selectedFile != null && isImageFileValid(selectedFile)
+      : description.trim() !== "";
 
   const handleGenerate = () => {
     if (activeTab === "image" && selectedFile) {
@@ -107,7 +115,7 @@ export default function NewImagePage() {
                 <input
                   ref={fileInputRef}
                   type="file"
-                  accept="image/jpeg,image/png,image/webp,image/heic,image/heif"
+                  accept={ALLOWED_IMAGE_TYPES.join(",")}
                   onChange={handleFileChange}
                   className="hidden"
                   aria-hidden
@@ -123,33 +131,45 @@ export default function NewImagePage() {
               </>
             )}
             {selectedFile && (
-              <div className="flex items-center gap-2 rounded-md border bg-white p-2">
-                {previewUrl && (
-                  /* eslint-disable-next-line @next/next/no-img-element */
-                  <img
-                    src={previewUrl}
-                    alt={selectedFile.name}
-                    className="size-16 shrink-0 rounded object-cover"
-                  />
+              <>
+                <div className="flex items-center gap-2 rounded-md border bg-white p-2">
+                  {previewUrl && (
+                    /* eslint-disable-next-line @next/next/no-img-element */
+                    <img
+                      src={previewUrl}
+                      alt={selectedFile.name}
+                      className="size-16 shrink-0 rounded object-cover"
+                    />
+                  )}
+                  <p
+                    className="min-w-0 flex-1 truncate"
+                    title={selectedFile.name}
+                  >
+                    {selectedFile.name}
+                  </p>
+                  <Button
+                    type="button"
+                    variant="destructive"
+                    size="icon"
+                    onClick={clearFile}
+                    disabled={disabled}
+                    className="shrink-0"
+                    aria-label="Remove file"
+                  >
+                    <TrashIcon className="size-4" />
+                  </Button>
+                </div>
+                {!isImageFileValid(selectedFile) && (
+                  <p className="text-sm text-destructive">
+                    {!isImageTypeAllowed(selectedFile.type) &&
+                    !isImageSizeValid(selectedFile.size)
+                      ? "Image must be JPEG, PNG, WebP, or HEIC and at most 10MB."
+                      : !isImageTypeAllowed(selectedFile.type)
+                        ? "Image must be JPEG, PNG, WebP, or HEIC."
+                        : "Image must be at most 10MB."}
+                  </p>
                 )}
-                <p
-                  className="min-w-0 flex-1 truncate text-sm"
-                  title={selectedFile.name}
-                >
-                  {selectedFile.name}
-                </p>
-                <Button
-                  type="button"
-                  variant="destructive"
-                  size="icon"
-                  onClick={clearFile}
-                  disabled={disabled}
-                  className="shrink-0"
-                  aria-label="Remove file"
-                >
-                  <TrashIcon className="size-4" />
-                </Button>
-              </div>
+              </>
             )}
           </TabsContent>
 

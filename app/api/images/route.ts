@@ -2,20 +2,16 @@ import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@clerk/nextjs/server";
 import { insertImage, listImagesByUserId } from "@/lib/db/images";
 import {
+  ALLOWED_IMAGE_TYPES,
+  isImageSizeValid,
+  isImageTypeAllowed,
+} from "@/lib/images/constants";
+import {
   generateImageForEnv,
   generateImageFromImage,
 } from "@/lib/images/generator";
 import { imageStore } from "@/lib/images/store";
 import type { CreateImageResponse, ImageListItem } from "@/lib/images/types";
-
-const ALLOWED_IMAGE_TYPES = [
-  "image/jpeg",
-  "image/png",
-  "image/webp",
-  "image/heic",
-  "image/heif",
-] as const;
-const MAX_IMAGE_SIZE_BYTES = 10 * 1024 * 1024; // 10MB
 
 function getCloudinaryPublicUrl(publicId: string): string {
   const cloudName = process.env.CLOUDINARY_CLOUD_NAME;
@@ -77,11 +73,7 @@ export async function POST(request: NextRequest) {
     const id = crypto.randomUUID();
 
     if (hasImage && image instanceof File) {
-      if (
-        !ALLOWED_IMAGE_TYPES.includes(
-          image.type as (typeof ALLOWED_IMAGE_TYPES)[number],
-        )
-      ) {
+      if (!isImageTypeAllowed(image.type)) {
         return NextResponse.json(
           {
             error: `Image type must be one of: ${ALLOWED_IMAGE_TYPES.join(", ")}.`,
@@ -89,7 +81,7 @@ export async function POST(request: NextRequest) {
           { status: 400 },
         );
       }
-      if (image.size > MAX_IMAGE_SIZE_BYTES) {
+      if (!isImageSizeValid(image.size)) {
         return NextResponse.json(
           { error: "Image size must be at most 10MB." },
           { status: 400 },
