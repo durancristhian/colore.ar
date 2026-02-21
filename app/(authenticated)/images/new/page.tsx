@@ -1,7 +1,8 @@
 "use client";
 
 import { useMutation } from "@tanstack/react-query";
-import { useRef, useState } from "react";
+import heic2any from "heic2any";
+import { useEffect, useRef, useState } from "react";
 import { TrashIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -16,8 +17,16 @@ export default function NewImagePage() {
   const [activeTab, setActiveTab] = useState<Tab>("description");
   const [description, setDescription] = useState("");
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [imageUrl, setImageUrl] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const previewUrlRef = useRef<string | null>(null);
+
+  useEffect(() => {
+    return () => {
+      if (previewUrlRef.current) URL.revokeObjectURL(previewUrlRef.current);
+    };
+  }, []);
 
   const createMutation = useMutation({
     mutationFn: createImage,
@@ -29,15 +38,34 @@ export default function NewImagePage() {
   const isGenerating = createMutation.isPending;
   const disabled = isGenerating;
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
-    if (file?.type.startsWith("image/")) {
-      setSelectedFile(file);
-    }
     e.target.value = "";
+    if (!file?.type.startsWith("image/")) return;
+
+    if (previewUrlRef.current) URL.revokeObjectURL(previewUrlRef.current);
+
+    const isHeic = file.type === "image/heic" || file.type === "image/heif";
+    let url: string;
+    if (isHeic) {
+      const result = await heic2any({ blob: file, toType: "image/jpeg" });
+      const blob = Array.isArray(result) ? result[0] : result;
+      url = URL.createObjectURL(blob);
+    } else {
+      url = URL.createObjectURL(file);
+    }
+
+    previewUrlRef.current = url;
+    setPreviewUrl(url);
+    setSelectedFile(file);
   };
 
   const clearFile = () => {
+    if (previewUrlRef.current) {
+      URL.revokeObjectURL(previewUrlRef.current);
+      previewUrlRef.current = null;
+    }
+    setPreviewUrl(null);
     setSelectedFile(null);
     if (fileInputRef.current) fileInputRef.current.value = "";
   };
@@ -96,6 +124,14 @@ export default function NewImagePage() {
             )}
             {selectedFile && (
               <div className="flex items-center gap-2 rounded-md border bg-white p-2">
+                {previewUrl && (
+                  /* eslint-disable-next-line @next/next/no-img-element */
+                  <img
+                    src={previewUrl}
+                    alt={selectedFile.name}
+                    className="size-16 shrink-0 rounded object-cover"
+                  />
+                )}
                 <p
                   className="min-w-0 flex-1 truncate text-sm"
                   title={selectedFile.name}
