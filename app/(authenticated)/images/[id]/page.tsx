@@ -80,7 +80,7 @@ export default function ImageDetailPage() {
           <p className="text-sm">{formatCreatedAt(image.createdAt)}</p>
         </div>
         <div className="relative">
-          <div className="absolute right-1 top-1 m-1">
+          <div className="absolute right-1 top-1 z-10 m-1">
             <DeleteImageButton
               imageId={image.id}
               onSuccess={() => router.push("/images")}
