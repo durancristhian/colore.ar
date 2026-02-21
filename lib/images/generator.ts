@@ -1,4 +1,4 @@
-import { generateImage as generateImageWithModel } from "ai";
+import { generateImage as generateImageWithModel, generateText } from "ai";
 import { createOpenRouter } from "@openrouter/ai-sdk-provider";
 
 /**
@@ -33,7 +33,7 @@ function buildPrompt(description: string): string {
 
 /**
  * Builds the prompt for image-to-image: PROMPT_IMAGE_PREFIX + PROMPT_SUFFIX joined with a space.
- * Used when generating from an uploaded image (Pollinations image endpoint).
+ * Used when generating from an uploaded image (Open Router image-to-image).
  */
 function buildPromptFromImage(): string {
   const prefix = process.env.PROMPT_IMAGE_PREFIX?.trim() ?? "";
@@ -100,26 +100,41 @@ export async function generateImageWithPollinations(
 }
 
 /**
- * Generates an image from a source image URL using Pollinations (image-to-image).
- * Builds prompt with buildPromptFromImage(), calls image.pollinations.ai with prompt and image query params.
- * Requires POLLINATIONS_API_KEY.
+ * Generates an image from a source image URL using Open Router (image-to-image).
+ * Uses generateText with a chat model that accepts image input and returns image output.
+ * Requires OPEN_ROUTER_API_KEY and OPEN_ROUTER_IMAGE_MODEL (image-capable chat model, e.g. google/gemini-3-pro-image-preview).
  */
 export async function generateImageFromImage(
   sourceImageUrl: string,
 ): Promise<Buffer> {
-  const prompt = buildPromptFromImage();
-  const apiKey = getPollinationsApiKey();
-  const url = `https://image.pollinations.ai/prompt/${encodeURIComponent(prompt)}?image=${encodeURIComponent(sourceImageUrl)}`;
-  const response = await fetch(url, {
-    headers: { Authorization: `Bearer ${apiKey}` },
+  const fullPrompt = buildPromptFromImage();
+  const apiKey = getEnv("OPEN_ROUTER_API_KEY");
+  const modelId = getEnv("OPEN_ROUTER_IMAGE_MODEL");
+  const openrouter = createOpenRouter({ apiKey });
+
+  const result = await generateText({
+    model: openrouter.chat(modelId),
+    messages: [
+      {
+        role: "user",
+        content: [
+          { type: "text", text: fullPrompt },
+          { type: "image", image: new URL(sourceImageUrl) },
+        ],
+      },
+    ],
+    providerOptions: {
+      openrouter: { modalities: ["image", "text"] },
+    },
   });
-  if (!response.ok) {
-    throw new Error(
-      `Pollinations image-from-image failed: ${response.status} ${response.statusText}`,
-    );
+
+  const imageFile = result.files?.find((f) =>
+    f.mediaType?.startsWith("image/"),
+  );
+  if (!imageFile) {
+    throw new Error("No image generated");
   }
-  const arrayBuffer = await response.arrayBuffer();
-  return Buffer.from(arrayBuffer);
+  return Buffer.from(imageFile.uint8Array);
 }
 
 /**

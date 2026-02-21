@@ -67,9 +67,7 @@ export default function NewImagePage() {
         >
           <TabsList className="w-full">
             <TabsTrigger value="description">From a prompt</TabsTrigger>
-            <TabsTrigger value="image" disabled>
-              From an image (Coming soon)
-            </TabsTrigger>
+            <TabsTrigger value="image">From an image</TabsTrigger>
           </TabsList>
 
           <TabsContent value="image" className="flex flex-col gap-2 mt-4">
