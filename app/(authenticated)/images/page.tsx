@@ -58,7 +58,7 @@ export default function ImagesPage() {
                   />
                   <div className="border-t p-2">
                     <p
-                      className="line-clamp-1"
+                      className="line-clamp-2"
                       title={image.description ?? undefined}
                     >
                       {image.description ?? "From uploaded image"}
