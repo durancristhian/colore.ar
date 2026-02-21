@@ -20,7 +20,7 @@ export function ImageWithActions({
   return (
     <div className="flex flex-col gap-4">
       {/* Screen: styled image (hidden when printing via global print CSS) */}
-      <CldImage src={src} alt={prompt} className="rounded-md border" />
+      <CldImage src={src} alt={prompt} wrapperClassName="rounded-md border" />
       {/* Print only: clean image (hidden on screen via .print-only display: none) */}
       <div className="print-only">
         {/* eslint-disable-next-line @next/next/no-img-element */}

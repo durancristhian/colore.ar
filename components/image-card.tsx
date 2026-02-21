@@ -17,7 +17,7 @@ export function ImageCard({ imageId, imageUrl, prompt }: ImageCardProps) {
         <div className="absolute right-1 top-1 m-1">
           <DeleteImageButton imageId={imageId} />
         </div>
-        <CldImage src={imageUrl} alt={prompt} className="rounded-t-md" />
+        <CldImage src={imageUrl} alt={prompt} wrapperClassName="rounded-t-md" />
         <div className="border-t p-2">
           <p className="line-clamp-2" title={prompt}>
             {prompt}
