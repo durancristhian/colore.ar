@@ -12,10 +12,13 @@ import { ImagePageLayout } from "@/components/image-page-layout";
 import { createImage } from "@/lib/api";
 import {
   ALLOWED_IMAGE_TYPES,
+  isImageFromImageEnabled,
   isImageFileValid,
   isImageSizeValid,
   isImageTypeAllowed,
 } from "@/lib/images/constants";
+
+const imageFromImageEnabled = isImageFromImageEnabled();
 
 type Tab = "image" | "description";
 
@@ -97,13 +100,18 @@ export default function NewImagePage() {
       <main className="flex flex-col gap-4">
         <Tabs
           value={activeTab}
-          onValueChange={(v) => setActiveTab(v as Tab)}
+          onValueChange={(v) => {
+            if (v === "image" && !imageFromImageEnabled) return;
+            setActiveTab(v as Tab);
+          }}
           defaultValue="description"
           className="gap-0"
         >
           <TabsList className="w-full">
             <TabsTrigger value="description">From a prompt</TabsTrigger>
-            <TabsTrigger value="image">From an image</TabsTrigger>
+            <TabsTrigger value="image" disabled={!imageFromImageEnabled}>
+              From an image
+            </TabsTrigger>
           </TabsList>
 
           <TabsContent value="image" className="flex flex-col gap-2 mt-4">

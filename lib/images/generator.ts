@@ -1,5 +1,6 @@
 import { generateImage as generateImageWithModel, generateText } from "ai";
 import { createOpenRouter } from "@openrouter/ai-sdk-provider";
+import { isImageFromImageEnabled } from "@/lib/images/constants";
 
 /**
  * Image generator interface. Implementations can be swapped (e.g. mock → Open Router / Vercel AI).
@@ -77,7 +78,7 @@ function getPollinationsApiKey(): string {
 
 /**
  * Generates an image from a text description using Pollinations (flux model).
- * Used when USE_OPEN_ROUTER_FOR_IMAGES is unset or false. Uses buildPrompt for PROMPT_PREFIX/PROMPT_SUFFIX consistency.
+ * Used when NEXT_PUBLIC_USE_OPEN_ROUTER_FOR_IMAGES is unset or false. Uses buildPrompt for PROMPT_PREFIX/PROMPT_SUFFIX consistency.
  * Requires POLLINATIONS_API_KEY.
  * See https://gen.pollinations.ai/
  */
@@ -138,21 +139,12 @@ export async function generateImageFromImage(
 }
 
 /**
- * Whether to use Open Router for text-to-image. True only when USE_OPEN_ROUTER_FOR_IMAGES is "true" or "1" (case-insensitive). Unset or false → Pollinations.
- */
-function shouldUseOpenRouterForImages(): boolean {
-  const raw = process.env.USE_OPEN_ROUTER_FOR_IMAGES;
-  if (raw === undefined || raw === null) return false;
-  return /^(true|1)$/i.test(raw.trim());
-}
-
-/**
- * Picks the image generator by USE_OPEN_ROUTER_FOR_IMAGES: true → Open Router (generateImage), unset/false → Pollinations (generateImageWithPollinations). Same return type for both.
+ * Picks the image generator by NEXT_PUBLIC_USE_OPEN_ROUTER_FOR_IMAGES: true → Open Router (generateImage), unset/false → Pollinations (generateImageWithPollinations). Same return type for both.
  */
 export async function generateImageForEnv(
   description: string,
 ): Promise<Buffer> {
-  if (shouldUseOpenRouterForImages()) {
+  if (isImageFromImageEnabled()) {
     return generateImage(description);
   }
   return generateImageWithPollinations(description);

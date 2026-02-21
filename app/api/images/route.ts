@@ -3,6 +3,7 @@ import { auth } from "@clerk/nextjs/server";
 import { insertImage, listImagesByUserId } from "@/lib/db/images";
 import {
   ALLOWED_IMAGE_TYPES,
+  isImageFromImageEnabled,
   isImageSizeValid,
   isImageTypeAllowed,
 } from "@/lib/images/constants";
@@ -73,6 +74,12 @@ export async function POST(request: NextRequest) {
     const id = crypto.randomUUID();
 
     if (hasImage && image instanceof File) {
+      if (!isImageFromImageEnabled()) {
+        return NextResponse.json(
+          { error: "Generation from image is not available." },
+          { status: 403 },
+        );
+      }
       if (!isImageTypeAllowed(image.type)) {
         return NextResponse.json(
           {
