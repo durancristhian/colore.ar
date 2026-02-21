@@ -26,7 +26,8 @@ function buildPrompt(description: string): string {
   const trimmed = description.trim();
   const prefix = process.env.PROMPT_PREFIX?.trim() ?? "";
   const suffix = process.env.PROMPT_SUFFIX?.trim() ?? "";
-  const parts = [prefix, trimmed, suffix].map((s) => s.trim()).filter(Boolean);
+  const quoted = `"${trimmed}"`;
+  const parts = [prefix, quoted, suffix].map((s) => s.trim()).filter(Boolean);
   return parts.join(" ");
 }
 
