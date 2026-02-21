@@ -2,13 +2,13 @@
 
 import { useMutation } from "@tanstack/react-query";
 import heic2any from "heic2any";
+import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { TrashIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Textarea } from "@/components/ui/textarea";
 import { ImagePageLayout } from "@/components/image-page-layout";
-import { ImageWithActions } from "@/components/image-with-actions";
 import { createImage } from "@/lib/api";
 import {
   ALLOWED_IMAGE_TYPES,
@@ -20,11 +20,11 @@ import {
 type Tab = "image" | "description";
 
 export default function NewImagePage() {
+  const router = useRouter();
   const [activeTab, setActiveTab] = useState<Tab>("description");
   const [description, setDescription] = useState("");
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
-  const [imageUrl, setImageUrl] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const previewUrlRef = useRef<string | null>(null);
 
@@ -37,7 +37,7 @@ export default function NewImagePage() {
   const createMutation = useMutation({
     mutationFn: createImage,
     onSuccess: (data) => {
-      setImageUrl(data.url ?? null);
+      if (data.id) router.push(`/images/${data.id}`);
     },
   });
 
@@ -192,19 +192,13 @@ export default function NewImagePage() {
           </TabsContent>
         </Tabs>
 
-        {!imageUrl && (
-          <Button
-            className="w-full"
-            onClick={handleGenerate}
-            disabled={disabled || !canGenerate}
-          >
-            {isGenerating ? "Generating…" : "Generate"}
-          </Button>
-        )}
-
-        {imageUrl && (
-          <ImageWithActions src={imageUrl} prompt="Generated creation" />
-        )}
+        <Button
+          className="w-full"
+          onClick={handleGenerate}
+          disabled={disabled || !canGenerate}
+        >
+          {isGenerating ? "Generating…" : "Generate"}
+        </Button>
 
         {createMutation.isError && (
           <p className="text-sm text-destructive">
