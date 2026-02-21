@@ -8,7 +8,13 @@ import {
 import { imageStore } from "@/lib/images/store";
 import type { CreateImageResponse, ImageListItem } from "@/lib/images/types";
 
-const ALLOWED_IMAGE_TYPES = ["image/jpeg", "image/png", "image/webp"] as const;
+const ALLOWED_IMAGE_TYPES = [
+  "image/jpeg",
+  "image/png",
+  "image/webp",
+  "image/heic",
+  "image/heif",
+] as const;
 const MAX_IMAGE_SIZE_BYTES = 10 * 1024 * 1024; // 10MB
 
 function getCloudinaryPublicUrl(publicId: string): string {
