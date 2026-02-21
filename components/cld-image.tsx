@@ -33,6 +33,7 @@ export function CldImage(props: CldImagePropsWithWrapper) {
         {...rest}
         src={resolvedSrc}
         fill
+        objectFit="contain"
         sizes="(max-width: 1024px) 100vw, 512px"
       />
     </div>
