@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Script from "next/script";
 import { Geist, Geist_Mono } from "next/font/google";
 import { ClerkProvider } from "@clerk/nextjs";
+import { Toaster } from "@/components/ui/sonner";
 import { Providers } from "./providers";
 import "./globals.css";
 
@@ -38,6 +39,7 @@ export default function RootLayout({
           />
           <Providers>
             <div className="mx-auto w-full max-w-lg p-4">{children}</div>
+            <Toaster />
           </Providers>
         </body>
       </html>
