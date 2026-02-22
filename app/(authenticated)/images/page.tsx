@@ -2,6 +2,7 @@
 
 import { useQuery } from "@tanstack/react-query";
 import Link from "next/link";
+import { Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Spinner } from "@/components/ui/spinner";
 import { ImageCard } from "@/components/image-card";
@@ -22,8 +23,10 @@ export default function ImagesPage() {
       <div className="flex flex-col gap-4">
         <div className="flex flex-1 items-center justify-between gap-4">
           <h1 className="font-semibold">Your creations</h1>
-          <Button asChild>
-            <Link href="/images/new">New</Link>
+          <Button asChild size="icon" aria-label="New creation">
+            <Link href="/images/new">
+              <Plus className="size-4" />
+            </Link>
           </Button>
         </div>
 
