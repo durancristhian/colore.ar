@@ -1,6 +1,7 @@
 "use client";
 
 import { SignInButton, SignedOut } from "@clerk/nextjs";
+import { Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { SparklesText } from "@/components/ui/sparkles-text";
 
@@ -15,7 +16,10 @@ export function LandingContent() {
       </div>
       <SignedOut>
         <SignInButton mode="modal">
-          <Button>Start creating</Button>
+          <Button>
+            <Sparkles className="size-4" />
+            Start creating
+          </Button>
         </SignInButton>
       </SignedOut>
     </div>
