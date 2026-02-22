@@ -55,6 +55,7 @@ export default function ImagesPage() {
                 imageId={image.id}
                 imageUrl={image.imageUrl}
                 prompt={image.description ?? "From uploaded image"}
+                createdAt={image.createdAt}
               />
             ))}
           </div>

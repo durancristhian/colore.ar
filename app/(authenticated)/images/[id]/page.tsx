@@ -9,15 +9,7 @@ import { DeleteImageButton } from "@/components/delete-image-button";
 import { PageLayout } from "@/components/page-layout";
 import { ImageWithActions } from "@/components/image-with-actions";
 import { getImage } from "@/lib/api";
-
-function formatCreatedAt(createdAt: string): string {
-  try {
-    const date = new Date(createdAt);
-    return date.toLocaleString();
-  } catch {
-    return createdAt;
-  }
-}
+import { formatCreatedAt } from "@/lib/format-date";
 
 const SHOW_CONFETTI_KEY = "show-confetti";
 
