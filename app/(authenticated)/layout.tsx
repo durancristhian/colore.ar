@@ -9,8 +9,8 @@ export default function AuthenticatedLayout({
   return (
     <div className="flex flex-col gap-4">
       <header className="flex items-center justify-between border-b pb-4">
-        <Link href="/images" className="text-xl font-semibold hover:underline">
-          Colore.ar
+        <Link href="/images">
+          <h1 className="text-xl font-black">Colore.ar</h1>
         </Link>
         <HeaderUserMenu />
       </header>

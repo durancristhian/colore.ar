@@ -38,7 +38,9 @@ export default function RootLayout({
             strategy="afterInteractive"
           />
           <Providers>
-            <div className="mx-auto w-full max-w-lg p-4">{children}</div>
+            <div className="mx-auto w-full max-w-lg p-4 min-h-screen">
+              {children}
+            </div>
             <Toaster />
           </Providers>
         </body>
