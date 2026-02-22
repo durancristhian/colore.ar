@@ -1,7 +1,7 @@
 "use client";
 
 import { CldImage } from "@/components/cld-image";
-import { DeleteImageButton } from "@/components/delete-image-button";
+import { ImageActionsMenu } from "@/components/image-actions-menu";
 import {
   Card,
   CardAction,
@@ -37,7 +37,7 @@ export function ImageCard({
         </CardTitle>
         <CardDescription>Created {formatCreatedAt(createdAt)}</CardDescription>
         <CardAction>
-          <DeleteImageButton imageId={imageId} />
+          <ImageActionsMenu imageId={imageId} imageUrl={imageUrl} />
         </CardAction>
       </CardHeader>
       <CardFooter className="p-4 pt-0">

@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { ConfettiFireworks } from "@/components/confetti-fireworks";
-import { DeleteImageButton } from "@/components/delete-image-button";
+import { ImageActionsMenu } from "@/components/image-actions-menu";
 import { PageLayout } from "@/components/page-layout";
 import { ImageWithActions } from "@/components/image-with-actions";
 import { getImage } from "@/lib/api";
@@ -102,9 +102,10 @@ export default function ImageDetailPage() {
         </div>
         <div className="relative">
           <div className="absolute right-1 top-1 z-10 m-1">
-            <DeleteImageButton
+            <ImageActionsMenu
               imageId={image.id}
-              onSuccess={() => router.push("/images")}
+              imageUrl={image.imageUrl}
+              onDeleteSuccess={() => router.push("/images")}
             />
           </div>
           <ImageWithActions
