@@ -1,6 +1,5 @@
-import { SignOutButton } from "@clerk/nextjs";
 import Link from "next/link";
-import { Button } from "@/components/ui/button";
+import { HeaderUserMenu } from "@/components/header-user-menu";
 
 export default function AuthenticatedLayout({
   children,
@@ -13,9 +12,7 @@ export default function AuthenticatedLayout({
         <Link href="/images" className="text-xl font-semibold hover:underline">
           Colore.ar
         </Link>
-        <SignOutButton>
-          <Button variant="outline">Log out</Button>
-        </SignOutButton>
+        <HeaderUserMenu />
       </header>
       {children}
     </div>
