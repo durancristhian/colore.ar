@@ -26,7 +26,11 @@ export async function createImage(payload: {
     method: "POST",
     body: formData,
   });
-  if (!res.ok) throw new Error("Something went wrong. Please try again.");
+  if (!res.ok) {
+    const body = await res.json().catch(() => ({}));
+    const error = typeof body?.error === "string" ? body.error : null;
+    throw new Error(error ?? "Something went wrong. Please try again.");
+  }
   return res.json();
 }
 

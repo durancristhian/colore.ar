@@ -5,6 +5,7 @@ import heic2any from "heic2any";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { TrashIcon } from "lucide-react";
+import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Textarea } from "@/components/ui/textarea";
@@ -85,14 +86,18 @@ export default function NewImagePage() {
       : description.trim() !== "";
 
   const handleGenerate = () => {
-    if (activeTab === "image" && selectedFile) {
-      createMutation.mutate({ description: "", image: selectedFile });
-    } else {
-      createMutation.mutate({
-        description: description.trim(),
-        image: null,
-      });
-    }
+    const payload =
+      activeTab === "image" && selectedFile
+        ? { description: "", image: selectedFile }
+        : { description: description.trim(), image: null as File | null };
+    toast.promise(createMutation.mutateAsync(payload), {
+      loading: "Generating...",
+      success: "Creation ready.",
+      error: (err) =>
+        err instanceof Error
+          ? err.message
+          : "Something went wrong. Please try again.",
+    });
   };
 
   return (
