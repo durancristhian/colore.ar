@@ -68,7 +68,7 @@ export function HeaderUserMenu() {
         <DropdownMenuItem asChild>
           <Link href="/feedback">
             <MessageCircle className="size-4" />
-            Feedback
+            Send feedback
           </Link>
         </DropdownMenuItem>
         <DropdownMenuSeparator />
