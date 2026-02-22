@@ -2,6 +2,7 @@
 
 import { useMutation } from "@tanstack/react-query";
 import { useState } from "react";
+import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { ImagePageLayout } from "@/components/image-page-layout";
@@ -22,7 +23,14 @@ export default function FeedbackPage() {
   const canSubmit = message.trim() !== "" && !isSubmitting;
 
   const handleSubmit = () => {
-    feedbackMutation.mutate(message.trim());
+    toast.promise(feedbackMutation.mutateAsync(message.trim()), {
+      loading: "Sending feedback...",
+      success: "Thanks, your feedback was sent.",
+      error: (err) =>
+        err instanceof Error
+          ? err.message
+          : "Something went wrong. Please try again.",
+    });
   };
 
   return (
@@ -47,20 +55,6 @@ export default function FeedbackPage() {
         <Button className="w-full" onClick={handleSubmit} disabled={!canSubmit}>
           {isSubmitting ? "Submitting feedback..." : "Submit feedback"}
         </Button>
-
-        {feedbackMutation.isError && (
-          <p className="text-sm text-destructive">
-            {feedbackMutation.error instanceof Error
-              ? feedbackMutation.error.message
-              : "Something went wrong. Please try again."}
-          </p>
-        )}
-
-        {feedbackMutation.isSuccess && (
-          <p className="text-sm text-muted-foreground">
-            Thanks, your feedback was sent.
-          </p>
-        )}
       </main>
     </ImagePageLayout>
   );
