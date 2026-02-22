@@ -53,7 +53,7 @@ export default function FeedbackPage() {
         />
 
         <Button className="w-full" onClick={handleSubmit} disabled={!canSubmit}>
-          {isSubmitting ? "Submitting feedback..." : "Submit feedback"}
+          Submit feedback
         </Button>
       </main>
     </ImagePageLayout>

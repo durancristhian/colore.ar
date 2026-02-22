@@ -210,7 +210,7 @@ export default function NewImagePage() {
           onClick={handleGenerate}
           disabled={disabled || !canGenerate}
         >
-          {isGenerating ? "Generating…" : "Generate"}
+          Generate
         </Button>
 
         {createMutation.isError && (
