@@ -2,6 +2,7 @@
 
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { TrashIcon } from "lucide-react";
+import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { deleteImage } from "@/lib/api";
 
@@ -29,7 +30,14 @@ export function DeleteImageButton({
     e.stopPropagation();
     if (!window.confirm("Are you sure you want to delete this creation?"))
       return;
-    deleteMutation.mutate(imageId);
+    toast.promise(deleteMutation.mutateAsync(imageId), {
+      loading: "Deleting...",
+      success: "Creation deleted.",
+      error: (err) =>
+        err instanceof Error
+          ? err.message
+          : "Something went wrong. Please try again.",
+    });
   }
 
   return (
