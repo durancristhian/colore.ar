@@ -7,6 +7,7 @@ import { useEffect, useRef, useState } from "react";
 import { TrashIcon } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
+import { Spinner } from "@/components/ui/spinner";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Textarea } from "@/components/ui/textarea";
 import { ImagePageLayout } from "@/components/image-page-layout";
@@ -210,6 +211,7 @@ export default function NewImagePage() {
           onClick={handleGenerate}
           disabled={disabled || !canGenerate}
         >
+          {isGenerating && <Spinner data-icon="inline-start" />}
           Generate
         </Button>
 

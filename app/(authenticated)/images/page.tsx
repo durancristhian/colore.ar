@@ -3,6 +3,7 @@
 import { useQuery } from "@tanstack/react-query";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import { Spinner } from "@/components/ui/spinner";
 import { ImageCard } from "@/components/image-card";
 import { listImages } from "@/lib/api";
 
@@ -26,7 +27,12 @@ export default function ImagesPage() {
           </Button>
         </div>
 
-        {isLoading && <p className="text-muted-foreground text-sm">Loading…</p>}
+        {isLoading && (
+          <div className="flex w-full items-center justify-center gap-2 text-muted-foreground text-sm">
+            <Spinner className="size-4 shrink-0" />
+            <span>Loading images…</span>
+          </div>
+        )}
 
         {isError && (
           <p className="text-sm text-destructive">
