@@ -3,9 +3,10 @@
 import { useMutation } from "@tanstack/react-query";
 import { useState } from "react";
 import { toast } from "sonner";
+import { Send } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
-import { ImagePageLayout } from "@/components/image-page-layout";
+import { PageLayout } from "@/components/page-layout";
 import { submitFeedback } from "@/lib/api";
 
 export default function FeedbackPage() {
@@ -34,13 +35,13 @@ export default function FeedbackPage() {
   };
 
   return (
-    <ImagePageLayout title="Feedback" backHref="/images">
+    <PageLayout title="Send feedback" backHref="/images">
       <main className="flex flex-col gap-4">
         <label
           htmlFor="feedback-message"
           className="text-sm font-medium leading-none"
         >
-          Your message
+          What would you like to tell us?
         </label>
         <Textarea
           id="feedback-message"
@@ -53,9 +54,10 @@ export default function FeedbackPage() {
         />
 
         <Button className="w-full" onClick={handleSubmit} disabled={!canSubmit}>
-          Submit feedback
+          <Send className="size-4" />
+          Send feedback
         </Button>
       </main>
-    </ImagePageLayout>
+    </PageLayout>
   );
 }

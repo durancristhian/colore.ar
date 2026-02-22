@@ -6,7 +6,7 @@ import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { ConfettiFireworks } from "@/components/confetti-fireworks";
 import { DeleteImageButton } from "@/components/delete-image-button";
-import { ImagePageLayout } from "@/components/image-page-layout";
+import { PageLayout } from "@/components/page-layout";
 import { ImageWithActions } from "@/components/image-with-actions";
 import { getImage } from "@/lib/api";
 
@@ -60,40 +60,40 @@ export default function ImageDetailPage() {
 
   if (!id) {
     return (
-      <ImagePageLayout title="Creation details" backHref="/images">
+      <PageLayout title="Creation details" backHref="/images">
         <p className="text-sm text-destructive">
           We didn&apos;t find the creation you&apos;re looking for.
         </p>
         <Link href="/images" className="text-sm underline">
           Back to creations
         </Link>
-      </ImagePageLayout>
+      </PageLayout>
     );
   }
 
   if (isLoading) {
     return (
-      <ImagePageLayout title="Creation details" backHref="/images">
+      <PageLayout title="Creation details" backHref="/images">
         <p className="text-muted-foreground text-sm">Loading…</p>
-      </ImagePageLayout>
+      </PageLayout>
     );
   }
 
   if (isError || !image) {
     return (
-      <ImagePageLayout title="Creation details" backHref="/images">
+      <PageLayout title="Creation details" backHref="/images">
         <p className="text-sm text-destructive">
           We didn&apos;t find the creation you&apos;re looking for.
         </p>
         <Link href="/images" className="text-sm underline">
           Back to creations
         </Link>
-      </ImagePageLayout>
+      </PageLayout>
     );
   }
 
   return (
-    <ImagePageLayout title="Creation details" backHref="/images">
+    <PageLayout title="Creation details" backHref="/images">
       {showConfetti ? (
         <ConfettiFireworks onComplete={handleConfettiComplete} />
       ) : null}
@@ -121,6 +121,6 @@ export default function ImageDetailPage() {
           />
         </div>
       </main>
-    </ImagePageLayout>
+    </PageLayout>
   );
 }

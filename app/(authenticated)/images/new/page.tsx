@@ -10,7 +10,7 @@ import { Button } from "@/components/ui/button";
 import { Spinner } from "@/components/ui/spinner";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Textarea } from "@/components/ui/textarea";
-import { ImagePageLayout } from "@/components/image-page-layout";
+import { PageLayout } from "@/components/page-layout";
 import { createImage } from "@/lib/api";
 import {
   ALLOWED_IMAGE_TYPES,
@@ -109,7 +109,7 @@ export default function NewImagePage() {
   };
 
   return (
-    <ImagePageLayout title="New creation" backHref="/images">
+    <PageLayout title="New creation" backHref="/images">
       <main className="flex flex-col gap-4">
         <Tabs
           value={activeTab}
@@ -228,6 +228,6 @@ export default function NewImagePage() {
           </p>
         )}
       </main>
-    </ImagePageLayout>
+    </PageLayout>
   );
 }
