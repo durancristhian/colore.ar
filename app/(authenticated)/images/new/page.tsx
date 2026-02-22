@@ -42,7 +42,14 @@ export default function NewImagePage() {
   const createMutation = useMutation({
     mutationFn: createImage,
     onSuccess: (data) => {
-      if (data.id) router.push(`/images/${data.id}`);
+      if (data.id) {
+        try {
+          localStorage.setItem("show-confetti", data.id);
+        } catch {
+          // ignore localStorage errors
+        }
+        router.push(`/images/${data.id}`);
+      }
     },
   });
 

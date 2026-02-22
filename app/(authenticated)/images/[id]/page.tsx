@@ -3,6 +3,8 @@
 import { useQuery } from "@tanstack/react-query";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import { ConfettiFireworks } from "@/components/confetti-fireworks";
 import { DeleteImageButton } from "@/components/delete-image-button";
 import { ImagePageLayout } from "@/components/image-page-layout";
 import { ImageWithActions } from "@/components/image-with-actions";
@@ -17,10 +19,13 @@ function formatCreatedAt(createdAt: string): string {
   }
 }
 
+const SHOW_CONFETTI_KEY = "show-confetti";
+
 export default function ImageDetailPage() {
   const params = useParams();
   const router = useRouter();
   const id = typeof params.id === "string" ? params.id : "";
+  const [showConfetti, setShowConfetti] = useState(false);
 
   const {
     data: image,
@@ -31,6 +36,27 @@ export default function ImageDetailPage() {
     queryFn: () => getImage(id),
     enabled: !!id,
   });
+
+  // When we have the image and came from the new page, show confetti once then unmount
+  useEffect(() => {
+    if (!id || !image) return;
+    try {
+      if (localStorage.getItem(SHOW_CONFETTI_KEY) === id) {
+        queueMicrotask(() => setShowConfetti(true));
+      }
+    } catch {
+      // ignore localStorage errors
+    }
+  }, [id, image]);
+
+  const handleConfettiComplete = () => {
+    try {
+      localStorage.removeItem(SHOW_CONFETTI_KEY);
+    } catch {
+      // ignore
+    }
+    setShowConfetti(false);
+  };
 
   if (!id) {
     return (
@@ -68,6 +94,9 @@ export default function ImageDetailPage() {
 
   return (
     <ImagePageLayout title="Creation details" backHref="/images">
+      {showConfetti ? (
+        <ConfettiFireworks onComplete={handleConfettiComplete} />
+      ) : null}
       <main className="flex flex-col gap-4">
         <div className="flex flex-col gap-1">
           <p className="text-muted-foreground text-sm">Prompt</p>
