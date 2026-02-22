@@ -2,16 +2,28 @@
 
 import Link from "next/link";
 import { SignOutButton, useUser } from "@clerk/nextjs";
+import { useTheme } from "next-themes";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
+  DropdownMenuRadioGroup,
+  DropdownMenuRadioItem,
   DropdownMenuSeparator,
+  DropdownMenuSub,
+  DropdownMenuSubContent,
+  DropdownMenuSubTrigger,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { LogOutIcon, MessageCircle } from "lucide-react";
+import { LogOutIcon, MessageCircle, Monitor, Moon, Sun } from "lucide-react";
+
+const themes = [
+  { value: "system", label: "Same as system", icon: Monitor },
+  { value: "dark", label: "Dark", icon: Moon },
+  { value: "light", label: "Light", icon: Sun },
+] as const;
 
 function getInitials(
   firstName: string | null,
@@ -35,6 +47,7 @@ function getInitials(
 
 export function HeaderUserMenu() {
   const { isLoaded, user } = useUser();
+  const { theme, setTheme } = useTheme();
 
   if (!isLoaded) {
     return (
@@ -54,6 +67,9 @@ export function HeaderUserMenu() {
     ? getInitials(user.firstName, user.lastName, user.fullName)
     : "??";
 
+  const ThemeIcon =
+    themes.find((t) => t.value === (theme ?? "system"))?.icon ?? Monitor;
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -71,6 +87,25 @@ export function HeaderUserMenu() {
             Send feedback
           </Link>
         </DropdownMenuItem>
+        <DropdownMenuSub>
+          <DropdownMenuSubTrigger>
+            <ThemeIcon className="size-4" />
+            Theme
+          </DropdownMenuSubTrigger>
+          <DropdownMenuSubContent>
+            <DropdownMenuRadioGroup
+              value={theme ?? "system"}
+              onValueChange={(value) => setTheme(value)}
+            >
+              {themes.map(({ value, label, icon: Icon }) => (
+                <DropdownMenuRadioItem key={value} value={value}>
+                  <Icon className="size-4" />
+                  {label}
+                </DropdownMenuRadioItem>
+              ))}
+            </DropdownMenuRadioGroup>
+          </DropdownMenuSubContent>
+        </DropdownMenuSub>
         <DropdownMenuSeparator />
         <SignOutButton>
           <DropdownMenuItem>
