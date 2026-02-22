@@ -1,7 +1,6 @@
 "use client";
 
 import { useMutation } from "@tanstack/react-query";
-import heic2any from "heic2any";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { TrashIcon } from "lucide-react";
@@ -66,6 +65,7 @@ export default function NewImagePage() {
     const isHeic = file.type === "image/heic" || file.type === "image/heif";
     let url: string;
     if (isHeic) {
+      const heic2any = (await import("heic2any")).default;
       const result = await heic2any({ blob: file, toType: "image/jpeg" });
       const blob = Array.isArray(result) ? result[0] : result;
       url = URL.createObjectURL(blob);
