@@ -14,6 +14,7 @@ export default function FeedbackPage() {
     mutationFn: submitFeedback,
     onSuccess: () => {
       setMessage("");
+      feedbackMutation.reset();
     },
   });
 
