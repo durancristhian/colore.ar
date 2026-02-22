@@ -8,6 +8,7 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
+  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { LogOutIcon, MessageCircle } from "lucide-react";
@@ -70,6 +71,7 @@ export function HeaderUserMenu() {
             Feedback
           </Link>
         </DropdownMenuItem>
+        <DropdownMenuSeparator />
         <SignOutButton>
           <DropdownMenuItem>
             <LogOutIcon className="size-4" />
