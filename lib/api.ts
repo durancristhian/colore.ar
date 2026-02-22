@@ -46,3 +46,16 @@ export async function deleteImage(id: string): Promise<void> {
   const res = await fetch(`${base}/api/images/${id}`, { method: "DELETE" });
   if (!res.ok) throw new Error("Failed to delete creation.");
 }
+
+export async function submitFeedback(message: string): Promise<void> {
+  const res = await fetch(`${base}/api/feedback`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ message }),
+  });
+  if (!res.ok) {
+    const body = await res.json().catch(() => ({}));
+    const error = typeof body?.error === "string" ? body.error : null;
+    throw new Error(error ?? "Something went wrong. Please try again.");
+  }
+}

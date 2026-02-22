@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { SignOutButton, useUser } from "@clerk/nextjs";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
@@ -9,7 +10,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { LogOutIcon } from "lucide-react";
+import { LogOutIcon, MessageCircle } from "lucide-react";
 
 function getInitials(
   firstName: string | null,
@@ -63,10 +64,16 @@ export function HeaderUserMenu() {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
+        <DropdownMenuItem asChild>
+          <Link href="/feedback">
+            <MessageCircle className="size-4" />
+            Feedback
+          </Link>
+        </DropdownMenuItem>
         <SignOutButton>
           <DropdownMenuItem>
             <LogOutIcon className="size-4" />
-            Sign out
+            Log out
           </DropdownMenuItem>
         </SignOutButton>
       </DropdownMenuContent>
