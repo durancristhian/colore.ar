@@ -145,7 +145,7 @@ export default function NewImagePage() {
             )}
             {selectedFile && (
               <>
-                <div className="flex items-center gap-2 rounded-md border bg-white p-2">
+                <div className="flex items-center gap-2 rounded-md border border-border bg-background p-2">
                   {previewUrl && (
                     /* eslint-disable-next-line @next/next/no-img-element */
                     <img
