@@ -2,8 +2,16 @@
 
 import { useQuery } from "@tanstack/react-query";
 import Link from "next/link";
-import { Plus } from "lucide-react";
+import { ImagePlus, Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import {
+  Empty,
+  EmptyContent,
+  EmptyDescription,
+  EmptyHeader,
+  EmptyMedia,
+  EmptyTitle,
+} from "@/components/ui/empty";
 import { ImageCard } from "@/components/image-card";
 import { LoadingMessage } from "@/components/loading-message";
 import { listImages } from "@/lib/api";
@@ -39,7 +47,25 @@ export default function ImagesPage() {
         )}
 
         {!isLoading && !isError && (!images || images.length === 0) && (
-          <p className="text-muted-foreground">No creations yet.</p>
+          <Empty className="border py-12">
+            <EmptyHeader>
+              <EmptyMedia variant="icon">
+                <ImagePlus className="size-6" />
+              </EmptyMedia>
+              <EmptyTitle>No creations yet</EmptyTitle>
+              <EmptyDescription>
+                Create your first image to get started.
+              </EmptyDescription>
+            </EmptyHeader>
+            <EmptyContent>
+              <Button asChild>
+                <Link href="/images/new">
+                  <Plus className="size-4" />
+                  New creation
+                </Link>
+              </Button>
+            </EmptyContent>
+          </Empty>
         )}
 
         {!isLoading && !isError && images && images.length > 0 && (
