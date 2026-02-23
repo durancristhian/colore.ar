@@ -18,6 +18,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { LogOutIcon, MessageCircle, Monitor, Moon, Sun } from "lucide-react";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const themes = [
   { value: "system", label: "Como el sistema", icon: Monitor },
@@ -49,17 +50,18 @@ export function HeaderUserMenu() {
   const { isLoaded, user } = useUser();
   const { theme, setTheme } = useTheme();
 
+  const displayName =
+    user?.firstName ?? user?.fullName ?? user?.username ?? "Usuario";
+
   if (!isLoaded) {
     return (
-      <Button
-        variant="ghost"
-        size="icon"
-        className="rounded-full size-8"
-        aria-label="Menú de usuario"
-        disabled
+      <div
+        className="flex h-auto items-center gap-2 rounded-full py-1.5"
+        aria-hidden
       >
-        <span className="text-muted-foreground">...</span>
-      </Button>
+        <Skeleton className="size-8 shrink-0 rounded-full" />
+        <Skeleton className="h-4 w-24 shrink-0" />
+      </div>
     );
   }
 
@@ -73,7 +75,12 @@ export function HeaderUserMenu() {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="ghost" size="icon" className="rounded-full">
+        <Button
+          variant="ghost"
+          size="sm"
+          className="flex h-auto items-center gap-2 rounded-full p-1.5 pr-3"
+          aria-label="Menú de usuario"
+        >
           <Avatar>
             <AvatarImage
               src={user?.imageUrl}
@@ -81,6 +88,7 @@ export function HeaderUserMenu() {
             />
             <AvatarFallback>{initials}</AvatarFallback>
           </Avatar>
+          <span>{displayName}</span>
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
