@@ -26,7 +26,7 @@ export function ImageCard({
   createdAt,
 }: ImageCardProps) {
   return (
-    <Card className="relative p-0 gap-0">
+    <Card className="relative p-0 gap-0 shadow-none">
       <Link
         href={`/imagenes/${imageId}`}
         className="flex flex-col rounded-xl"
