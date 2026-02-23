@@ -4,7 +4,7 @@ import {
   createContext,
   useCallback,
   useContext,
-  useEffect,
+  useRef,
   useState,
 } from "react";
 
@@ -14,6 +14,8 @@ type PrintImageContextValue = {
 
 const PrintImageContext = createContext<PrintImageContextValue | null>(null);
 
+const CLEAR_PENDING_DELAY_MS = 600;
+
 export function PrintImageProvider({
   children,
 }: {
@@ -22,19 +24,28 @@ export function PrintImageProvider({
   const [pending, setPending] = useState<{ url: string; alt: string } | null>(
     null,
   );
+  const clearPendingTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(
+    null,
+  );
 
   const printImage = useCallback((url: string, alt = "") => {
+    if (clearPendingTimeoutRef.current) {
+      clearTimeout(clearPendingTimeoutRef.current);
+      clearPendingTimeoutRef.current = null;
+    }
     setPending({ url, alt });
   }, []);
 
-  useEffect(() => {
-    if (!pending) return;
-    const id = setTimeout(() => {
-      window.print();
+  const handleImageLoad = useCallback(() => {
+    window.print();
+    if (clearPendingTimeoutRef.current) {
+      clearTimeout(clearPendingTimeoutRef.current);
+    }
+    clearPendingTimeoutRef.current = setTimeout(() => {
       setPending(null);
-    }, 0);
-    return () => clearTimeout(id);
-  }, [pending]);
+      clearPendingTimeoutRef.current = null;
+    }, CLEAR_PENDING_DELAY_MS);
+  }, []);
 
   return (
     <PrintImageContext.Provider value={{ printImage }}>
@@ -43,9 +54,11 @@ export function PrintImageProvider({
         {pending ? (
           /* eslint-disable-next-line @next/next/no-img-element */
           <img
+            key={pending.url}
             src={pending.url}
             alt={pending.alt}
             className="border-2 rounded-md"
+            onLoad={handleImageLoad}
           />
         ) : null}
       </div>

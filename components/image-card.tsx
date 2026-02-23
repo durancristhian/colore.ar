@@ -29,7 +29,7 @@ export function ImageCard({
     <Card className="relative p-0 gap-0">
       <Link
         href={`/images/${imageId}`}
-        className="flex flex-col"
+        className="flex flex-col rounded-xl"
         aria-label={`View image: ${prompt}`}
       >
         <CldImage src={imageUrl} alt={prompt} wrapperClassName="rounded-t-xl" />
