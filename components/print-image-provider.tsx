@@ -26,6 +26,7 @@ export function PrintImageProvider({
   const [pending, setPending] = useState<{ url: string; alt: string } | null>(
     null,
   );
+  const [mounted, setMounted] = useState(false);
   const clearPendingTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(
     null,
   );
@@ -50,7 +51,9 @@ export function PrintImageProvider({
   }, []);
 
   useEffect(() => {
+    const id = requestAnimationFrame(() => setMounted(true));
     return () => {
+      cancelAnimationFrame(id);
       if (clearPendingTimeoutRef.current) {
         clearTimeout(clearPendingTimeoutRef.current);
       }
@@ -75,7 +78,8 @@ export function PrintImageProvider({
   return (
     <PrintImageContext.Provider value={{ printImage }}>
       {children}
-      {typeof document !== "undefined" &&
+      {mounted &&
+        typeof document !== "undefined" &&
         createPortal(printOnlyNode, document.body)}
     </PrintImageContext.Provider>
   );
