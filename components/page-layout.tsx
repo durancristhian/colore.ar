@@ -11,7 +11,7 @@ interface PageLayoutProps {
 export function PageLayout({ title, backHref, children }: PageLayoutProps) {
   return (
     <div className="w-full">
-      <div className="mb-4 flex items-center gap-4">
+      <div className="mb-4 flex items-center gap-4 border-b border-border pb-4">
         <Button variant="ghost" size="icon" asChild>
           <Link href={backHref} aria-label="Volver">
             <ArrowLeftIcon />

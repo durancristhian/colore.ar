@@ -30,15 +30,13 @@ export default function ImagesPage() {
   return (
     <div className="w-full">
       <div className="flex flex-col gap-4">
-        <div className="flex flex-1 items-center justify-between gap-4">
+        <div className="flex flex-1 items-center justify-between gap-4 border-b border-border pb-4">
           <h1 className="font-semibold">Tus imágenes</h1>
-          {!isLoading && !isError && images && images.length > 0 && (
-            <Button asChild size="icon" aria-label="Nueva imagen">
-              <Link href="/imagenes/nueva">
-                <Plus className="size-4" />
-              </Link>
-            </Button>
-          )}
+          <Button asChild size="icon" aria-label="Nueva imagen">
+            <Link href="/imagenes/nueva">
+              <Plus className="size-4" />
+            </Link>
+          </Button>
         </div>
 
         {isLoading && <LoadingMessage label="Cargando imágenes..." />}

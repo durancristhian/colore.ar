@@ -50,21 +50,6 @@ export function HeaderUserMenu() {
   const { isLoaded, user } = useUser();
   const { theme, setTheme } = useTheme();
 
-  const displayName =
-    user?.firstName ?? user?.fullName ?? user?.username ?? "Usuario";
-
-  if (!isLoaded) {
-    return (
-      <div
-        className="flex h-auto items-center gap-2 rounded-full py-1.5"
-        aria-hidden
-      >
-        <Skeleton className="size-8 shrink-0 rounded-full" />
-        <Skeleton className="h-4 w-24 shrink-0" />
-      </div>
-    );
-  }
-
   const initials = user
     ? getInitials(user.firstName, user.lastName, user.fullName)
     : "??";
@@ -77,18 +62,21 @@ export function HeaderUserMenu() {
       <DropdownMenuTrigger asChild>
         <Button
           variant="ghost"
-          size="sm"
-          className="flex h-auto items-center gap-2 rounded-full p-1.5 pr-3"
+          size="icon"
+          className="rounded-full"
           aria-label="Menú de usuario"
         >
-          <Avatar>
-            <AvatarImage
-              src={user?.imageUrl}
-              alt={user?.fullName ?? "Usuario"}
-            />
-            <AvatarFallback>{initials}</AvatarFallback>
-          </Avatar>
-          <span>{displayName}</span>
+          {!isLoaded ? (
+            <Skeleton className="size-8 shrink-0 rounded-full" />
+          ) : (
+            <Avatar>
+              <AvatarImage
+                src={user?.imageUrl}
+                alt={user?.fullName ?? "Usuario"}
+              />
+              <AvatarFallback>{initials}</AvatarFallback>
+            </Avatar>
+          )}
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">

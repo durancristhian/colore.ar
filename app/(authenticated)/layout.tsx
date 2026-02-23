@@ -10,16 +10,18 @@ export default function AuthenticatedLayout({
 }) {
   return (
     <PrintImageProvider>
-      <div className="flex flex-col gap-4">
-        <header className="flex items-center justify-between border-b pb-4">
-          <Link href="/imagenes">
-            <SparklesText as={<h1 />} className="text-xl font-black">
-              Colore.ar
-            </SparklesText>
-          </Link>
-          <HeaderUserMenu />
+      <div className="flex min-h-screen flex-col">
+        <header className="border-b border-border bg-muted/50">
+          <div className="mx-auto flex w-full max-w-lg items-center justify-between px-4 py-4">
+            <Link href="/imagenes">
+              <SparklesText as={<h1 />} className="text-xl font-black">
+                Colore.ar
+              </SparklesText>
+            </Link>
+            <HeaderUserMenu />
+          </div>
         </header>
-        {children}
+        <div className="mx-auto w-full max-w-lg flex-1 p-4">{children}</div>
       </div>
     </PrintImageProvider>
   );

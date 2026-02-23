@@ -48,9 +48,7 @@ export default function RootLayout({
             strategy="afterInteractive"
           />
           <Providers>
-            <div className="mx-auto w-full max-w-lg p-4 min-h-screen">
-              {children}
-            </div>
+            <div className="flex min-h-screen flex-col">{children}</div>
             <Toaster />
           </Providers>
         </body>
