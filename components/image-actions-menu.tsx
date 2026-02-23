@@ -3,6 +3,7 @@
 import { useState } from "react";
 import {
   CopyIcon,
+  DownloadIcon,
   MoreHorizontalIcon,
   PrinterIcon,
   Trash2Icon,
@@ -19,19 +20,39 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { usePrintImage } from "@/components/print-image-provider";
+import { buildImageDownloadFilename } from "@/utils/image-download-filename";
+import { downloadImage } from "@/utils/download-image";
 
 interface ImageActionsMenuProps {
   imageId: string;
   imageUrl: string;
+  prompt: string;
   onDeleteSuccess?: () => void;
 }
 
 export function ImageActionsMenu({
   imageId,
   imageUrl,
+  prompt,
   onDeleteSuccess,
 }: ImageActionsMenuProps) {
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const printImage = usePrintImage();
+
+  function handlePrint(e: React.MouseEvent) {
+    e.preventDefault();
+    e.stopPropagation();
+    if (printImage) {
+      printImage.printImage(imageUrl, prompt);
+    } else {
+      window.print();
+    }
+  }
+
+  function handleDownload() {
+    downloadImage(imageUrl, buildImageDownloadFilename(prompt, new Date()));
+  }
 
   async function handleCopyUrl() {
     try {
@@ -49,21 +70,13 @@ export function ImageActionsMenu({
   return (
     <>
       <ButtonGroup
-        className="flex-1"
+        className="flex-1 w-full"
         onClick={(e) => {
           e.preventDefault();
           e.stopPropagation();
         }}
       >
-        <Button
-          variant="default"
-          className="flex-1"
-          onClick={(e) => {
-            e.preventDefault();
-            e.stopPropagation();
-            window.print();
-          }}
-        >
+        <Button variant="default" className="flex-1" onClick={handlePrint}>
           <PrinterIcon className="size-4" />
           Print
         </Button>
@@ -75,6 +88,10 @@ export function ImageActionsMenu({
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end" className="w-40">
             <DropdownMenuGroup>
+              <DropdownMenuItem onSelect={handleDownload}>
+                <DownloadIcon />
+                Download
+              </DropdownMenuItem>
               <DropdownMenuItem onSelect={handleCopyUrl}>
                 <CopyIcon />
                 Copy image URL

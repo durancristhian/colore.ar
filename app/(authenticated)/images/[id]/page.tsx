@@ -5,9 +5,9 @@ import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { ConfettiFireworks } from "@/components/confetti-fireworks";
+import { CldImage } from "@/components/cld-image";
 import { ImageActionsMenu } from "@/components/image-actions-menu";
 import { PageLayout } from "@/components/page-layout";
-import { ImageWithActions } from "@/components/image-with-actions";
 import { getImage } from "@/lib/api";
 import { formatCreatedAt } from "@/lib/format-date";
 
@@ -100,17 +100,17 @@ export default function ImageDetailPage() {
           <p className="text-muted-foreground text-sm">Created</p>
           <p className="text-sm">{formatCreatedAt(image.createdAt)}</p>
         </div>
-        <div className="relative">
-          <div className="absolute right-1 top-1 z-10 m-1">
-            <ImageActionsMenu
-              imageId={image.id}
-              imageUrl={image.imageUrl}
-              onDeleteSuccess={() => router.push("/images")}
-            />
-          </div>
-          <ImageWithActions
+        <div className="flex flex-col gap-4">
+          <CldImage
             src={image.imageUrl}
+            alt={image.description ?? "From uploaded image"}
+            wrapperClassName="rounded-md border"
+          />
+          <ImageActionsMenu
+            imageId={image.id}
+            imageUrl={image.imageUrl}
             prompt={image.description ?? "From uploaded image"}
+            onDeleteSuccess={() => router.push("/images")}
           />
         </div>
       </main>

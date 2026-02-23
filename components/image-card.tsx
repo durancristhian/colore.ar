@@ -42,7 +42,11 @@ export function ImageCard({
           </CardDescription>
         </CardHeader>
         <CardFooter className="px-4 pb-4">
-          <ImageActionsMenu imageId={imageId} imageUrl={imageUrl} />
+          <ImageActionsMenu
+            imageId={imageId}
+            imageUrl={imageUrl}
+            prompt={prompt}
+          />
         </CardFooter>
       </Link>
     </Card>
