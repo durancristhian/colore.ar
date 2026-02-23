@@ -1,7 +1,12 @@
 "use client";
 
 import { useState } from "react";
-import { CopyIcon, MoreHorizontalIcon, Trash2Icon } from "lucide-react";
+import {
+  CopyIcon,
+  MoreHorizontalIcon,
+  PrinterIcon,
+  Trash2Icon,
+} from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { ButtonGroup } from "@/components/ui/button-group";
@@ -59,6 +64,7 @@ export function ImageActionsMenu({
             window.print();
           }}
         >
+          <PrinterIcon className="size-4" />
           Print
         </Button>
         <DropdownMenu>
