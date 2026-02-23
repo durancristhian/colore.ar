@@ -4,8 +4,8 @@ import { CldImage } from "@/components/cld-image";
 import { ImageActionsMenu } from "@/components/image-actions-menu";
 import {
   Card,
-  CardAction,
   CardDescription,
+  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
@@ -29,22 +29,22 @@ export function ImageCard({
     <Card className="relative p-0 gap-0">
       <Link
         href={`/images/${imageId}`}
-        className="flex flex-col rounded-xl"
+        className="flex flex-col"
         aria-label={`View image: ${prompt}`}
       >
         <CldImage src={imageUrl} alt={prompt} wrapperClassName="rounded-t-xl" />
-        <CardHeader className="p-4 pr-12">
-          <CardTitle className="line-clamp-2" title={prompt}>
+        <CardHeader className="p-4">
+          <CardTitle className="line-clamp-1" title={prompt}>
             {prompt}
           </CardTitle>
           <CardDescription>
             Created {formatCreatedAt(createdAt)}
           </CardDescription>
         </CardHeader>
+        <CardFooter className="px-4 pb-4">
+          <ImageActionsMenu imageId={imageId} imageUrl={imageUrl} />
+        </CardFooter>
       </Link>
-      <CardAction className="absolute top-4 right-4">
-        <ImageActionsMenu imageId={imageId} imageUrl={imageUrl} />
-      </CardAction>
     </Card>
   );
 }
