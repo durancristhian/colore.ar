@@ -6,13 +6,10 @@ import {
   Card,
   CardAction,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
 import { formatCreatedAt } from "@/lib/format-date";
-import { Eye } from "lucide-react";
 import Link from "next/link";
 
 interface ImageCardProps {
@@ -29,25 +26,25 @@ export function ImageCard({
   createdAt,
 }: ImageCardProps) {
   return (
-    <Card className="p-0 gap-0">
-      <CldImage src={imageUrl} alt={prompt} wrapperClassName="rounded-t-xl" />
-      <CardHeader className="p-4">
-        <CardTitle className="line-clamp-2" title={prompt}>
-          {prompt}
-        </CardTitle>
-        <CardDescription>Created {formatCreatedAt(createdAt)}</CardDescription>
-        <CardAction>
-          <ImageActionsMenu imageId={imageId} imageUrl={imageUrl} />
-        </CardAction>
-      </CardHeader>
-      <CardFooter className="p-4 pt-0">
-        <Button asChild className="w-full">
-          <Link href={`/images/${imageId}`}>
-            <Eye />
-            View
-          </Link>
-        </Button>
-      </CardFooter>
+    <Card className="relative p-0 gap-0">
+      <Link
+        href={`/images/${imageId}`}
+        className="flex flex-col rounded-xl"
+        aria-label={`View image: ${prompt}`}
+      >
+        <CldImage src={imageUrl} alt={prompt} wrapperClassName="rounded-t-xl" />
+        <CardHeader className="p-4 pr-12">
+          <CardTitle className="line-clamp-2" title={prompt}>
+            {prompt}
+          </CardTitle>
+          <CardDescription>
+            Created {formatCreatedAt(createdAt)}
+          </CardDescription>
+        </CardHeader>
+      </Link>
+      <CardAction className="absolute top-4 right-4">
+        <ImageActionsMenu imageId={imageId} imageUrl={imageUrl} />
+      </CardAction>
     </Card>
   );
 }
