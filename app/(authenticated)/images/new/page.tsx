@@ -156,11 +156,11 @@ export default function NewImagePage() {
                 <div className="flex items-center gap-2 rounded-md border bg-white p-2">
                   {previewUrl && (
                     /* eslint-disable-next-line @next/next/no-img-element */
-                    (<img
+                    <img
                       src={previewUrl}
                       alt={selectedFile.name}
                       className="size-16 shrink-0 rounded object-cover"
-                    />)
+                    />
                   )}
                   <p
                     className="min-w-0 flex-1 truncate"

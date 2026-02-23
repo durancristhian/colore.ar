@@ -64,13 +64,13 @@ export function PrintImageProvider({
     <div className="print-only" aria-hidden>
       {pending ? (
         /* eslint-disable-next-line @next/next/no-img-element */
-        (<img
+        <img
           key={pending.url}
           src={pending.url}
           alt={pending.alt}
           className="border-2 rounded-md"
           onLoad={handleImageLoad}
-        />)
+        />
       ) : null}
     </div>
   );
