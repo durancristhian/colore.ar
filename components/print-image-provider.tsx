@@ -4,9 +4,11 @@ import {
   createContext,
   useCallback,
   useContext,
+  useEffect,
   useRef,
   useState,
 } from "react";
+import { createPortal } from "react-dom";
 
 type PrintImageContextValue = {
   printImage: (url: string, alt?: string) => void;
@@ -47,21 +49,34 @@ export function PrintImageProvider({
     }, CLEAR_PENDING_DELAY_MS);
   }, []);
 
+  useEffect(() => {
+    return () => {
+      if (clearPendingTimeoutRef.current) {
+        clearTimeout(clearPendingTimeoutRef.current);
+      }
+    };
+  }, []);
+
+  const printOnlyNode = (
+    <div className="print-only" aria-hidden>
+      {pending ? (
+        /* eslint-disable-next-line @next/next/no-img-element */
+        <img
+          key={pending.url}
+          src={pending.url}
+          alt={pending.alt}
+          className="border-2 rounded-md"
+          onLoad={handleImageLoad}
+        />
+      ) : null}
+    </div>
+  );
+
   return (
     <PrintImageContext.Provider value={{ printImage }}>
       {children}
-      <div className="print-only" aria-hidden>
-        {pending ? (
-          /* eslint-disable-next-line @next/next/no-img-element */
-          <img
-            key={pending.url}
-            src={pending.url}
-            alt={pending.alt}
-            className="border-2 rounded-md"
-            onLoad={handleImageLoad}
-          />
-        ) : null}
-      </div>
+      {typeof document !== "undefined" &&
+        createPortal(printOnlyNode, document.body)}
     </PrintImageContext.Provider>
   );
 }

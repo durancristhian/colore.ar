@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   DownloadIcon,
   ImageIcon,
@@ -41,12 +41,18 @@ export function ImageActionsMenu({
 }: ImageActionsMenuProps) {
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const printImage = usePrintImage();
+  const imageUrlRef = useRef(imageUrl);
+  const promptRef = useRef(prompt);
+  useEffect(() => {
+    imageUrlRef.current = imageUrl;
+    promptRef.current = prompt;
+  }, [imageUrl, prompt]);
 
   function handlePrint(e: React.MouseEvent) {
     e.preventDefault();
     e.stopPropagation();
     if (printImage) {
-      printImage.printImage(imageUrl, prompt);
+      printImage.printImage(imageUrlRef.current, promptRef.current);
     } else {
       window.print();
     }

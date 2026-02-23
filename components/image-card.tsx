@@ -37,9 +37,7 @@ export function ImageCard({
           <CardTitle className="line-clamp-1" title={prompt}>
             {prompt}
           </CardTitle>
-          <CardDescription>
-            Created {formatCreatedAt(createdAt)}
-          </CardDescription>
+          <CardDescription>{formatCreatedAt(createdAt)}</CardDescription>
         </CardHeader>
         <CardFooter className="px-4 pb-4">
           <ImageActionsMenu
