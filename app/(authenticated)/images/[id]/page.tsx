@@ -6,6 +6,7 @@ import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { ConfettiFireworks } from "@/components/confetti-fireworks";
 import { CldImage } from "@/components/cld-image";
+import { ErrorMessage } from "@/components/error-message";
 import { ImageActionsMenu } from "@/components/image-actions-menu";
 import { Label } from "@/components/ui/label";
 import { LoadingMessage } from "@/components/loading-message";
@@ -55,12 +56,15 @@ export default function ImageDetailPage() {
   if (!id) {
     return (
       <PageLayout title="Creation details" backHref="/images">
-        <p className="text-sm text-destructive">
-          We didn&apos;t find the creation you&apos;re looking for.
-        </p>
-        <Link href="/images" className="text-sm underline">
-          Back to creations
-        </Link>
+        <ErrorMessage
+          title="Creation not found"
+          description="We didn't find the creation you're looking for."
+          action={
+            <Link href="/images" className="text-sm underline">
+              Back to creations
+            </Link>
+          }
+        />
       </PageLayout>
     );
   }
@@ -76,12 +80,15 @@ export default function ImageDetailPage() {
   if (isError || !image) {
     return (
       <PageLayout title="Creation details" backHref="/images">
-        <p className="text-sm text-destructive">
-          We didn&apos;t find the creation you&apos;re looking for.
-        </p>
-        <Link href="/images" className="text-sm underline">
-          Back to creations
-        </Link>
+        <ErrorMessage
+          title="Creation not found"
+          description="We didn't find the creation you're looking for."
+          action={
+            <Link href="/images" className="text-sm underline">
+              Back to creations
+            </Link>
+          }
+        />
       </PageLayout>
     );
   }

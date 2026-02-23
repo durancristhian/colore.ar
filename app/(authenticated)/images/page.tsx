@@ -12,6 +12,7 @@ import {
   EmptyMedia,
   EmptyTitle,
 } from "@/components/ui/empty";
+import { ErrorMessage } from "@/components/error-message";
 import { ImageCard } from "@/components/image-card";
 import { LoadingMessage } from "@/components/loading-message";
 import { listImages } from "@/lib/api";
@@ -41,9 +42,10 @@ export default function ImagesPage() {
         {isLoading && <LoadingMessage label="Loading creations..." />}
 
         {isError && (
-          <p className="text-sm text-destructive">
-            Failed to load creations. Try again.
-          </p>
+          <ErrorMessage
+            title="Couldn't load creations"
+            description="Failed to load creations. Try again."
+          />
         )}
 
         {!isLoading && !isError && (!images || images.length === 0) && (

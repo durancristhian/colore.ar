@@ -4,6 +4,7 @@ import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { TrashIcon } from "lucide-react";
+import { ErrorMessage } from "@/components/error-message";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Spinner } from "@/components/ui/spinner";
@@ -115,9 +116,9 @@ export default function NewImagePage() {
         >
           <TabsList className="w-full">
             <TabsTrigger value="image" disabled={!imageFromImageEnabled}>
-              From an image
+              Image to image
             </TabsTrigger>
-            <TabsTrigger value="description">From a prompt</TabsTrigger>
+            <TabsTrigger value="description">Text to image</TabsTrigger>
           </TabsList>
 
           <TabsContent value="image" className="flex flex-col gap-2 mt-4">
@@ -172,14 +173,18 @@ export default function NewImagePage() {
                   </Button>
                 </div>
                 {!isImageFileValid(selectedFile) && (
-                  <p className="text-sm text-destructive">
-                    {!isImageTypeAllowed(selectedFile.type) &&
-                    !isImageSizeValid(selectedFile.size)
-                      ? "Image must be JPEG, PNG, WebP, or HEIC and at most 10MB."
-                      : !isImageTypeAllowed(selectedFile.type)
-                        ? "Image must be JPEG, PNG, WebP, or HEIC."
-                        : "Image must be at most 10MB."}
-                  </p>
+                  <ErrorMessage
+                    variant="default"
+                    title="Invalid image"
+                    description={
+                      !isImageTypeAllowed(selectedFile.type) &&
+                      !isImageSizeValid(selectedFile.size)
+                        ? "Image must be JPEG, PNG, WebP, or HEIC and at most 10MB."
+                        : !isImageTypeAllowed(selectedFile.type)
+                          ? "Image must be JPEG, PNG, WebP, or HEIC."
+                          : "Image must be at most 10MB."
+                    }
+                  />
                 )}
               </>
             )}
@@ -209,9 +214,13 @@ export default function NewImagePage() {
         </Button>
 
         {createMutation.isError && (
-          <p className="text-sm text-destructive">
-            Something went wrong. Please try again.
-          </p>
+          <ErrorMessage
+            title="Something went wrong"
+            description={
+              createMutation.error?.message ??
+              "Something went wrong. Please try again."
+            }
+          />
         )}
       </main>
     </PageLayout>
