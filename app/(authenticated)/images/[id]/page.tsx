@@ -95,15 +95,13 @@ export default function ImageDetailPage() {
           <p className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
             Prompt
           </p>
-          <p className="text-sm">
-            {image.description ?? "From uploaded image"}
-          </p>
+          <p>{image.description ?? "From uploaded image"}</p>
         </div>
         <div className="flex flex-col gap-2">
           <p className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
             Created
           </p>
-          <p className="text-sm">{formatCreatedAt(image.createdAt)}</p>
+          <p>{formatCreatedAt(image.createdAt)}</p>
         </div>
         <div className="flex flex-col gap-4">
           <CldImage
