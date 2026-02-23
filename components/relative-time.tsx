@@ -6,26 +6,36 @@ import {
   HoverCardTrigger,
 } from "@/components/ui/hover-card";
 import { formatRawDate, getRelative } from "@/lib/format-date";
+import { ClockIcon } from "lucide-react";
 
 interface RelativeTimeProps {
   /** ISO date string (e.g. createdAt from API) */
   date: string;
-  className?: string;
 }
 
-export function RelativeTime({ date, className }: RelativeTimeProps) {
+export function RelativeTime({ date }: RelativeTimeProps) {
   const raw = formatRawDate(date);
   const relative = getRelative(date, raw);
 
   return (
     <HoverCard openDelay={300} closeDelay={100}>
       <HoverCardTrigger asChild>
-        <time dateTime={date} className={className} tabIndex={0}>
+        <time
+          dateTime={date}
+          className="capitalize hover:underline focus:underline underline-offset-2 cursor-default outline-none focus:rounded"
+          tabIndex={0}
+        >
           {relative}
         </time>
       </HoverCardTrigger>
-      <HoverCardContent side="top" align="start">
-        {raw}
+      <HoverCardContent side="top" align="start" className="w-auto">
+        <div className="flex items-center gap-2">
+          <ClockIcon
+            className="size-4 shrink-0 text-muted-foreground"
+            aria-hidden
+          />
+          <span>{raw}</span>
+        </div>
       </HoverCardContent>
     </HoverCard>
   );
