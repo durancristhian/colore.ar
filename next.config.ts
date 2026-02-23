@@ -7,10 +7,6 @@ const nextConfig: NextConfig = {
         source: "/stats.js",
         destination: "https://cloud.umami.is/script.js",
       },
-      {
-        source: "/api/send",
-        destination: "https://cloud.umami.is/api/send",
-      },
     ];
   },
 };
