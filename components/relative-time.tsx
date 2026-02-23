@@ -16,16 +16,19 @@ interface RelativeTimeProps {
 export function RelativeTime({ date }: RelativeTimeProps) {
   const raw = formatRawDate(date);
   const relative = getRelative(date, raw);
+  const display = relative.length
+    ? relative.charAt(0).toUpperCase() + relative.slice(1)
+    : relative;
 
   return (
     <HoverCard openDelay={300} closeDelay={100}>
       <HoverCardTrigger asChild>
         <time
           dateTime={date}
-          className="capitalize hover:underline focus:underline underline-offset-2 cursor-default outline-none focus:rounded"
+          className="hover:underline focus:underline underline-offset-2 cursor-default outline-none focus:rounded"
           tabIndex={0}
         >
-          {relative}
+          {display}
         </time>
       </HoverCardTrigger>
       <HoverCardContent side="top" align="start" className="w-auto">

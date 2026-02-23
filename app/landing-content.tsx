@@ -18,7 +18,7 @@ export function LandingContent() {
         <SignInButton mode="modal">
           <Button>
             <Sparkles className="size-4" />
-            Empezá a crear
+            Quiero crear mi imagen
           </Button>
         </SignInButton>
       </SignedOut>

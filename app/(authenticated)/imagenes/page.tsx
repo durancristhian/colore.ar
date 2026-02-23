@@ -32,11 +32,13 @@ export default function ImagesPage() {
       <div className="flex flex-col gap-4">
         <div className="flex flex-1 items-center justify-between gap-4">
           <h1 className="font-semibold">Tus imágenes</h1>
-          <Button asChild size="icon" aria-label="Nueva imagen">
-            <Link href="/imagenes/nueva">
-              <Plus className="size-4" />
-            </Link>
-          </Button>
+          {!isLoading && !isError && images && images.length > 0 && (
+            <Button asChild size="icon" aria-label="Nueva imagen">
+              <Link href="/imagenes/nueva">
+                <Plus className="size-4" />
+              </Link>
+            </Button>
+          )}
         </div>
 
         {isLoading && <LoadingMessage label="Cargando imágenes..." />}
@@ -55,9 +57,7 @@ export default function ImagesPage() {
                 <ImagePlus className="size-6" />
               </EmptyMedia>
               <EmptyTitle>Aún no hay imágenes</EmptyTitle>
-              <EmptyDescription>
-                Las que generes van a aparecer acá.
-              </EmptyDescription>
+              <EmptyDescription>Creá tu imagen para colorear</EmptyDescription>
             </EmptyHeader>
             <EmptyContent>
               <Button asChild>

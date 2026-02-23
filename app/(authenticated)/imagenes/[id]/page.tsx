@@ -100,7 +100,7 @@ export default function ImageDetailPage() {
       ) : null}
       <main className="flex flex-col gap-4">
         <div className="flex flex-col gap-2">
-          <Label>Consigna</Label>
+          <Label>Lo que pediste</Label>
           <p>{image.description ?? "A partir de una imagen"}</p>
         </div>
         <div className="flex flex-col gap-2">

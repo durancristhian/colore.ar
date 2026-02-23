@@ -45,7 +45,7 @@ export default function FeedbackPage() {
           <Textarea
             id="feedback-message"
             rows={5}
-            placeholder="Escribí acá..."
+            placeholder="Contanos tu experiencia, sugerencias o lo que quieras..."
             value={message}
             onChange={(e) => setMessage(e.target.value)}
             disabled={isSubmitting}

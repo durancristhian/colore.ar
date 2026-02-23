@@ -118,9 +118,9 @@ export default function NewImagePage() {
         >
           <TabsList className="w-full">
             <TabsTrigger value="image" disabled={!imageFromImageEnabled}>
-              Imagen a imagen
+              Desde una foto
             </TabsTrigger>
-            <TabsTrigger value="description">Texto a imagen</TabsTrigger>
+            <TabsTrigger value="description">Desde texto</TabsTrigger>
           </TabsList>
 
           <TabsContent value="image" className="flex flex-col gap-2 mt-4">
@@ -197,7 +197,7 @@ export default function NewImagePage() {
             <Textarea
               id="prompt"
               rows={5}
-              placeholder="Una persona feliz con un perro sentado al lado. Montañas de fondo."
+              placeholder="Ejemplo: Una persona feliz con un perro sentado al lado. Montañas de fondo."
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               disabled={disabled}
