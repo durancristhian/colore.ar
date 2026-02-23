@@ -55,13 +55,13 @@ export default function ImageDetailPage() {
 
   if (!id) {
     return (
-      <PageLayout title="Creation details" backHref="/images">
+      <PageLayout title="Detalles de la imagen" backHref="/imagenes">
         <ErrorMessage
-          title="Creation not found"
-          description="We didn't find the creation you're looking for."
+          title="Imagen no encontrada"
+          description="No encontramos la imagen que buscás."
           action={
-            <Link href="/images" className="text-sm underline">
-              Back to creations
+            <Link href="/imagenes" className="text-sm underline">
+              Volver a imágenes
             </Link>
           }
         />
@@ -71,21 +71,21 @@ export default function ImageDetailPage() {
 
   if (isLoading) {
     return (
-      <PageLayout title="Creation details" backHref="/images">
-        <LoadingMessage label="Loading creation..." />
+      <PageLayout title="Detalles de la imagen" backHref="/imagenes">
+        <LoadingMessage label="Cargando imagen..." />
       </PageLayout>
     );
   }
 
   if (isError || !image) {
     return (
-      <PageLayout title="Creation details" backHref="/images">
+      <PageLayout title="Detalles de la imagen" backHref="/imagenes">
         <ErrorMessage
-          title="Creation not found"
-          description="We didn't find the creation you're looking for."
+          title="Imagen no encontrada"
+          description="No encontramos la imagen que buscás."
           action={
-            <Link href="/images" className="text-sm underline">
-              Back to creations
+            <Link href="/imagenes" className="text-sm underline">
+              Volver a imágenes
             </Link>
           }
         />
@@ -94,17 +94,17 @@ export default function ImageDetailPage() {
   }
 
   return (
-    <PageLayout title="Creation details" backHref="/images">
+    <PageLayout title="Detalles de la imagen" backHref="/imagenes">
       {showConfetti ? (
         <ConfettiFireworks onComplete={handleConfettiComplete} />
       ) : null}
       <main className="flex flex-col gap-4">
         <div className="flex flex-col gap-2">
-          <Label>Prompt</Label>
-          <p>{image.description ?? "From uploaded image"}</p>
+          <Label>Consigna</Label>
+          <p>{image.description ?? "A partir de una imagen"}</p>
         </div>
         <div className="flex flex-col gap-2">
-          <Label>Created</Label>
+          <Label>Creado</Label>
           <p>
             <RelativeTime date={image.createdAt} />
           </p>
@@ -112,14 +112,14 @@ export default function ImageDetailPage() {
         <div className="flex flex-col gap-4">
           <CldImage
             src={image.imageUrl}
-            alt={image.description ?? "From uploaded image"}
+            alt={image.description ?? "A partir de una imagen"}
             wrapperClassName="rounded-md border"
           />
           <ImageActionsMenu
             imageId={image.id}
             imageUrl={image.imageUrl}
-            prompt={image.description ?? "From uploaded image"}
-            onDeleteSuccess={() => router.push("/images")}
+            prompt={image.description ?? "A partir de una imagen"}
+            onDeleteSuccess={() => router.push("/imagenes")}
           />
         </div>
       </main>

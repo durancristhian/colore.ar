@@ -7,14 +7,17 @@ export async function POST(request: NextRequest) {
   const user = await currentUser();
 
   if (!userId || !user) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    return NextResponse.json({ error: "No autorizado" }, { status: 401 });
   }
 
   let body: unknown;
   try {
     body = await request.json();
   } catch {
-    return NextResponse.json({ error: "Invalid JSON body" }, { status: 400 });
+    return NextResponse.json(
+      { error: "Cuerpo JSON inválido" },
+      { status: 400 },
+    );
   }
 
   const message =
@@ -27,7 +30,7 @@ export async function POST(request: NextRequest) {
 
   if (!message) {
     return NextResponse.json(
-      { error: "message is required and must be a non-empty string" },
+      { error: "message es requerido y debe ser un string no vacío" },
       { status: 400 },
     );
   }
@@ -53,13 +56,13 @@ export async function POST(request: NextRequest) {
       message.includes("TELEGRAM_CHATID")
     ) {
       return NextResponse.json(
-        { error: "Feedback is temporarily unavailable." },
+        { error: "El feedback no está disponible temporalmente." },
         { status: 503 },
       );
     }
     console.error("Feedback send failed:", error);
     return NextResponse.json(
-      { error: "Something went wrong. Please try again." },
+      { error: "Algo salió mal. Por favor, intentá de nuevo." },
       { status: 500 },
     );
   }

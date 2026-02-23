@@ -70,18 +70,18 @@ export function ImageActionsMenu({
       await navigator.clipboard.write([
         new ClipboardItem({ "image/png": pngBlob }),
       ]);
-      toast.success("Image copied to clipboard");
+      toast.success("Imagen copiada al portapapeles");
     } catch {
-      toast.error("Could not copy image");
+      toast.error("No se pudo copiar la imagen");
     }
   }
 
   async function handleCopyUrl() {
     try {
       await navigator.clipboard.writeText(imageUrl);
-      toast.success("URL copied to clipboard");
+      toast.success("URL copiada al portapapeles");
     } catch {
-      toast.error("Could not copy URL");
+      toast.error("No se pudo copiar la URL");
     }
   }
 
@@ -100,11 +100,11 @@ export function ImageActionsMenu({
       >
         <Button variant="default" className="flex-1" onClick={handlePrint}>
           <PrinterIcon className="size-4" />
-          Print
+          Imprimir
         </Button>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant="default" size="icon" aria-label="More options">
+            <Button variant="default" size="icon" aria-label="Más opciones">
               <MoreHorizontalIcon className="size-4" />
             </Button>
           </DropdownMenuTrigger>
@@ -112,15 +112,15 @@ export function ImageActionsMenu({
             <DropdownMenuGroup>
               <DropdownMenuItem onSelect={handleDownload}>
                 <DownloadIcon />
-                Download
+                Descargar
               </DropdownMenuItem>
               <DropdownMenuItem onSelect={handleCopyImage}>
                 <ImageIcon />
-                Copy image
+                Copiar imagen
               </DropdownMenuItem>
               <DropdownMenuItem onSelect={handleCopyUrl}>
                 <Link2Icon />
-                Copy image URL
+                Copiar URL de la imagen
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
@@ -130,7 +130,7 @@ export function ImageActionsMenu({
                 onSelect={handleDeleteSelect}
               >
                 <Trash2Icon />
-                Delete
+                Eliminar
               </DropdownMenuItem>
             </DropdownMenuGroup>
           </DropdownMenuContent>

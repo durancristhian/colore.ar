@@ -11,7 +11,7 @@ export default function AuthenticatedLayout({
     <PrintImageProvider>
       <div className="flex flex-col gap-4">
         <header className="flex items-center justify-between border-b pb-4">
-          <Link href="/images">
+          <Link href="/imagenes">
             <h1 className="text-xl font-black">Colore.ar</h1>
           </Link>
           <HeaderUserMenu />

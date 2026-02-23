@@ -12,13 +12,13 @@ export function LandingContent() {
         <div>
           <SparklesText as={<h1 />}>Colore.ar</SparklesText>
         </div>
-        <p className="text-muted-foreground">Generate. Print. Paint.</p>
+        <p className="text-muted-foreground">Generá. Imprimí. Pintá.</p>
       </div>
       <SignedOut>
         <SignInButton mode="modal">
           <Button>
             <Sparkles className="size-4" />
-            Start creating
+            Empezá a crear
           </Button>
         </SignInButton>
       </SignedOut>

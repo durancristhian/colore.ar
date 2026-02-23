@@ -20,9 +20,9 @@ import {
 import { LogOutIcon, MessageCircle, Monitor, Moon, Sun } from "lucide-react";
 
 const themes = [
-  { value: "system", label: "Same as system", icon: Monitor },
-  { value: "dark", label: "Dark", icon: Moon },
-  { value: "light", label: "Light", icon: Sun },
+  { value: "system", label: "Como el sistema", icon: Monitor },
+  { value: "dark", label: "Oscuro", icon: Moon },
+  { value: "light", label: "Claro", icon: Sun },
 ] as const;
 
 function getInitials(
@@ -55,7 +55,7 @@ export function HeaderUserMenu() {
         variant="ghost"
         size="icon"
         className="rounded-full size-8"
-        aria-label="User menu"
+        aria-label="Menú de usuario"
         disabled
       >
         <span className="text-muted-foreground">...</span>
@@ -75,7 +75,10 @@ export function HeaderUserMenu() {
       <DropdownMenuTrigger asChild>
         <Button variant="ghost" size="icon" className="rounded-full">
           <Avatar>
-            <AvatarImage src={user?.imageUrl} alt={user?.fullName ?? "User"} />
+            <AvatarImage
+              src={user?.imageUrl}
+              alt={user?.fullName ?? "Usuario"}
+            />
             <AvatarFallback>{initials}</AvatarFallback>
           </Avatar>
         </Button>
@@ -84,13 +87,13 @@ export function HeaderUserMenu() {
         <DropdownMenuItem asChild>
           <Link href="/feedback">
             <MessageCircle className="size-4" />
-            Send feedback
+            Enviar feedback
           </Link>
         </DropdownMenuItem>
         <DropdownMenuSub>
           <DropdownMenuSubTrigger>
             <ThemeIcon className="size-4" />
-            Theme
+            Tema
           </DropdownMenuSubTrigger>
           <DropdownMenuSubContent>
             <DropdownMenuRadioGroup
@@ -110,7 +113,7 @@ export function HeaderUserMenu() {
         <SignOutButton>
           <DropdownMenuItem>
             <LogOutIcon className="size-4" />
-            Log out
+            Cerrar sesión
           </DropdownMenuItem>
         </SignOutButton>
       </DropdownMenuContent>

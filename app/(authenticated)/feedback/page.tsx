@@ -26,26 +26,24 @@ export default function FeedbackPage() {
 
   const handleSubmit = () => {
     toast.promise(feedbackMutation.mutateAsync(message.trim()), {
-      loading: "Sending feedback...",
-      success: "Thanks, your feedback was sent.",
+      loading: "Enviando feedback...",
+      success: "Gracias, tu feedback fue enviado.",
       error: (err) =>
         err instanceof Error
           ? err.message
-          : "Something went wrong. Please try again.",
+          : "Algo salió mal. Por favor, intentá de nuevo.",
     });
   };
 
   return (
-    <PageLayout title="Send feedback" backHref="/images">
+    <PageLayout title="Enviar feedback" backHref="/imagenes">
       <main className="flex flex-col gap-4">
         <div className="flex flex-col gap-2">
-          <Label htmlFor="feedback-message">
-            What would you like to tell us?
-          </Label>
+          <Label htmlFor="feedback-message">¿Qué te gustaría contarnos?</Label>
           <Textarea
             id="feedback-message"
             rows={5}
-            placeholder="Share your feedback, ideas, or report an issue…"
+            placeholder="Escribí acá..."
             value={message}
             onChange={(e) => setMessage(e.target.value)}
             disabled={isSubmitting}
@@ -54,7 +52,7 @@ export default function FeedbackPage() {
         </div>
         <Button className="w-full" onClick={handleSubmit} disabled={!canSubmit}>
           <Send className="size-4" />
-          Send feedback
+          Enviar feedback
         </Button>
       </main>
     </PageLayout>

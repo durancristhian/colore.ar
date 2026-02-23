@@ -13,7 +13,7 @@ export function PageLayout({ title, backHref, children }: PageLayoutProps) {
     <div className="w-full">
       <div className="mb-4 flex items-center gap-4">
         <Button variant="ghost" size="icon" asChild>
-          <Link href={backHref} aria-label="Back">
+          <Link href={backHref} aria-label="Volver">
             <ArrowLeftIcon />
           </Link>
         </Button>

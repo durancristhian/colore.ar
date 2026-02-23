@@ -1,11 +1,11 @@
 import RelativeTimeLib from "@yaireo/relative-time";
 
-const relativeTime = new RelativeTimeLib();
+const relativeTime = new RelativeTimeLib({ locale: "es" });
 
 export function formatRawDate(createdAt: string): string {
   try {
     const date = new Date(createdAt);
-    return date.toLocaleString();
+    return date.toLocaleString("es");
   } catch {
     return createdAt;
   }

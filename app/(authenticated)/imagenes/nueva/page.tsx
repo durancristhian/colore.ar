@@ -3,7 +3,7 @@
 import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
-import { TrashIcon } from "lucide-react";
+import { Sparkles, TrashIcon } from "lucide-react";
 import { ErrorMessage } from "@/components/error-message";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
@@ -48,7 +48,7 @@ export default function NewImagePage() {
         } catch {
           // ignore localStorage errors
         }
-        router.push(`/images/${data.id}`);
+        router.push(`/imagenes/${data.id}`);
       }
     },
   });
@@ -103,7 +103,7 @@ export default function NewImagePage() {
   };
 
   return (
-    <PageLayout title="New creation" backHref="/images">
+    <PageLayout title="Nueva imagen" backHref="/imagenes">
       <main className="flex flex-col gap-4">
         <Tabs
           value={activeTab}
@@ -116,15 +116,15 @@ export default function NewImagePage() {
         >
           <TabsList className="w-full">
             <TabsTrigger value="image" disabled={!imageFromImageEnabled}>
-              Image to image
+              Imagen a imagen
             </TabsTrigger>
-            <TabsTrigger value="description">Text to image</TabsTrigger>
+            <TabsTrigger value="description">Texto a imagen</TabsTrigger>
           </TabsList>
 
           <TabsContent value="image" className="flex flex-col gap-2 mt-4">
             {!selectedFile && (
               <>
-                <Label>Choose an image to convert</Label>
+                <Label>Elegí una imagen para convertir</Label>
                 <input
                   ref={fileInputRef}
                   type="file"
@@ -139,7 +139,7 @@ export default function NewImagePage() {
                   onClick={() => fileInputRef.current?.click()}
                   disabled={disabled}
                 >
-                  Select image
+                  Seleccionar imagen
                 </Button>
               </>
             )}
@@ -167,7 +167,7 @@ export default function NewImagePage() {
                     onClick={clearFile}
                     disabled={disabled}
                     className="shrink-0"
-                    aria-label="Remove file"
+                    aria-label="Quitar archivo"
                   >
                     <TrashIcon className="size-4" />
                   </Button>
@@ -175,14 +175,14 @@ export default function NewImagePage() {
                 {!isImageFileValid(selectedFile) && (
                   <ErrorMessage
                     variant="default"
-                    title="Invalid image"
+                    title="Imagen inválida"
                     description={
                       !isImageTypeAllowed(selectedFile.type) &&
                       !isImageSizeValid(selectedFile.size)
-                        ? "Image must be JPEG, PNG, WebP, or HEIC and at most 10MB."
+                        ? "La imagen debe ser JPEG, PNG, WebP o HEIC y pesar como máximo 10MB."
                         : !isImageTypeAllowed(selectedFile.type)
-                          ? "Image must be JPEG, PNG, WebP, or HEIC."
-                          : "Image must be at most 10MB."
+                          ? "La imagen debe ser JPEG, PNG, WebP o HEIC."
+                          : "La imagen debe pesar como máximo 10MB."
                     }
                   />
                 )}
@@ -191,11 +191,11 @@ export default function NewImagePage() {
           </TabsContent>
 
           <TabsContent value="description" className="flex flex-col gap-2 mt-4">
-            <Label htmlFor="prompt">What would you like to create?</Label>
+            <Label htmlFor="prompt">¿Qué te gustaría crear?</Label>
             <Textarea
               id="prompt"
               rows={5}
-              placeholder="A happy person with a dog sitting next to it. Mountains behind them."
+              placeholder="Una persona feliz con un perro sentado al lado. Montañas de fondo."
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               disabled={disabled}
@@ -209,16 +209,20 @@ export default function NewImagePage() {
           onClick={handleGenerate}
           disabled={disabled || !canGenerate}
         >
-          {isGenerating && <Spinner data-icon="inline-start" />}
-          Generate
+          {isGenerating ? (
+            <Spinner data-icon="inline-start" />
+          ) : (
+            <Sparkles className="size-4" />
+          )}
+          {isGenerating ? "Generando..." : "Generar"}
         </Button>
 
         {createMutation.isError && (
           <ErrorMessage
-            title="Something went wrong"
+            title="Algo salió mal"
             description={
               createMutation.error?.message ??
-              "Something went wrong. Please try again."
+              "Algo salió mal. Por favor, intentá de nuevo."
             }
           />
         )}

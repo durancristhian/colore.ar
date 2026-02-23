@@ -22,7 +22,7 @@ export function DeleteImageButton({
         variant="destructive"
         size="icon-sm"
         className="size-9 p-2"
-        aria-label="Delete creation"
+        aria-label="Eliminar imagen"
         onClick={() => setOpen(true)}
       >
         <Trash2Icon className="size-4" />

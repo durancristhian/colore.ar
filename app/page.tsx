@@ -4,7 +4,7 @@ import { LandingContent } from "./landing-content";
 
 export default async function Home() {
   const { userId } = await auth();
-  if (userId) redirect("/images");
+  if (userId) redirect("/imagenes");
 
   return <LandingContent />;
 }

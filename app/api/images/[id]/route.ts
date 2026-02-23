@@ -11,14 +11,17 @@ export async function GET(
 ) {
   const { userId } = await auth();
   if (!userId) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    return NextResponse.json({ error: "No autorizado" }, { status: 401 });
   }
 
   const { id } = await params;
   const image = await getImageByIdAndUserId(id, userId);
 
   if (!image) {
-    return NextResponse.json({ error: "Image not found" }, { status: 404 });
+    return NextResponse.json(
+      { error: "Imagen no encontrada" },
+      { status: 404 },
+    );
   }
 
   return NextResponse.json(image);
@@ -30,14 +33,17 @@ export async function DELETE(
 ) {
   const { userId } = await auth();
   if (!userId) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    return NextResponse.json({ error: "No autorizado" }, { status: 401 });
   }
 
   const { id } = await params;
   const deleted = await deleteImageByIdAndUserId(id, userId);
 
   if (!deleted) {
-    return NextResponse.json({ error: "Image not found" }, { status: 404 });
+    return NextResponse.json(
+      { error: "Imagen no encontrada" },
+      { status: 404 },
+    );
   }
 
   return new NextResponse(null, { status: 204 });

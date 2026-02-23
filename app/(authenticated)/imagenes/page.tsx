@@ -31,20 +31,20 @@ export default function ImagesPage() {
     <div className="w-full">
       <div className="flex flex-col gap-4">
         <div className="flex flex-1 items-center justify-between gap-4">
-          <h1 className="font-semibold">Your creations</h1>
-          <Button asChild size="icon" aria-label="New creation">
-            <Link href="/images/new">
+          <h1 className="font-semibold">Tus imágenes</h1>
+          <Button asChild size="icon" aria-label="Nueva imagen">
+            <Link href="/imagenes/nueva">
               <Plus className="size-4" />
             </Link>
           </Button>
         </div>
 
-        {isLoading && <LoadingMessage label="Loading creations..." />}
+        {isLoading && <LoadingMessage label="Cargando imágenes..." />}
 
         {isError && (
           <ErrorMessage
-            title="Couldn't load creations"
-            description="Failed to load creations. Try again."
+            title="No se pudieron cargar las imágenes"
+            description="Falló la carga. Intentá de nuevo."
           />
         )}
 
@@ -54,16 +54,16 @@ export default function ImagesPage() {
               <EmptyMedia variant="icon">
                 <ImagePlus className="size-6" />
               </EmptyMedia>
-              <EmptyTitle>No creations yet</EmptyTitle>
+              <EmptyTitle>Aún no hay imágenes</EmptyTitle>
               <EmptyDescription>
-                Create your first image to get started.
+                Las que generes van a aparecer acá.
               </EmptyDescription>
             </EmptyHeader>
             <EmptyContent>
               <Button asChild>
-                <Link href="/images/new">
+                <Link href="/imagenes/nueva">
                   <Plus className="size-4" />
-                  New creation
+                  Nueva imagen
                 </Link>
               </Button>
             </EmptyContent>
@@ -77,7 +77,7 @@ export default function ImagesPage() {
                 key={image.id}
                 imageId={image.id}
                 imageUrl={image.imageUrl}
-                prompt={image.description ?? "From uploaded image"}
+                prompt={image.description ?? "A partir de una imagen"}
                 createdAt={image.createdAt}
               />
             ))}

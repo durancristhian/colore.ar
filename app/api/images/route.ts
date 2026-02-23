@@ -23,7 +23,7 @@ function getCloudinaryPublicUrl(publicId: string): string {
 export async function GET() {
   const { userId } = await auth();
   if (!userId) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    return NextResponse.json({ error: "No autorizado" }, { status: 401 });
   }
   const images: ImageListItem[] = await listImagesByUserId(userId);
   return NextResponse.json(images);
@@ -32,7 +32,7 @@ export async function GET() {
 export async function POST(request: NextRequest) {
   const { userId } = await auth();
   if (!userId) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    return NextResponse.json({ error: "No autorizado" }, { status: 401 });
   }
 
   try {
@@ -41,7 +41,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json(
         {
           error:
-            "Content-Type must be multipart/form-data with description and optional image.",
+            "Content-Type debe ser multipart/form-data con description e imagen opcional.",
         },
         { status: 400 },
       );
@@ -60,13 +60,13 @@ export async function POST(request: NextRequest) {
 
     if (hasImage && hasDescription) {
       return NextResponse.json(
-        { error: "Send either description or image, not both." },
+        { error: "Enviá solo descripción o imagen, no ambos." },
         { status: 400 },
       );
     }
     if (!hasImage && !hasDescription) {
       return NextResponse.json(
-        { error: "Either description or image is required." },
+        { error: "Se requiere descripción o imagen." },
         { status: 400 },
       );
     }
@@ -76,21 +76,21 @@ export async function POST(request: NextRequest) {
     if (hasImage && image instanceof File) {
       if (!isImageFromImageEnabled()) {
         return NextResponse.json(
-          { error: "Generation from image is not available." },
+          { error: "La generación desde imagen no está disponible." },
           { status: 403 },
         );
       }
       if (!isImageTypeAllowed(image.type)) {
         return NextResponse.json(
           {
-            error: `Image type must be one of: ${ALLOWED_IMAGE_TYPES.join(", ")}.`,
+            error: `El tipo de imagen debe ser uno de: ${ALLOWED_IMAGE_TYPES.join(", ")}.`,
           },
           { status: 400 },
         );
       }
       if (!isImageSizeValid(image.size)) {
         return NextResponse.json(
-          { error: "Image size must be at most 10MB." },
+          { error: "La imagen debe pesar como máximo 10MB." },
           { status: 400 },
         );
       }
@@ -138,14 +138,14 @@ export async function POST(request: NextRequest) {
     if (isConfigError) {
       return NextResponse.json(
         {
-          error: "Generation is not available right now.",
+          error: "La generación no está disponible en este momento.",
           details: message,
         },
         { status: 503 },
       );
     }
     return NextResponse.json(
-      { error: "Something went wrong. Please try again." },
+      { error: "Algo salió mal. Por favor, intentá de nuevo." },
       { status: 500 },
     );
   }

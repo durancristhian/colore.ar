@@ -28,9 +28,9 @@ export function ImageCard({
   return (
     <Card className="relative p-0 gap-0">
       <Link
-        href={`/images/${imageId}`}
+        href={`/imagenes/${imageId}`}
         className="flex flex-col rounded-xl"
-        aria-label={`View image: ${prompt}`}
+        aria-label={`Ver imagen: ${prompt}`}
       >
         <CldImage src={imageUrl} alt={prompt} wrapperClassName="rounded-t-xl" />
         <CardHeader className="p-4">

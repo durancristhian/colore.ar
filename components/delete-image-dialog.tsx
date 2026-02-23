@@ -44,12 +44,12 @@ export function DeleteImageDialog({
     e.preventDefault();
     e.stopPropagation();
     toast.promise(deleteMutation.mutateAsync(imageId), {
-      loading: "Deleting...",
-      success: "Creation deleted.",
+      loading: "Eliminando...",
+      success: "Imagen eliminada.",
       error: (err) =>
         err instanceof Error
           ? err.message
-          : "Something went wrong. Please try again.",
+          : "Algo salió mal. Por favor, intentá de nuevo.",
     });
   }
 
@@ -60,20 +60,20 @@ export function DeleteImageDialog({
           <AlertDialogMedia className="bg-destructive/10 text-destructive dark:bg-destructive/20 dark:text-destructive">
             <Trash2Icon />
           </AlertDialogMedia>
-          <AlertDialogTitle>Delete creation?</AlertDialogTitle>
+          <AlertDialogTitle>¿Eliminar imagen?</AlertDialogTitle>
           <AlertDialogDescription>
-            This will permanently delete this creation. This action cannot be
-            undone.
+            Se eliminará esta imagen de forma permanente. Esta acción no se
+            puede deshacer.
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogCancel variant="outline">Cancel</AlertDialogCancel>
+          <AlertDialogCancel variant="outline">Cancelar</AlertDialogCancel>
           <AlertDialogAction
             variant="destructive"
             onClick={handleDelete}
             disabled={deleteMutation.isPending}
           >
-            Delete
+            Eliminar
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>
