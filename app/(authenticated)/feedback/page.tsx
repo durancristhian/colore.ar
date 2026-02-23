@@ -5,6 +5,7 @@ import { useState } from "react";
 import { toast } from "sonner";
 import { Send } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { PageLayout } from "@/components/page-layout";
 import { submitFeedback } from "@/lib/api";
@@ -38,12 +39,9 @@ export default function FeedbackPage() {
     <PageLayout title="Send feedback" backHref="/images">
       <main className="flex flex-col gap-4">
         <div className="flex flex-col gap-2">
-          <label
-            htmlFor="feedback-message"
-            className="text-sm font-medium leading-none"
-          >
+          <Label htmlFor="feedback-message">
             What would you like to tell us?
-          </label>
+          </Label>
           <Textarea
             id="feedback-message"
             rows={5}

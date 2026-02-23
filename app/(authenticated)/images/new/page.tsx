@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { TrashIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Label } from "@/components/ui/label";
 import { Spinner } from "@/components/ui/spinner";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Textarea } from "@/components/ui/textarea";
@@ -122,9 +123,7 @@ export default function NewImagePage() {
           <TabsContent value="image" className="flex flex-col gap-2 mt-4">
             {!selectedFile && (
               <>
-                <label className="text-sm font-medium leading-none">
-                  Choose an image to convert
-                </label>
+                <Label>Choose an image to convert</Label>
                 <input
                   ref={fileInputRef}
                   type="file"
@@ -187,12 +186,7 @@ export default function NewImagePage() {
           </TabsContent>
 
           <TabsContent value="description" className="flex flex-col gap-2 mt-4">
-            <label
-              htmlFor="prompt"
-              className="text-sm font-medium leading-none"
-            >
-              What would you like to create?
-            </label>
+            <Label htmlFor="prompt">What would you like to create?</Label>
             <Textarea
               id="prompt"
               rows={5}

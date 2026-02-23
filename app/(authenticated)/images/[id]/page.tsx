@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 import { ConfettiFireworks } from "@/components/confetti-fireworks";
 import { CldImage } from "@/components/cld-image";
 import { ImageActionsMenu } from "@/components/image-actions-menu";
+import { Label } from "@/components/ui/label";
 import { LoadingMessage } from "@/components/loading-message";
 import { PageLayout } from "@/components/page-layout";
 import { getImage } from "@/lib/api";
@@ -92,15 +93,11 @@ export default function ImageDetailPage() {
       ) : null}
       <main className="flex flex-col gap-4">
         <div className="flex flex-col gap-2">
-          <p className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
-            Prompt
-          </p>
+          <Label>Prompt</Label>
           <p>{image.description ?? "From uploaded image"}</p>
         </div>
         <div className="flex flex-col gap-2">
-          <p className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
-            Created
-          </p>
+          <Label>Created</Label>
           <p>{formatCreatedAt(image.createdAt)}</p>
         </div>
         <div className="flex flex-col gap-4">
