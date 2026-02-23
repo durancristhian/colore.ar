@@ -14,6 +14,7 @@ import {
   AlertDialogMedia,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
+import { Spinner } from "@/components/ui/spinner";
 import { deleteImage } from "@/lib/api";
 
 interface DeleteImageDialogProps {
@@ -37,20 +38,21 @@ export function DeleteImageDialog({
       queryClient.invalidateQueries({ queryKey: ["image", imageId] });
       onOpenChange(false);
       onSuccess?.();
+      toast.success("Imagen eliminada.");
+    },
+    onError: (err) => {
+      toast.error(
+        err instanceof Error
+          ? err.message
+          : "Algo salió mal. Por favor, intentá de nuevo.",
+      );
     },
   });
 
   function handleDelete(e: React.MouseEvent) {
     e.preventDefault();
     e.stopPropagation();
-    toast.promise(deleteMutation.mutateAsync(imageId), {
-      loading: "Eliminando...",
-      success: "Imagen eliminada.",
-      error: (err) =>
-        err instanceof Error
-          ? err.message
-          : "Algo salió mal. Por favor, intentá de nuevo.",
-    });
+    deleteMutation.mutateAsync(imageId);
   }
 
   return (
@@ -73,7 +75,10 @@ export function DeleteImageDialog({
             onClick={handleDelete}
             disabled={deleteMutation.isPending}
           >
-            Eliminar
+            {deleteMutation.isPending ? (
+              <Spinner data-icon="inline-start" />
+            ) : null}
+            {deleteMutation.isPending ? "Eliminando..." : "Eliminar"}
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>

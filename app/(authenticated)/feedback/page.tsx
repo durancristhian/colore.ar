@@ -6,6 +6,7 @@ import { toast } from "sonner";
 import { Send } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
+import { Spinner } from "@/components/ui/spinner";
 import { Textarea } from "@/components/ui/textarea";
 import { PageLayout } from "@/components/page-layout";
 import { submitFeedback } from "@/lib/api";
@@ -18,6 +19,14 @@ export default function FeedbackPage() {
     onSuccess: () => {
       setMessage("");
       feedbackMutation.reset();
+      toast.success("Gracias, tu feedback fue enviado.");
+    },
+    onError: (err) => {
+      toast.error(
+        err instanceof Error
+          ? err.message
+          : "Algo salió mal. Por favor, intentá de nuevo.",
+      );
     },
   });
 
@@ -25,14 +34,7 @@ export default function FeedbackPage() {
   const canSubmit = message.trim() !== "" && !isSubmitting;
 
   const handleSubmit = () => {
-    toast.promise(feedbackMutation.mutateAsync(message.trim()), {
-      loading: "Enviando feedback...",
-      success: "Gracias, tu feedback fue enviado.",
-      error: (err) =>
-        err instanceof Error
-          ? err.message
-          : "Algo salió mal. Por favor, intentá de nuevo.",
-    });
+    feedbackMutation.mutateAsync(message.trim());
   };
 
   return (
@@ -51,8 +53,12 @@ export default function FeedbackPage() {
           />
         </div>
         <Button className="w-full" onClick={handleSubmit} disabled={!canSubmit}>
-          <Send className="size-4" />
-          Enviar feedback
+          {isSubmitting ? (
+            <Spinner data-icon="inline-start" />
+          ) : (
+            <Send className="size-4" />
+          )}
+          {isSubmitting ? "Enviando..." : "Enviar feedback"}
         </Button>
       </main>
     </PageLayout>
