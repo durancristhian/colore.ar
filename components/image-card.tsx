@@ -32,7 +32,13 @@ export function ImageCard({
         className="flex flex-col rounded-xl"
         aria-label={`Ver imagen: ${prompt}`}
       >
-        <CldImage src={imageUrl} alt={prompt} wrapperClassName="rounded-t-xl" />
+        <div className="border-b border-border">
+          <CldImage
+            src={imageUrl}
+            alt={prompt}
+            wrapperClassName="rounded-t-xl"
+          />
+        </div>
         <CardHeader className="p-4">
           <CardTitle className="line-clamp-1" title={prompt}>
             {prompt}
