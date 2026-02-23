@@ -33,8 +33,9 @@ export default function RootLayout({
           className={`${geistSans.variable} ${geistMono.variable} antialiased`}
         >
           <Script
-            src="https://cloud.umami.is/script.js"
+            src="/stats.js"
             data-website-id="7dbb19cc-b89c-4b9b-84e6-98df42fc191d"
+            data-host-url={process.env.NEXT_PUBLIC_APP_URL}
             strategy="afterInteractive"
           />
           <Providers>
