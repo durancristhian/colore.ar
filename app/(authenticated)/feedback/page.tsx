@@ -37,22 +37,23 @@ export default function FeedbackPage() {
   return (
     <PageLayout title="Send feedback" backHref="/images">
       <main className="flex flex-col gap-4">
-        <label
-          htmlFor="feedback-message"
-          className="text-sm font-medium leading-none"
-        >
-          What would you like to tell us?
-        </label>
-        <Textarea
-          id="feedback-message"
-          rows={5}
-          placeholder="Share your feedback, ideas, or report an issue…"
-          value={message}
-          onChange={(e) => setMessage(e.target.value)}
-          disabled={isSubmitting}
-          className="min-h-24 w-full"
-        />
-
+        <div className="flex flex-col gap-2">
+          <label
+            htmlFor="feedback-message"
+            className="text-sm font-medium leading-none"
+          >
+            What would you like to tell us?
+          </label>
+          <Textarea
+            id="feedback-message"
+            rows={5}
+            placeholder="Share your feedback, ideas, or report an issue…"
+            value={message}
+            onChange={(e) => setMessage(e.target.value)}
+            disabled={isSubmitting}
+            className="min-h-24 w-full"
+          />
+        </div>
         <Button className="w-full" onClick={handleSubmit} disabled={!canSubmit}>
           <Send className="size-4" />
           Send feedback

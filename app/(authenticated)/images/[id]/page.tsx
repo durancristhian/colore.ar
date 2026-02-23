@@ -91,13 +91,13 @@ export default function ImageDetailPage() {
         <ConfettiFireworks onComplete={handleConfettiComplete} />
       ) : null}
       <main className="flex flex-col gap-4">
-        <div className="flex flex-col gap-1">
+        <div className="flex flex-col gap-2">
           <p className="text-muted-foreground text-sm">Prompt</p>
           <p className="text-sm">
             {image.description ?? "From uploaded image"}
           </p>
         </div>
-        <div className="flex flex-col gap-1">
+        <div className="flex flex-col gap-2">
           <p className="text-muted-foreground text-sm">Created</p>
           <p className="text-sm">{formatCreatedAt(image.createdAt)}</p>
         </div>
