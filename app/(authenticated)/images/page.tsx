@@ -4,8 +4,8 @@ import { useQuery } from "@tanstack/react-query";
 import Link from "next/link";
 import { Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Spinner } from "@/components/ui/spinner";
 import { ImageCard } from "@/components/image-card";
+import { LoadingMessage } from "@/components/loading-message";
 import { listImages } from "@/lib/api";
 
 export default function ImagesPage() {
@@ -30,12 +30,7 @@ export default function ImagesPage() {
           </Button>
         </div>
 
-        {isLoading && (
-          <div className="flex w-full items-center justify-center gap-2 text-muted-foreground text-sm">
-            <Spinner className="size-4 shrink-0" />
-            <span>Loading images…</span>
-          </div>
-        )}
+        {isLoading && <LoadingMessage label="Loading creations..." />}
 
         {isError && (
           <p className="text-sm text-destructive">

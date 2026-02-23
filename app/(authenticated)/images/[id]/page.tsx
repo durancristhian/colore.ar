@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 import { ConfettiFireworks } from "@/components/confetti-fireworks";
 import { CldImage } from "@/components/cld-image";
 import { ImageActionsMenu } from "@/components/image-actions-menu";
+import { LoadingMessage } from "@/components/loading-message";
 import { PageLayout } from "@/components/page-layout";
 import { getImage } from "@/lib/api";
 import { formatCreatedAt } from "@/lib/format-date";
@@ -66,7 +67,7 @@ export default function ImageDetailPage() {
   if (isLoading) {
     return (
       <PageLayout title="Creation details" backHref="/images">
-        <p className="text-muted-foreground text-sm">Loading…</p>
+        <LoadingMessage label="Loading creation..." />
       </PageLayout>
     );
   }
