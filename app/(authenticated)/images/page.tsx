@@ -39,7 +39,7 @@ export default function ImagesPage() {
         )}
 
         {!isLoading && !isError && (!images || images.length === 0) && (
-          <p className="text-muted-foreground text-sm">No creations yet.</p>
+          <p className="text-muted-foreground">No creations yet.</p>
         )}
 
         {!isLoading && !isError && images && images.length > 0 && (

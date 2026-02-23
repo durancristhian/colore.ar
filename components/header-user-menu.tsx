@@ -58,7 +58,7 @@ export function HeaderUserMenu() {
         aria-label="User menu"
         disabled
       >
-        <span className="text-muted-foreground text-sm">…</span>
+        <span className="text-muted-foreground">...</span>
       </Button>
     );
   }
