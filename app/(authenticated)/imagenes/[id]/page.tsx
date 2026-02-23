@@ -99,10 +99,12 @@ export default function ImageDetailPage() {
         <ConfettiFireworks onComplete={handleConfettiComplete} />
       ) : null}
       <main className="flex flex-col gap-4">
-        <div className="flex flex-col gap-2">
-          <Label>Lo que pediste</Label>
-          <p>{image.description ?? "A partir de una imagen"}</p>
-        </div>
+        {image.description ? (
+          <div className="flex flex-col gap-2">
+            <Label>Lo que pediste</Label>
+            <p>{image.description}</p>
+          </div>
+        ) : null}
         <div className="flex flex-col gap-2">
           <Label>Creado</Label>
           <p>
