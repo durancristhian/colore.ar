@@ -43,11 +43,21 @@ export function ImageActionsMenu({
 
   return (
     <>
-      <ButtonGroup className="flex-1">
+      <ButtonGroup
+        className="flex-1"
+        onClick={(e) => {
+          e.preventDefault();
+          e.stopPropagation();
+        }}
+      >
         <Button
           variant="default"
           className="flex-1"
-          onClick={() => window.print()}
+          onClick={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            window.print();
+          }}
         >
           Print
         </Button>
