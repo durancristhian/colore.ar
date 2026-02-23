@@ -26,7 +26,9 @@ type Tab = "image" | "description";
 
 export default function NewImagePage() {
   const router = useRouter();
-  const [activeTab, setActiveTab] = useState<Tab>("description");
+  const [activeTab, setActiveTab] = useState<Tab>(() =>
+    imageFromImageEnabled ? "image" : "description",
+  );
   const [description, setDescription] = useState("");
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
