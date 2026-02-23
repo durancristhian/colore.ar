@@ -11,7 +11,7 @@ import { Label } from "@/components/ui/label";
 import { LoadingMessage } from "@/components/loading-message";
 import { PageLayout } from "@/components/page-layout";
 import { getImage } from "@/lib/api";
-import { formatCreatedAt } from "@/lib/format-date";
+import { RelativeTime } from "@/components/relative-time";
 
 const SHOW_CONFETTI_KEY = "show-confetti";
 
@@ -98,7 +98,9 @@ export default function ImageDetailPage() {
         </div>
         <div className="flex flex-col gap-2">
           <Label>Created</Label>
-          <p>{formatCreatedAt(image.createdAt)}</p>
+          <p>
+            <RelativeTime date={image.createdAt} />
+          </p>
         </div>
         <div className="flex flex-col gap-4">
           <CldImage

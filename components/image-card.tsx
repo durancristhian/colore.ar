@@ -9,7 +9,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { formatCreatedAt } from "@/lib/format-date";
+import { RelativeTime } from "@/components/relative-time";
 import Link from "next/link";
 
 interface ImageCardProps {
@@ -37,7 +37,9 @@ export function ImageCard({
           <CardTitle className="line-clamp-1" title={prompt}>
             {prompt}
           </CardTitle>
-          <CardDescription>{formatCreatedAt(createdAt)}</CardDescription>
+          <CardDescription>
+            <RelativeTime date={createdAt} />
+          </CardDescription>
         </CardHeader>
         <CardFooter className="px-4 pb-4">
           <ImageActionsMenu
