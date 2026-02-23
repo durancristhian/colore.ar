@@ -47,7 +47,7 @@ export function ImageCard({
             <RelativeTime date={createdAt} />
           </CardDescription>
         </CardHeader>
-        <CardFooter className="px-4 pb-4">
+        <CardFooter className="border-t border-border bg-muted/50 p-4 [.border-t]:pt-4 rounded-b-xl">
           <ImageActionsMenu
             imageId={imageId}
             imageUrl={imageUrl}
