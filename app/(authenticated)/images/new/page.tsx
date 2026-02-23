@@ -4,7 +4,6 @@ import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { TrashIcon } from "lucide-react";
-import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Spinner } from "@/components/ui/spinner";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -98,14 +97,7 @@ export default function NewImagePage() {
       activeTab === "image" && selectedFile
         ? { description: "", image: selectedFile }
         : { description: description.trim(), image: null as File | null };
-    toast.promise(createMutation.mutateAsync(payload), {
-      loading: "Generating...",
-      success: "Creation ready.",
-      error: (err) =>
-        err instanceof Error
-          ? err.message
-          : "Something went wrong. Please try again.",
-    });
+    createMutation.mutate(payload);
   };
 
   return (
