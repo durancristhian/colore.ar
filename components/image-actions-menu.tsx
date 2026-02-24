@@ -31,6 +31,8 @@ interface ImageActionsMenuProps {
   imageUrl: string;
   prompt: string;
   onDeleteSuccess?: () => void;
+  /** Button variant: "default" (primary) for details, "outline" for list cards. */
+  variant?: "default" | "outline";
 }
 
 export function ImageActionsMenu({
@@ -38,6 +40,7 @@ export function ImageActionsMenu({
   imageUrl,
   prompt,
   onDeleteSuccess,
+  variant = "default",
 }: ImageActionsMenuProps) {
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const printImage = usePrintImage();
@@ -98,13 +101,13 @@ export function ImageActionsMenu({
           e.stopPropagation();
         }}
       >
-        <Button variant="outline" className="flex-1" onClick={handlePrint}>
+        <Button variant={variant} className="flex-1" onClick={handlePrint}>
           <PrinterIcon className="size-4" />
           Imprimir
         </Button>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant="outline" size="icon" aria-label="Más opciones">
+            <Button variant={variant} size="icon" aria-label="Más opciones">
               <MoreHorizontalIcon className="size-4" />
             </Button>
           </DropdownMenuTrigger>

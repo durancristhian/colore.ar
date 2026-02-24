@@ -52,6 +52,7 @@ export function ImageCard({
             imageId={imageId}
             imageUrl={imageUrl}
             prompt={prompt}
+            variant="outline"
           />
         </CardFooter>
       </Link>
