@@ -14,7 +14,9 @@ export function LandingContent() {
             <h1>Colore.ar</h1>
           </SparklesText>
         </div>
-        <p className="text-muted-foreground">Generá. Imprimí. Pintá.</p>
+        <p className="text-muted-foreground">
+          Dibujos para imprimir y pintar, hechos a tu medida.
+        </p>
       </div>
       <SignedOut>
         <SignInButton mode="modal">

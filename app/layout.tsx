@@ -14,7 +14,7 @@ const dmSans = DM_Sans({
 
 export const metadata: Metadata = {
   title: "Colore.ar",
-  description: "Colore.ar - Generá. Imprimí. Pintá.",
+  description: "Creá dibujos para colorear a medida, imprimilos y pintalos.",
   icons: {
     icon: [
       { url: "/favicon.ico", sizes: "any" },
