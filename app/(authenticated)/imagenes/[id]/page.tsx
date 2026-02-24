@@ -12,6 +12,7 @@ import { Label } from "@/components/ui/label";
 import { LoadingMessage } from "@/components/loading-message";
 import { PageLayout } from "@/components/page-layout";
 import { getImage } from "@/lib/api";
+import { DEFAULT_IMAGE_DESCRIPTION } from "@/lib/images/constants";
 import { RelativeTime } from "@/components/relative-time";
 
 const SHOW_CONFETTI_KEY = "show-confetti";
@@ -102,9 +103,7 @@ export default function ImageDetailPage() {
         <div className="flex flex-col gap-2">
           <Label>{image.description ? "Lo que pediste" : "Origen"}</Label>
           <p>
-            {image.description
-              ? image.description
-              : "Generada a partir de una imagen."}
+            {image.description ? image.description : DEFAULT_IMAGE_DESCRIPTION}
           </p>
         </div>
         <div className="flex flex-col gap-2">
@@ -116,13 +115,13 @@ export default function ImageDetailPage() {
         <div className="flex flex-col gap-4">
           <CldImage
             src={image.imageUrl}
-            alt={image.description ?? "A partir de una imagen"}
+            alt={image.description ?? DEFAULT_IMAGE_DESCRIPTION}
             wrapperClassName="rounded-md border"
           />
           <ImageActionsMenu
             imageId={image.id}
             imageUrl={image.imageUrl}
-            prompt={image.description ?? "A partir de una imagen"}
+            prompt={image.description ?? DEFAULT_IMAGE_DESCRIPTION}
             onDeleteSuccess={() => router.push("/imagenes")}
           />
         </div>

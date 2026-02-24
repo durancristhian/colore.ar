@@ -1,3 +1,6 @@
+/** Fallback text when an image has no description (e.g. uploaded from file). */
+export const DEFAULT_IMAGE_DESCRIPTION = "A partir de una imagen";
+
 export const ALLOWED_IMAGE_TYPES = [
   "image/jpeg",
   "image/png",

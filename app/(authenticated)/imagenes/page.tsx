@@ -17,6 +17,7 @@ import { ImageCard } from "@/components/image-card";
 import { LoadingMessage } from "@/components/loading-message";
 import { PageLayout } from "@/components/page-layout";
 import { listImages } from "@/lib/api";
+import { DEFAULT_IMAGE_DESCRIPTION } from "@/lib/images/constants";
 
 export default function ImagesPage() {
   const {
@@ -78,7 +79,7 @@ export default function ImagesPage() {
                 key={image.id}
                 imageId={image.id}
                 imageUrl={image.imageUrl}
-                prompt={image.description ?? "A partir de una imagen"}
+                prompt={image.description ?? DEFAULT_IMAGE_DESCRIPTION}
                 createdAt={image.createdAt}
               />
             ))}
