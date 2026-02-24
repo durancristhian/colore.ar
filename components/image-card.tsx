@@ -25,12 +25,13 @@ export function ImageCard({
   createdAt,
 }: ImageCardProps) {
   return (
-    <Item asChild variant="outline" size="sm">
-      <Link
-        href={`/imagenes/${imageId}`}
-        className="flex items-start rounded-xl"
-        aria-label={`Ver imagen: ${prompt}`}
-      >
+    <Item
+      asChild
+      variant="outline"
+      size="sm"
+      className="items-start rounded-xl"
+    >
+      <Link href={`/imagenes/${imageId}`} aria-label={`Ver imagen: ${prompt}`}>
         <ItemMedia variant="image" className="size-36 shrink-0 rounded-lg">
           <CldImage
             src={imageUrl}
