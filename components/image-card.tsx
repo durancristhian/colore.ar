@@ -1,14 +1,13 @@
 "use client";
 
 import { CldImage } from "@/components/cld-image";
-import { ImageActionsMenu } from "@/components/image-actions-menu";
 import {
-  Card,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+  Item,
+  ItemContent,
+  ItemDescription,
+  ItemMedia,
+  ItemTitle,
+} from "@/components/ui/item";
 import { RelativeTime } from "@/components/relative-time";
 import Link from "next/link";
 
@@ -26,36 +25,28 @@ export function ImageCard({
   createdAt,
 }: ImageCardProps) {
   return (
-    <Card className="relative p-0 gap-0 shadow-none">
+    <Item asChild variant="outline" size="sm">
       <Link
         href={`/imagenes/${imageId}`}
-        className="flex flex-col rounded-xl"
+        className="flex items-start rounded-xl"
         aria-label={`Ver imagen: ${prompt}`}
       >
-        <div className="border-b border-border">
+        <ItemMedia variant="image" className="size-36 shrink-0 rounded-lg">
           <CldImage
             src={imageUrl}
             alt={prompt}
-            wrapperClassName="rounded-t-xl"
+            wrapperClassName="!size-36 !w-36 !h-36 rounded-lg"
           />
-        </div>
-        <CardHeader className="p-4">
-          <CardTitle className="line-clamp-1" title={prompt}>
+        </ItemMedia>
+        <ItemContent className="min-w-0 gap-2">
+          <ItemTitle title={prompt} className="line-clamp-2 text-base">
             {prompt}
-          </CardTitle>
-          <CardDescription>
+          </ItemTitle>
+          <ItemDescription>
             <RelativeTime date={createdAt} />
-          </CardDescription>
-        </CardHeader>
-        <CardFooter className="border-t border-border bg-muted/50 p-4 [.border-t]:pt-4 rounded-b-xl">
-          <ImageActionsMenu
-            imageId={imageId}
-            imageUrl={imageUrl}
-            prompt={prompt}
-            variant="outline"
-          />
-        </CardFooter>
+          </ItemDescription>
+        </ItemContent>
       </Link>
-    </Card>
+    </Item>
   );
 }
