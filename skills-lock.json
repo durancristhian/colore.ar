@@ -6,6 +6,11 @@
       "sourceType": "github",
       "computedHash": "515ba75178bd44875812d9a560bdf14651f86709f89cf1d4f209638e879807f3"
     },
+    "react-query": {
+      "source": "mindrally/skills",
+      "sourceType": "github",
+      "computedHash": "7e9543c800d45f1cd9efaeb9f6e5dcc91d3922b768ec41b06a98341840e0b8c7"
+    },
     "vercel-composition-patterns": {
       "source": "vercel-labs/agent-skills",
       "sourceType": "github",
