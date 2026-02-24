@@ -98,13 +98,13 @@ export function ImageActionsMenu({
           e.stopPropagation();
         }}
       >
-        <Button variant="default" className="flex-1" onClick={handlePrint}>
+        <Button variant="outline" className="flex-1" onClick={handlePrint}>
           <PrinterIcon className="size-4" />
           Imprimir
         </Button>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant="default" size="icon" aria-label="Más opciones">
+            <Button variant="outline" size="icon" aria-label="Más opciones">
               <MoreHorizontalIcon className="size-4" />
             </Button>
           </DropdownMenuTrigger>
