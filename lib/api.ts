@@ -41,31 +41,31 @@ export async function createImage(payload: {
   if (!res.ok) {
     const body = await res.json().catch(() => ({}));
     const error = typeof body?.error === "string" ? body.error : null;
-    throw new Error(error ?? "Something went wrong. Please try again.");
+    throw new Error(error ?? "Algo salió mal. Por favor, intentá de nuevo.");
   }
   return res.json();
 }
 
 export async function listImages(): Promise<ImageListItem[]> {
   const res = await fetch(`${base}/api/images`);
-  if (!res.ok) throw new Error("Failed to load creations.");
+  if (!res.ok) throw new Error("No se pudieron cargar las imágenes.");
   return res.json();
 }
 
 export async function getImage(id: string): Promise<ImageListItem> {
   const res = await fetch(`${base}/api/images/${id}`);
-  if (!res.ok) throw new Error("Failed to load creation.");
+  if (!res.ok) throw new Error("No se pudo cargar la imagen.");
   return res.json();
 }
 
 export async function deleteImage(id: string): Promise<void> {
   const res = await fetch(`${base}/api/images/${id}`, { method: "DELETE" });
-  if (!res.ok) throw new Error("Failed to delete creation.");
+  if (!res.ok) throw new Error("No se pudo eliminar la imagen.");
 }
 
 export async function getCurrentUser(): Promise<CurrentUser> {
   const res = await fetch(`${base}/api/user/me`);
-  if (!res.ok) throw new Error("Failed to load user.");
+  if (!res.ok) throw new Error("No se pudo cargar el usuario.");
   return res.json();
 }
 
@@ -78,6 +78,6 @@ export async function submitFeedback(message: string): Promise<void> {
   if (!res.ok) {
     const body = await res.json().catch(() => ({}));
     const error = typeof body?.error === "string" ? body.error : null;
-    throw new Error(error ?? "Something went wrong. Please try again.");
+    throw new Error(error ?? "Algo salió mal. Por favor, intentá de nuevo.");
   }
 }
