@@ -36,7 +36,7 @@ export function RelativeTime({ date }: RelativeTimeProps) {
         </time>
       </HoverCardTrigger>
       <HoverCardContent side="top" align="start" className="w-auto">
-        <p className="text-sm text-muted-foreground">{raw}</p>
+        <p className="text-sm text-muted-foreground">Generada el {raw}.</p>
       </HoverCardContent>
     </HoverCard>
   );
