@@ -11,6 +11,11 @@
       "sourceType": "github",
       "computedHash": "25b68bfaa9c6f6efed9a36b6573f2453d0b0555aa84c8b4b9c74185f38fd0129"
     },
+    "copywriting": {
+      "source": "coreyhaines31/marketingskills",
+      "sourceType": "github",
+      "computedHash": "39b7a636c7e254a2f08dee43db6b9f6faf6723de999a6bbce2eb5ac95a130207"
+    },
     "next-best-practices": {
       "source": "vercel-labs/next-skills",
       "sourceType": "github",
