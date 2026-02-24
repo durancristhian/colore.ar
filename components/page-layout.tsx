@@ -22,7 +22,7 @@ export function PageLayout({
       <div className="mb-4 flex flex-1 items-center justify-between gap-4">
         <div className="flex items-center gap-4">
           {showBackButton && (
-            <Button variant="ghost" size="icon" asChild>
+            <Button variant="outline" size="icon" asChild>
               <Link href={backHref} aria-label="Volver">
                 <ArrowLeftIcon />
               </Link>
