@@ -1,45 +1,35 @@
 "use client";
 
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
-import { useEffect, useRef, useState } from "react";
-import { Sparkles, TrashIcon } from "lucide-react";
+import { useState } from "react";
+import { Info, Sparkles } from "lucide-react";
 import { ErrorMessage } from "@/components/error-message";
 import { Button } from "@/components/ui/button";
-import { Label } from "@/components/ui/label";
 import { Spinner } from "@/components/ui/spinner";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Textarea } from "@/components/ui/textarea";
+import { Switch } from "@/components/ui/switch";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { Label } from "@/components/ui/label";
 import { PageLayout } from "@/components/page-layout";
-import { createImage } from "@/lib/api";
-import {
-  ALLOWED_IMAGE_TYPES,
-  isImageFromImageEnabled,
-  isImageFileValid,
-  isImageSizeValid,
-  isImageTypeAllowed,
-} from "@/lib/images/constants";
-
-const imageFromImageEnabled = isImageFromImageEnabled();
-
-type Tab = "image" | "description";
+import { DescriptionPromptField } from "@/components/description-prompt-field";
+import { TabbedGenerateForm } from "./tabbed-generate-form";
+import { createImage, getCurrentUser } from "@/lib/api";
 
 export default function NewImagePage() {
   const router = useRouter();
-  const [activeTab, setActiveTab] = useState<Tab>(() =>
-    imageFromImageEnabled ? "image" : "description",
-  );
-  const [description, setDescription] = useState("");
-  const [selectedFile, setSelectedFile] = useState<File | null>(null);
-  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
-  const fileInputRef = useRef<HTMLInputElement>(null);
-  const previewUrlRef = useRef<string | null>(null);
+  const { data: currentUser, isLoading: isLoadingUser } = useQuery({
+    queryKey: ["user", "me"],
+    queryFn: getCurrentUser,
+  });
 
-  useEffect(() => {
-    return () => {
-      if (previewUrlRef.current) URL.revokeObjectURL(previewUrlRef.current);
-    };
-  }, []);
+  const treatAsStandard =
+    isLoadingUser || !currentUser || currentUser.role === "standard";
+  const isAdminOrVip =
+    !!currentUser &&
+    (currentUser.role === "admin" || currentUser.role === "vip");
+
+  const [usePaidModel, setUsePaidModel] = useState(false);
+  const [description, setDescription] = useState("");
 
   const createMutation = useMutation({
     mutationFn: createImage,
@@ -56,168 +46,76 @@ export default function NewImagePage() {
   });
 
   const isGenerating = createMutation.isPending;
-  const disabled = isGenerating;
 
-  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    e.target.value = "";
-    if (!file?.type.startsWith("image/")) return;
-
-    if (previewUrlRef.current) URL.revokeObjectURL(previewUrlRef.current);
-
-    const isHeic = file.type === "image/heic" || file.type === "image/heif";
-    let url: string;
-    if (isHeic) {
-      const heic2any = (await import("heic2any")).default;
-      const result = await heic2any({ blob: file, toType: "image/jpeg" });
-      const blob = Array.isArray(result) ? result[0] : result;
-      url = URL.createObjectURL(blob);
-    } else {
-      url = URL.createObjectURL(file);
-    }
-
-    previewUrlRef.current = url;
-    setPreviewUrl(url);
-    setSelectedFile(file);
-  };
-
-  const clearFile = () => {
-    if (previewUrlRef.current) {
-      URL.revokeObjectURL(previewUrlRef.current);
-      previewUrlRef.current = null;
-    }
-    setPreviewUrl(null);
-    setSelectedFile(null);
-    if (fileInputRef.current) fileInputRef.current.value = "";
-  };
-
-  const canGenerate =
-    activeTab === "image"
-      ? selectedFile != null && isImageFileValid(selectedFile)
-      : description.trim() !== "";
-
-  const handleGenerate = () => {
-    const payload =
-      activeTab === "image" && selectedFile
-        ? { description: "", image: selectedFile }
-        : { description: description.trim(), image: null as File | null };
-    createMutation.mutate(payload);
-  };
+  const showTextOnlyForm = treatAsStandard || (isAdminOrVip && !usePaidModel);
+  const showTabbedForm = isAdminOrVip && usePaidModel;
 
   return (
     <PageLayout title="Nueva imagen" backHref="/imagenes">
       <main className="flex flex-col gap-4">
-        <Tabs
-          value={activeTab}
-          onValueChange={(v) => {
-            if (v === "image" && !imageFromImageEnabled) return;
-            setActiveTab(v as Tab);
-          }}
-          defaultValue="description"
-          className="gap-0"
-        >
-          <TabsList className="w-full">
-            <TabsTrigger value="image" disabled={!imageFromImageEnabled}>
-              Desde una foto
-            </TabsTrigger>
-            <TabsTrigger value="description">Desde texto</TabsTrigger>
-          </TabsList>
-
-          <TabsContent value="image" className="flex flex-col gap-2 mt-4">
-            {!selectedFile && (
-              <>
-                <Label>Elegí una imagen para convertir</Label>
-                <input
-                  ref={fileInputRef}
-                  type="file"
-                  accept={ALLOWED_IMAGE_TYPES.join(",")}
-                  onChange={handleFileChange}
-                  className="hidden"
-                  aria-hidden
+        {isAdminOrVip && (
+          <Alert>
+            <Info className="size-4 shrink-0" aria-hidden />
+            <AlertTitle>¿Usar modelo de pago?</AlertTitle>
+            <AlertDescription className="gap-2">
+              <p>
+                La calidad va a ser excelente pero cada generación cuesta una
+                moneda, así que usálo solo cuando sea necesario. Al activarlo
+                también podés generar imágenes desde una foto, no solo desde
+                texto.
+              </p>
+              <div className="flex items-center gap-2">
+                <Switch
+                  id="use-paid-model"
+                  checked={usePaidModel}
+                  onCheckedChange={setUsePaidModel}
                 />
-                <Button
-                  type="button"
-                  variant="outline"
-                  onClick={() => fileInputRef.current?.click()}
-                  disabled={disabled}
-                >
-                  Seleccionar imagen
-                </Button>
-              </>
-            )}
-            {selectedFile && (
-              <>
-                <div className="flex items-center gap-2 rounded-md border border-border bg-background p-2">
-                  {previewUrl && (
-                    /* eslint-disable-next-line @next/next/no-img-element */
-                    <img
-                      src={previewUrl}
-                      alt={selectedFile.name}
-                      className="size-16 shrink-0 rounded object-cover"
-                    />
-                  )}
-                  <p
-                    className="min-w-0 flex-1 truncate"
-                    title={selectedFile.name}
-                  >
-                    {selectedFile.name}
-                  </p>
-                  <Button
-                    type="button"
-                    variant="destructive"
-                    size="icon"
-                    onClick={clearFile}
-                    disabled={disabled}
-                    className="shrink-0"
-                    aria-label="Quitar archivo"
-                  >
-                    <TrashIcon className="size-4" />
-                  </Button>
-                </div>
-                {!isImageFileValid(selectedFile) && (
-                  <ErrorMessage
-                    variant="default"
-                    title="Imagen inválida"
-                    description={
-                      !isImageTypeAllowed(selectedFile.type) &&
-                      !isImageSizeValid(selectedFile.size)
-                        ? "La imagen debe ser JPEG, PNG, WebP o HEIC y pesar como máximo 10MB."
-                        : !isImageTypeAllowed(selectedFile.type)
-                          ? "La imagen debe ser JPEG, PNG, WebP o HEIC."
-                          : "La imagen debe pesar como máximo 10MB."
-                    }
-                  />
-                )}
-              </>
-            )}
-          </TabsContent>
+                <Label htmlFor="use-paid-model">Sí, usar modelo de pago</Label>
+              </div>
+            </AlertDescription>
+          </Alert>
+        )}
 
-          <TabsContent value="description" className="flex flex-col gap-2 mt-4">
-            <Label htmlFor="prompt">¿Qué te gustaría crear?</Label>
-            <Textarea
-              id="prompt"
-              rows={5}
-              placeholder="Ejemplo: Una persona feliz con un perro sentado al lado. Montañas de fondo."
+        {showTextOnlyForm && (
+          <>
+            <DescriptionPromptField
               value={description}
-              onChange={(e) => setDescription(e.target.value)}
-              disabled={disabled}
-              className="min-h-24 w-full"
+              onChange={setDescription}
+              disabled={isGenerating}
             />
-          </TabsContent>
-        </Tabs>
+            <Button
+              className="w-full"
+              onClick={() =>
+                createMutation.mutate({
+                  description: description.trim(),
+                  image: null,
+                  usePaidModel: false,
+                })
+              }
+              disabled={isGenerating || description.trim() === ""}
+            >
+              {isGenerating ? (
+                <Spinner data-icon="inline-start" />
+              ) : (
+                <Sparkles className="size-4" />
+              )}
+              {isGenerating ? "Generando..." : "Generar"}
+            </Button>
+          </>
+        )}
 
-        <Button
-          className="w-full"
-          onClick={handleGenerate}
-          disabled={disabled || !canGenerate}
-        >
-          {isGenerating ? (
-            <Spinner data-icon="inline-start" />
-          ) : (
-            <Sparkles className="size-4" />
-          )}
-          {isGenerating ? "Generando..." : "Generar"}
-        </Button>
+        {showTabbedForm && (
+          <TabbedGenerateForm
+            key="paid"
+            onGenerate={(payload) =>
+              createMutation.mutate({
+                ...payload,
+                usePaidModel: true,
+              })
+            }
+            disabled={isGenerating}
+          />
+        )}
 
         {createMutation.isError && (
           <ErrorMessage

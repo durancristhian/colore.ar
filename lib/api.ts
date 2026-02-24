@@ -23,12 +23,17 @@ export type ImageListItem = {
 export async function createImage(payload: {
   description: string;
   image?: File | null;
+  usePaidModel?: boolean;
 }): Promise<CreateImageResponse> {
   const formData = new FormData();
   formData.append("description", payload.description ?? "");
   if (payload.image instanceof File) {
     formData.append("image", payload.image);
   }
+  formData.append(
+    "usePaidModel",
+    payload.usePaidModel === true ? "true" : "false",
+  );
   const res = await fetch(`${base}/api/images`, {
     method: "POST",
     body: formData,

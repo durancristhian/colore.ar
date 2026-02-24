@@ -1,15 +1,17 @@
 import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@clerk/nextjs/server";
+import { getOrCreateUser } from "@/lib/db/users";
 import { insertImage, listImagesByUserId } from "@/lib/db/images";
 import {
   ALLOWED_IMAGE_TYPES,
-  isImageFromImageEnabled,
   isImageSizeValid,
   isImageTypeAllowed,
 } from "@/lib/images/constants";
+import { getImageGenerationOptions } from "@/lib/images/generation-mode";
 import {
-  generateImageForEnv,
+  generateImage,
   generateImageFromImage,
+  generateImageWithPollinations,
 } from "@/lib/images/generator";
 import { imageStore } from "@/lib/images/store";
 import type { CreateImageResponse, ImageListItem } from "@/lib/images/types";
@@ -35,6 +37,9 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: "No autorizado" }, { status: 401 });
   }
 
+  const user = await getOrCreateUser(userId);
+  const role = user.role;
+
   try {
     const contentType = request.headers.get("content-type") ?? "";
     if (!contentType.includes("multipart/form-data")) {
@@ -50,6 +55,13 @@ export async function POST(request: NextRequest) {
     const formData = await request.formData();
     const description = formData.get("description");
     const image = formData.get("image");
+    const usePaidModelRaw = formData.get("usePaidModel");
+    const usePaidModel =
+      typeof usePaidModelRaw === "string" &&
+      /^(true|1)$/i.test(usePaidModelRaw.trim());
+
+    const { usePaidModel: usePaid, allowImageFromImage } =
+      getImageGenerationOptions(role, usePaidModel);
 
     const hasImage =
       image instanceof File &&
@@ -74,7 +86,7 @@ export async function POST(request: NextRequest) {
     const id = crypto.randomUUID();
 
     if (hasImage && image instanceof File) {
-      if (!isImageFromImageEnabled()) {
+      if (!allowImageFromImage) {
         return NextResponse.json(
           { error: "La generación desde imagen no está disponible." },
           { status: 403 },
@@ -115,7 +127,9 @@ export async function POST(request: NextRequest) {
     }
 
     const trimmedDescription = (description as string).trim();
-    const buffer = await generateImageForEnv(trimmedDescription);
+    const buffer = usePaid
+      ? await generateImage(trimmedDescription)
+      : await generateImageWithPollinations(trimmedDescription);
     const publicId = await imageStore.save(buffer);
     const url = getCloudinaryPublicUrl(publicId);
 
