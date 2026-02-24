@@ -6,6 +6,11 @@
       "sourceType": "github",
       "computedHash": "f540cdf890ed9eb3267f136bcd6dfb486de2e05dc09d2cdfce4726fb99b5801c"
     },
+    "code-quality": {
+      "source": "tursodatabase/turso",
+      "sourceType": "github",
+      "computedHash": "25b68bfaa9c6f6efed9a36b6573f2453d0b0555aa84c8b4b9c74185f38fd0129"
+    },
     "next-best-practices": {
       "source": "vercel-labs/next-skills",
       "sourceType": "github",
