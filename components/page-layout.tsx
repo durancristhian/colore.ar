@@ -19,7 +19,7 @@ export function PageLayout({
 }: PageLayoutProps) {
   return (
     <div className="w-full">
-      <div className="mb-4 flex flex-1 items-center justify-between gap-4 border-b border-border pb-4">
+      <div className="mb-4 flex flex-1 items-center justify-between gap-4">
         <div className="flex items-center gap-4">
           {showBackButton && (
             <Button variant="ghost" size="icon" asChild>
