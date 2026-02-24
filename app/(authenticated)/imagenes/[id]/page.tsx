@@ -11,6 +11,7 @@ import { ImageActionsMenu } from "@/components/image-actions-menu";
 import { Label } from "@/components/ui/label";
 import { LoadingMessage } from "@/components/loading-message";
 import { PageLayout } from "@/components/page-layout";
+import { BackButton } from "@/components/back-button";
 import { getImage } from "@/lib/api";
 import { DEFAULT_IMAGE_DESCRIPTION } from "@/lib/images/constants";
 import { RelativeTime } from "@/components/relative-time";
@@ -56,7 +57,10 @@ export default function ImageDetailPage() {
 
   if (!id) {
     return (
-      <PageLayout title="Detalles de la imagen" backHref="/imagenes">
+      <PageLayout
+        title="Detalles de la imagen"
+        leftContent={<BackButton href="/imagenes" />}
+      >
         <ErrorMessage
           title="Imagen no encontrada"
           description="No encontramos la imagen que buscás."
@@ -72,7 +76,10 @@ export default function ImageDetailPage() {
 
   if (isLoading) {
     return (
-      <PageLayout title="Detalles de la imagen" backHref="/imagenes">
+      <PageLayout
+        title="Detalles de la imagen"
+        leftContent={<BackButton href="/imagenes" />}
+      >
         <LoadingMessage label="Cargando imagen..." />
       </PageLayout>
     );
@@ -80,7 +87,10 @@ export default function ImageDetailPage() {
 
   if (isError || !image) {
     return (
-      <PageLayout title="Detalles de la imagen" backHref="/imagenes">
+      <PageLayout
+        title="Detalles de la imagen"
+        leftContent={<BackButton href="/imagenes" />}
+      >
         <ErrorMessage
           title="Imagen no encontrada"
           description="No encontramos la imagen que buscás."
@@ -95,7 +105,10 @@ export default function ImageDetailPage() {
   }
 
   return (
-    <PageLayout title="Detalles de la imagen" backHref="/imagenes">
+    <PageLayout
+      title="Detalles de la imagen"
+      leftContent={<BackButton href="/imagenes" />}
+    >
       {showConfetti ? (
         <ConfettiFireworks onComplete={handleConfettiComplete} />
       ) : null}

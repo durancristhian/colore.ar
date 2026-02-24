@@ -11,6 +11,7 @@ import { Switch } from "@/components/ui/switch";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Label } from "@/components/ui/label";
 import { PageLayout } from "@/components/page-layout";
+import { BackButton } from "@/components/back-button";
 import { DescriptionPromptField } from "@/components/description-prompt-field";
 import { TabbedGenerateForm } from "./tabbed-generate-form";
 import { createImage, getCurrentUser } from "@/lib/api";
@@ -51,7 +52,10 @@ export default function NewImagePage() {
   const showTabbedForm = isAdminOrVip && usePaidModel;
 
   return (
-    <PageLayout title="Nueva imagen" backHref="/imagenes">
+    <PageLayout
+      title="Nueva imagen"
+      leftContent={<BackButton href="/imagenes" />}
+    >
       <main className="flex flex-col gap-4">
         {isAdminOrVip && (
           <Alert>

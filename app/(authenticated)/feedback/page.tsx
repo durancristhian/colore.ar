@@ -9,6 +9,7 @@ import { Label } from "@/components/ui/label";
 import { Spinner } from "@/components/ui/spinner";
 import { Textarea } from "@/components/ui/textarea";
 import { PageLayout } from "@/components/page-layout";
+import { BackButton } from "@/components/back-button";
 import { submitFeedback } from "@/lib/api";
 
 export default function FeedbackPage() {
@@ -38,7 +39,10 @@ export default function FeedbackPage() {
   };
 
   return (
-    <PageLayout title="Enviar feedback" backHref="/imagenes">
+    <PageLayout
+      title="Enviar feedback"
+      leftContent={<BackButton href="/imagenes" />}
+    >
       <main className="flex flex-col gap-4">
         <div className="flex flex-col gap-2">
           <Label htmlFor="feedback-message">¿Qué te gustaría contarnos?</Label>

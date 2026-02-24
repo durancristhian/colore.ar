@@ -1,19 +1,13 @@
-import Link from "next/link";
-import { ArrowLeftIcon } from "@phosphor-icons/react";
-import { Button } from "@/components/ui/button";
-
 interface PageLayoutProps {
   title: string;
-  backHref?: string;
-  showBackButton?: boolean;
+  leftContent?: React.ReactNode;
   rightContent?: React.ReactNode;
   children: React.ReactNode;
 }
 
 export function PageLayout({
   title,
-  backHref = "/",
-  showBackButton = true,
+  leftContent,
   rightContent,
   children,
 }: PageLayoutProps) {
@@ -21,13 +15,7 @@ export function PageLayout({
     <div className="w-full">
       <div className="mb-4 flex flex-1 items-center justify-between gap-4">
         <div className="flex items-center gap-4">
-          {showBackButton && (
-            <Button variant="outline" size="icon" asChild>
-              <Link href={backHref} aria-label="Volver">
-                <ArrowLeftIcon />
-              </Link>
-            </Button>
-          )}
+          {leftContent}
           <h1 className="font-semibold">{title}</h1>
         </div>
         {rightContent != null ? <div>{rightContent}</div> : null}

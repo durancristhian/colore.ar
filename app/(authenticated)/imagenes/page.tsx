@@ -32,7 +32,6 @@ export default function ImagesPage() {
   return (
     <PageLayout
       title="Tus imágenes"
-      showBackButton={false}
       rightContent={
         <Button asChild size="sm" aria-label="Nueva imagen">
           <Link href="/imagenes/nueva" className="flex items-center gap-2">
