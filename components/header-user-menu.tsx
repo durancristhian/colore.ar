@@ -28,6 +28,7 @@ import {
 import { Skeleton } from "@/components/ui/skeleton";
 import { getCurrentUser } from "@/lib/api";
 import { ROLE_BADGE_CLASSES, ROLE_LABELS } from "@/lib/roles";
+import { queryKeys } from "@/lib/query-keys";
 
 const themes = [
   { value: "system", label: "Como el sistema", icon: MonitorIcon },
@@ -59,7 +60,7 @@ export function HeaderUserMenu() {
   const { isLoaded, user } = useUser();
   const { theme, setTheme } = useTheme();
   const { data: currentUser } = useQuery({
-    queryKey: ["user", "me"],
+    queryKey: queryKeys.user.me,
     queryFn: getCurrentUser,
   });
 

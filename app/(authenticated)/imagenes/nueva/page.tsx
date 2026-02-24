@@ -15,11 +15,12 @@ import { BackButton } from "@/components/back-button";
 import { DescriptionPromptField } from "@/components/description-prompt-field";
 import { TabbedGenerateForm } from "./tabbed-generate-form";
 import { createImage, getCurrentUser } from "@/lib/api";
+import { queryKeys } from "@/lib/query-keys";
 
 export default function NewImagePage() {
   const router = useRouter();
   const { data: currentUser, isLoading: isLoadingUser } = useQuery({
-    queryKey: ["user", "me"],
+    queryKey: queryKeys.user.me,
     queryFn: getCurrentUser,
   });
 

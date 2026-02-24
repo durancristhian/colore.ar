@@ -18,6 +18,7 @@ import { LoadingMessage } from "@/components/loading-message";
 import { PageLayout } from "@/components/page-layout";
 import { listImages } from "@/lib/api";
 import { DEFAULT_IMAGE_DESCRIPTION } from "@/lib/images/constants";
+import { queryKeys } from "@/lib/query-keys";
 
 export default function ImagesPage() {
   const {
@@ -25,7 +26,7 @@ export default function ImagesPage() {
     isLoading,
     isError,
   } = useQuery({
-    queryKey: ["images"],
+    queryKey: queryKeys.images.all,
     queryFn: listImages,
   });
 

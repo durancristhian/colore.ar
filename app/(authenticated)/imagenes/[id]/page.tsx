@@ -15,6 +15,7 @@ import { BackButton } from "@/components/back-button";
 import { getImage } from "@/lib/api";
 import { DEFAULT_IMAGE_DESCRIPTION } from "@/lib/images/constants";
 import { RelativeTime } from "@/components/relative-time";
+import { queryKeys } from "@/lib/query-keys";
 
 const SHOW_CONFETTI_KEY = "show-confetti";
 
@@ -29,7 +30,7 @@ export default function ImageDetailPage() {
     isLoading,
     isError,
   } = useQuery({
-    queryKey: ["image", id],
+    queryKey: queryKeys.images.detail(id),
     queryFn: () => getImage(id),
     enabled: !!id,
   });

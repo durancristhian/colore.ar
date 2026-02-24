@@ -16,6 +16,7 @@ import {
 } from "@/components/ui/alert-dialog";
 import { Spinner } from "@/components/ui/spinner";
 import { deleteImage } from "@/lib/api";
+import { queryKeys } from "@/lib/query-keys";
 
 interface DeleteImageDialogProps {
   imageId: string;
@@ -34,8 +35,10 @@ export function DeleteImageDialog({
   const deleteMutation = useMutation({
     mutationFn: deleteImage,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["images"] });
-      queryClient.invalidateQueries({ queryKey: ["image", imageId] });
+      queryClient.invalidateQueries({ queryKey: queryKeys.images.all });
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.images.detail(imageId),
+      });
       onOpenChange(false);
       onSuccess?.();
       toast.success("Imagen eliminada.");
