@@ -37,6 +37,7 @@ export function ImageCard({
             src={imageUrl}
             alt={prompt}
             wrapperClassName="!size-36 !w-36 !h-36 rounded-lg"
+            objectFit="cover"
           />
         </ItemMedia>
         <ItemContent className="min-w-0 gap-2">

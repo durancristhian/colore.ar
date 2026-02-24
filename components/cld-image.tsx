@@ -10,6 +10,10 @@ import { getPublicIdFromCloudinaryUrl } from "@/utils/cloudinary-url";
 export type CldImagePropsWithWrapper = Omit<CldImageProps, "fill" | "sizes"> & {
   /** Extra classes for the aspect-ratio placeholder wrapper. */
   wrapperClassName?: string;
+  /** Override wrapper background (default: bg-muted). Use e.g. "bg-white" for a white frame. */
+  wrapperBackgroundClassName?: string;
+  /** How the image fills the wrapper. Default "contain" shows full image; "cover" fills the cell (may crop). */
+  objectFit?: "contain" | "cover";
 };
 
 /**
@@ -19,13 +23,19 @@ export type CldImagePropsWithWrapper = Omit<CldImageProps, "fill" | "sizes"> & {
  * Always fills its wrapper (aspect-ratio box) to avoid layout shift. Requires src and alt.
  */
 export function CldImage(props: CldImagePropsWithWrapper) {
-  const { wrapperClassName, ...rest } = props;
+  const {
+    wrapperClassName,
+    wrapperBackgroundClassName,
+    objectFit = "contain",
+    ...rest
+  } = props;
   const resolvedSrc = getPublicIdFromCloudinaryUrl(props.src) ?? props.src;
 
   return (
     <div
       className={clsx(
-        "relative aspect-square w-full overflow-hidden bg-white",
+        "relative aspect-square w-full overflow-hidden bg-muted/50 print:bg-white",
+        wrapperBackgroundClassName,
         wrapperClassName,
       )}
     >
@@ -33,7 +43,7 @@ export function CldImage(props: CldImagePropsWithWrapper) {
         {...rest}
         src={resolvedSrc}
         fill
-        style={{ ...rest.style, objectFit: "contain" }}
+        style={{ ...rest.style, objectFit }}
         sizes="(max-width: 1024px) 100vw, 512px"
         loading="eager"
       />
