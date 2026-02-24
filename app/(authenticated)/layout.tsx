@@ -14,8 +14,8 @@ export default function AuthenticatedLayout({
         <header className="border-b border-border bg-muted/50">
           <div className="mx-auto flex w-full max-w-lg items-center justify-between px-4 py-4">
             <Link href="/imagenes">
-              <SparklesText className="text-xl">
-                <p>Colore.ar</p>
+              <SparklesText as={<h1 />} className="text-xl font-black">
+                Colore.ar
               </SparklesText>
             </Link>
             <HeaderUserMenu />

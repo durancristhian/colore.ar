@@ -10,9 +10,7 @@ export function LandingContent() {
     <div className="min-h-[calc(100dvh-2rem)] flex flex-col items-center justify-center gap-8">
       <div className="text-center space-y-2">
         <div>
-          <SparklesText>
-            <h1>Colore.ar</h1>
-          </SparklesText>
+          <SparklesText as={<h1 />}>Colore.ar</SparklesText>
         </div>
         <p className="text-muted-foreground">Generá. Imprimí. Pintá.</p>
       </div>

@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Script from "next/script";
-import { DM_Sans, Fraunces } from "next/font/google";
+import { DM_Sans } from "next/font/google";
 import { ClerkProvider } from "@clerk/nextjs";
 import { esES } from "@clerk/localizations";
 import { Toaster } from "@/components/ui/sonner";
@@ -9,11 +9,6 @@ import "./globals.css";
 
 const dmSans = DM_Sans({
   variable: "--font-sans",
-  subsets: ["latin"],
-});
-
-const fraunces = Fraunces({
-  variable: "--font-serif",
   subsets: ["latin"],
 });
 
@@ -38,7 +33,7 @@ export default function RootLayout({
   return (
     <ClerkProvider localization={esES}>
       <html lang="es" suppressHydrationWarning>
-        <body className={`${dmSans.variable} ${fraunces.variable} antialiased`}>
+        <body className={`${dmSans.variable} antialiased`}>
           <Script
             src="/stats.js"
             data-website-id="7dbb19cc-b89c-4b9b-84e6-98df42fc191d"
