@@ -32,7 +32,11 @@ export function ImageCard({
       size="sm"
       className="items-start rounded-xl"
     >
-      <Link href={`/imagenes/${imageId}`} aria-label={`Ver imagen: ${prompt}`}>
+      <Link
+        href={`/imagenes/${imageId}`}
+        aria-label={`Ver imagen: ${prompt}`}
+        className="gap-4"
+      >
         <ItemMedia variant="image" className="size-36 shrink-0 rounded-lg">
           <CldImage
             src={imageUrl}
