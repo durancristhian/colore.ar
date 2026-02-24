@@ -3,7 +3,7 @@
 import {
   createContext,
   useCallback,
-  useContext,
+  use,
   useEffect,
   useRef,
   useState,
@@ -86,5 +86,5 @@ export function PrintImageProvider({
 }
 
 export function usePrintImage(): PrintImageContextValue | null {
-  return useContext(PrintImageContext);
+  return use(PrintImageContext);
 }
