@@ -1,7 +1,7 @@
 "use client";
 
-import { useRef, useState } from "react";
-import { Sparkles, TrashIcon } from "lucide-react";
+import { useId, useRef, useState } from "react";
+import { ImagePlus, Sparkles, TrashIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Spinner } from "@/components/ui/spinner";
@@ -32,6 +32,7 @@ export function TabbedGenerateForm({
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const previewUrlRef = useRef<string | null>(null);
+  const fileInputId = useId();
 
   const canGenerate =
     activeTab === "image"
@@ -94,8 +95,9 @@ export function TabbedGenerateForm({
       <TabsContent value="image" className="flex flex-col gap-2 mt-4">
         {!selectedFile && (
           <>
-            <Label>Elegí una imagen para convertir</Label>
+            <Label htmlFor={fileInputId}>Elegí una imagen</Label>
             <input
+              id={fileInputId}
               ref={fileInputRef}
               type="file"
               accept={ALLOWED_IMAGE_TYPES.join(",")}
@@ -109,6 +111,7 @@ export function TabbedGenerateForm({
               onClick={() => fileInputRef.current?.click()}
               disabled={disabled}
             >
+              <ImagePlus className="size-4" />
               Seleccionar imagen
             </Button>
           </>
