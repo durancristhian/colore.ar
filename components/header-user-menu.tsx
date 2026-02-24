@@ -67,7 +67,7 @@ export function HeaderUserMenu() {
 
   return (
     <div className="flex items-center gap-2">
-      {currentUser && (
+      {currentUser && currentUser.role !== "standard" && (
         <Badge
           variant="outline"
           className={ROLE_BADGE_CLASSES[currentUser.role]}
