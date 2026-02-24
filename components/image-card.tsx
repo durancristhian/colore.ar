@@ -9,6 +9,7 @@ import {
   ItemTitle,
 } from "@/components/ui/item";
 import { RelativeTime } from "@/components/relative-time";
+import { ImageActionsMenu } from "@/components/image-actions-menu";
 import Link from "next/link";
 
 interface ImageCardProps {
@@ -47,6 +48,19 @@ export function ImageCard({
           <ItemDescription>
             <RelativeTime date={createdAt} />
           </ItemDescription>
+          <div
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+            }}
+          >
+            <ImageActionsMenu
+              imageId={imageId}
+              imageUrl={imageUrl}
+              prompt={prompt}
+              variant="outline"
+            />
+          </div>
         </ItemContent>
       </Link>
     </Item>

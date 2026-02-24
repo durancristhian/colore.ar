@@ -31,6 +31,7 @@ interface ImageActionsMenuProps {
   imageUrl: string;
   prompt: string;
   onDeleteSuccess?: () => void;
+  variant?: React.ComponentProps<typeof Button>["variant"];
 }
 
 export function ImageActionsMenu({
@@ -38,6 +39,7 @@ export function ImageActionsMenu({
   imageUrl,
   prompt,
   onDeleteSuccess,
+  variant = "default",
 }: ImageActionsMenuProps) {
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const printImage = usePrintImage();
@@ -98,13 +100,13 @@ export function ImageActionsMenu({
           e.stopPropagation();
         }}
       >
-        <Button className="flex-1" onClick={handlePrint}>
+        <Button className="flex-1" variant={variant} onClick={handlePrint}>
           <PrinterIcon className="size-4" />
           Imprimir
         </Button>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button size="icon" aria-label="Más opciones">
+            <Button size="icon" variant={variant} aria-label="Más opciones">
               <MoreHorizontalIcon className="size-4" />
             </Button>
           </DropdownMenuTrigger>
