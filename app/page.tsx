@@ -7,7 +7,7 @@ export default async function Home() {
   if (userId) redirect("/imagenes");
 
   return (
-    <div className="mx-auto w-full max-w-lg p-4 min-h-screen">
+    <div className="mx-auto w-full max-w-lg p-4 min-h-dvh">
       <LandingContent />
     </div>
   );

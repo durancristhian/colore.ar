@@ -10,7 +10,7 @@ export default function AuthenticatedLayout({
 }) {
   return (
     <PrintImageProvider>
-      <div className="flex min-h-screen flex-col">
+      <div className="flex min-h-dvh flex-col">
         <header className="border-b border-border bg-muted/50">
           <div className="mx-auto flex w-full max-w-lg items-center justify-between px-4 py-4">
             <Link href="/imagenes">

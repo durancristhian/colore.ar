@@ -41,7 +41,7 @@ export default function RootLayout({
             strategy="afterInteractive"
           />
           <Providers>
-            <div className="flex min-h-screen flex-col">{children}</div>
+            <div className="flex min-h-dvh flex-col">{children}</div>
             <Toaster />
           </Providers>
         </body>
