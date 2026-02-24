@@ -9,10 +9,9 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
+  DropdownMenuCheckboxItem,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuRadioGroup,
-  DropdownMenuRadioItem,
   DropdownMenuSeparator,
   DropdownMenuSub,
   DropdownMenuSubContent,
@@ -32,8 +31,8 @@ import { ROLE_BADGE_CLASSES, ROLE_LABELS } from "@/lib/roles";
 
 const themes = [
   { value: "system", label: "Como el sistema", icon: MonitorIcon },
-  { value: "dark", label: "Oscuro", icon: MoonIcon },
   { value: "light", label: "Claro", icon: SunIcon },
+  { value: "dark", label: "Oscuro", icon: MoonIcon },
 ] as const;
 
 function getInitials(
@@ -115,17 +114,18 @@ export function HeaderUserMenu() {
               Tema
             </DropdownMenuSubTrigger>
             <DropdownMenuSubContent>
-              <DropdownMenuRadioGroup
-                value={theme ?? "system"}
-                onValueChange={(value) => setTheme(value)}
-              >
-                {themes.map(({ value, label, icon: Icon }) => (
-                  <DropdownMenuRadioItem key={value} value={value}>
-                    <Icon className="size-4" />
-                    {label}
-                  </DropdownMenuRadioItem>
-                ))}
-              </DropdownMenuRadioGroup>
+              {themes.map(({ value, label, icon: Icon }) => (
+                <DropdownMenuCheckboxItem
+                  key={value}
+                  checked={(theme ?? "system") === value}
+                  onCheckedChange={(checked) => {
+                    if (checked) setTheme(value);
+                  }}
+                >
+                  <Icon className="size-4" />
+                  {label}
+                </DropdownMenuCheckboxItem>
+              ))}
             </DropdownMenuSubContent>
           </DropdownMenuSub>
           <DropdownMenuSeparator />
