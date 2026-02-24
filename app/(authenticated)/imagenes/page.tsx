@@ -33,9 +33,10 @@ export default function ImagesPage() {
       title="Tus imágenes"
       showBackButton={false}
       rightContent={
-        <Button asChild size="icon" aria-label="Nueva imagen">
-          <Link href="/imagenes/nueva">
+        <Button asChild size="sm" aria-label="Nueva imagen">
+          <Link href="/imagenes/nueva" className="flex items-center gap-2">
             <Plus className="size-4" />
+            Nueva imagen
           </Link>
         </Button>
       }
