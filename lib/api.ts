@@ -1,4 +1,11 @@
+import type { UserRole } from "@/lib/db/users";
+
 const base = "";
+
+export type CurrentUser = {
+  id: string;
+  role: UserRole;
+};
 
 export type CreateImageResponse = {
   id: string;
@@ -49,6 +56,12 @@ export async function getImage(id: string): Promise<ImageListItem> {
 export async function deleteImage(id: string): Promise<void> {
   const res = await fetch(`${base}/api/images/${id}`, { method: "DELETE" });
   if (!res.ok) throw new Error("Failed to delete creation.");
+}
+
+export async function getCurrentUser(): Promise<CurrentUser> {
+  const res = await fetch(`${base}/api/user/me`);
+  if (!res.ok) throw new Error("Failed to load user.");
+  return res.json();
 }
 
 export async function submitFeedback(message: string): Promise<void> {
