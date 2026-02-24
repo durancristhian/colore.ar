@@ -3,8 +3,8 @@ import { auth, currentUser } from "@clerk/nextjs/server";
 import { Telegram } from "@/lib/telegram";
 
 export async function POST(request: NextRequest) {
-  const { userId } = await auth();
-  const user = await currentUser();
+  const [authResult, user] = await Promise.all([auth(), currentUser()]);
+  const userId = authResult.userId;
 
   if (!userId || !user) {
     return NextResponse.json({ error: "No autorizado" }, { status: 401 });

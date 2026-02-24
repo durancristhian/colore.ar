@@ -9,12 +9,12 @@ export async function GET(
   _request: Request,
   { params }: { params: Promise<{ id: string }> },
 ) {
-  const { userId } = await auth();
+  const [authResult, { id }] = await Promise.all([auth(), params]);
+  const userId = authResult.userId;
   if (!userId) {
     return NextResponse.json({ error: "No autorizado" }, { status: 401 });
   }
 
-  const { id } = await params;
   const image = await getImageByIdAndUserId(id, userId);
 
   if (!image) {
@@ -31,12 +31,12 @@ export async function DELETE(
   _request: Request,
   { params }: { params: Promise<{ id: string }> },
 ) {
-  const { userId } = await auth();
+  const [authResult, { id }] = await Promise.all([auth(), params]);
+  const userId = authResult.userId;
   if (!userId) {
     return NextResponse.json({ error: "No autorizado" }, { status: 401 });
   }
 
-  const { id } = await params;
   const deleted = await deleteImageByIdAndUserId(id, userId);
 
   if (!deleted) {
