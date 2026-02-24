@@ -6,7 +6,7 @@ import {
   HoverCardTrigger,
 } from "@/components/ui/hover-card";
 import { formatRawDate, getRelative } from "@/lib/format-date";
-import { ClockIcon } from "lucide-react";
+import { ClockIcon } from "@phosphor-icons/react";
 
 interface RelativeTimeProps {
   /** ISO date string (e.g. createdAt from API) */

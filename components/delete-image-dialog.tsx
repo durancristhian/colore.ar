@@ -1,7 +1,7 @@
 "use client";
 
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { Trash2Icon } from "lucide-react";
+import { TrashIcon } from "@phosphor-icons/react";
 import { toast } from "sonner";
 import {
   AlertDialog,
@@ -60,7 +60,7 @@ export function DeleteImageDialog({
       <AlertDialogContent size="sm">
         <AlertDialogHeader>
           <AlertDialogMedia className="bg-destructive/10 text-destructive dark:bg-destructive/20 dark:text-destructive">
-            <Trash2Icon />
+            <TrashIcon />
           </AlertDialogMedia>
           <AlertDialogTitle>¿Eliminar imagen?</AlertDialogTitle>
           <AlertDialogDescription>

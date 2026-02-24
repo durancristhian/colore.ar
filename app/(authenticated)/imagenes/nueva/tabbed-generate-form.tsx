@@ -1,7 +1,7 @@
 "use client";
 
 import { useId, useRef, useState } from "react";
-import { ImagePlus, Sparkles, TrashIcon } from "lucide-react";
+import { ImageSquareIcon, SparkleIcon, TrashIcon } from "@phosphor-icons/react";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Spinner } from "@/components/ui/spinner";
@@ -111,7 +111,7 @@ export function TabbedGenerateForm({
               onClick={() => fileInputRef.current?.click()}
               disabled={disabled}
             >
-              <ImagePlus className="size-4" />
+              <ImageSquareIcon className="size-4" />
               Seleccionar imagen
             </Button>
           </>
@@ -176,7 +176,7 @@ export function TabbedGenerateForm({
         {disabled ? (
           <Spinner data-icon="inline-start" />
         ) : (
-          <Sparkles className="size-4" />
+          <SparkleIcon className="size-4" />
         )}
         {disabled ? "Generando..." : "Generar"}
       </Button>

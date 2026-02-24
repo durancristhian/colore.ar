@@ -3,7 +3,7 @@
 import { useMutation } from "@tanstack/react-query";
 import { useState } from "react";
 import { toast } from "sonner";
-import { Send } from "lucide-react";
+import { PaperPlaneRightIcon } from "@phosphor-icons/react";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Spinner } from "@/components/ui/spinner";
@@ -56,7 +56,7 @@ export default function FeedbackPage() {
           {isSubmitting ? (
             <Spinner data-icon="inline-start" />
           ) : (
-            <Send className="size-4" />
+            <PaperPlaneRightIcon className="size-4" />
           )}
           {isSubmitting ? "Enviando..." : "Enviar feedback"}
         </Button>

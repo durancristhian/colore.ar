@@ -19,15 +19,21 @@ import {
   DropdownMenuSubTrigger,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { LogOutIcon, MessageCircle, Monitor, Moon, Sun } from "lucide-react";
+import {
+  ChatCircleIcon,
+  MonitorIcon,
+  MoonIcon,
+  SignOutIcon,
+  SunIcon,
+} from "@phosphor-icons/react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { getCurrentUser } from "@/lib/api";
 import { ROLE_BADGE_CLASSES, ROLE_LABELS } from "@/lib/roles";
 
 const themes = [
-  { value: "system", label: "Como el sistema", icon: Monitor },
-  { value: "dark", label: "Oscuro", icon: Moon },
-  { value: "light", label: "Claro", icon: Sun },
+  { value: "system", label: "Como el sistema", icon: MonitorIcon },
+  { value: "dark", label: "Oscuro", icon: MoonIcon },
+  { value: "light", label: "Claro", icon: SunIcon },
 ] as const;
 
 function getInitials(
@@ -63,7 +69,7 @@ export function HeaderUserMenu() {
     : "??";
 
   const ThemeIcon =
-    themes.find((t) => t.value === (theme ?? "system"))?.icon ?? Monitor;
+    themes.find((t) => t.value === (theme ?? "system"))?.icon ?? MonitorIcon;
 
   return (
     <div className="flex items-center gap-2">
@@ -99,7 +105,7 @@ export function HeaderUserMenu() {
         <DropdownMenuContent align="end">
           <DropdownMenuItem asChild>
             <Link href="/feedback">
-              <MessageCircle className="size-4" />
+              <ChatCircleIcon className="size-4" />
               Enviar feedback
             </Link>
           </DropdownMenuItem>
@@ -125,7 +131,7 @@ export function HeaderUserMenu() {
           <DropdownMenuSeparator />
           <SignOutButton>
             <DropdownMenuItem>
-              <LogOutIcon className="size-4" />
+              <SignOutIcon className="size-4" />
               Cerrar sesión
             </DropdownMenuItem>
           </SignOutButton>

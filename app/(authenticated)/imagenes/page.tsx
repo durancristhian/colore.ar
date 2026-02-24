@@ -2,7 +2,7 @@
 
 import { useQuery } from "@tanstack/react-query";
 import Link from "next/link";
-import { ImagePlus, Plus } from "lucide-react";
+import { ImageSquareIcon, PlusIcon } from "@phosphor-icons/react";
 import { Button } from "@/components/ui/button";
 import {
   Empty,
@@ -36,7 +36,7 @@ export default function ImagesPage() {
       rightContent={
         <Button asChild size="sm" aria-label="Nueva imagen">
           <Link href="/imagenes/nueva" className="flex items-center gap-2">
-            <Plus className="size-4" />
+            <PlusIcon className="size-4" />
             Nueva imagen
           </Link>
         </Button>
@@ -56,7 +56,7 @@ export default function ImagesPage() {
           <Empty className="border py-12">
             <EmptyHeader>
               <EmptyMedia variant="icon">
-                <ImagePlus className="size-6" />
+                <ImageSquareIcon className="size-6" />
               </EmptyMedia>
               <EmptyTitle>Aún no hay imágenes</EmptyTitle>
               <EmptyDescription>Creá tu imagen para colorear</EmptyDescription>
@@ -64,7 +64,7 @@ export default function ImagesPage() {
             <EmptyContent>
               <Button asChild>
                 <Link href="/imagenes/nueva">
-                  <Plus className="size-4" />
+                  <PlusIcon className="size-4" />
                   Nueva imagen
                 </Link>
               </Button>

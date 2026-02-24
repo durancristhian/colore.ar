@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Trash2Icon } from "lucide-react";
+import { TrashIcon } from "@phosphor-icons/react";
 import { Button } from "@/components/ui/button";
 import { DeleteImageDialog } from "@/components/delete-image-dialog";
 
@@ -25,7 +25,7 @@ export function DeleteImageButton({
         aria-label="Eliminar imagen"
         onClick={() => setOpen(true)}
       >
-        <Trash2Icon className="size-4" />
+        <TrashIcon className="size-4" />
       </Button>
       <DeleteImageDialog
         imageId={imageId}

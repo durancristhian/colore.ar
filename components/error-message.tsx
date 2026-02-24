@@ -1,4 +1,4 @@
-import { AlertCircleIcon, AlertTriangleIcon } from "lucide-react";
+import { WarningCircleIcon, WarningIcon } from "@phosphor-icons/react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 
 type ErrorMessageProps = {
@@ -14,7 +14,7 @@ export function ErrorMessage({
   action,
   variant = "destructive",
 }: ErrorMessageProps) {
-  const Icon = variant === "destructive" ? AlertCircleIcon : AlertTriangleIcon;
+  const Icon = variant === "destructive" ? WarningCircleIcon : WarningIcon;
 
   return (
     <Alert variant={variant}>

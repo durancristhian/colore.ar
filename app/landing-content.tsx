@@ -1,7 +1,7 @@
 "use client";
 
 import { SignInButton, SignedOut } from "@clerk/nextjs";
-import { Sparkles } from "lucide-react";
+import { SparkleIcon } from "@phosphor-icons/react";
 import { Button } from "@/components/ui/button";
 import { SparklesText } from "@/components/ui/sparkles-text";
 
@@ -19,7 +19,7 @@ export function LandingContent() {
       <SignedOut>
         <SignInButton mode="modal">
           <Button>
-            <Sparkles className="size-4" />
+            <SparkleIcon className="size-4" />
             Quiero crear mi imagen
           </Button>
         </SignInButton>

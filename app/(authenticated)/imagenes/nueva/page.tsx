@@ -3,7 +3,7 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { Info, Sparkles } from "lucide-react";
+import { InfoIcon, SparkleIcon } from "@phosphor-icons/react";
 import { ErrorMessage } from "@/components/error-message";
 import { Button } from "@/components/ui/button";
 import { Spinner } from "@/components/ui/spinner";
@@ -55,7 +55,7 @@ export default function NewImagePage() {
       <main className="flex flex-col gap-4">
         {isAdminOrVip && (
           <Alert>
-            <Info className="size-4 shrink-0" aria-hidden />
+            <InfoIcon className="size-4 shrink-0" aria-hidden />
             <AlertTitle>¿Usar modelo de pago?</AlertTitle>
             <AlertDescription className="gap-2">
               <p>
@@ -97,7 +97,7 @@ export default function NewImagePage() {
               {isGenerating ? (
                 <Spinner data-icon="inline-start" />
               ) : (
-                <Sparkles className="size-4" />
+                <SparkleIcon className="size-4" />
               )}
               {isGenerating ? "Generando..." : "Generar"}
             </Button>

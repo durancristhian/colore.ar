@@ -3,12 +3,12 @@
 import { useEffect, useRef, useState } from "react";
 import {
   DownloadIcon,
+  DotsThreeIcon,
   ImageIcon,
-  Link2Icon,
-  MoreHorizontalIcon,
+  LinkIcon,
   PrinterIcon,
-  Trash2Icon,
-} from "lucide-react";
+  TrashIcon,
+} from "@phosphor-icons/react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { ButtonGroup } from "@/components/ui/button-group";
@@ -107,7 +107,7 @@ export function ImageActionsMenu({
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button size="icon" variant={variant} aria-label="Más opciones">
-              <MoreHorizontalIcon className="size-4" />
+              <DotsThreeIcon className="size-4" />
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end" className="w-40">
@@ -121,7 +121,7 @@ export function ImageActionsMenu({
                 Copiar imagen
               </DropdownMenuItem>
               <DropdownMenuItem onSelect={handleCopyUrl}>
-                <Link2Icon />
+                <LinkIcon />
                 Copiar URL de la imagen
               </DropdownMenuItem>
             </DropdownMenuGroup>
@@ -131,7 +131,7 @@ export function ImageActionsMenu({
                 variant="destructive"
                 onSelect={handleDeleteSelect}
               >
-                <Trash2Icon />
+                <TrashIcon />
                 Eliminar
               </DropdownMenuItem>
             </DropdownMenuGroup>
