@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { HouseIcon } from "@phosphor-icons/react";
 import { Button } from "@/components/ui/button";
 
 export default function NotFound() {
@@ -14,7 +15,10 @@ export default function NotFound() {
           </p>
         </div>
         <Button asChild>
-          <Link href="/">Volver al inicio</Link>
+          <Link href="/" className="flex items-center gap-2">
+            <HouseIcon className="size-4" />
+            Volver al inicio
+          </Link>
         </Button>
       </div>
     </div>
