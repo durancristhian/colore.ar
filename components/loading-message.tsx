@@ -6,9 +6,9 @@ type LoadingMessageProps = {
 
 export function LoadingMessage({ label }: LoadingMessageProps) {
   return (
-    <div className="flex w-full items-center justify-center gap-2 text-muted-foreground">
-      <Spinner className="size-4 shrink-0" />
-      <span>{label}</span>
+    <div className="w-full space-y-2 text-center text-muted-foreground">
+      <Spinner className="mx-auto block size-8 shrink-0" />
+      <p>{label}</p>
     </div>
   );
 }
