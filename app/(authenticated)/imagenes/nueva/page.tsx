@@ -57,7 +57,7 @@ export default function NewImagePage() {
       title="Nueva imagen"
       leftContent={<BackButton href="/imagenes" />}
     >
-      <main className="flex flex-col gap-4">
+      <div className="flex flex-col gap-4">
         {isAdminOrVip && (
           <Alert>
             <InfoIcon className="size-4 shrink-0" aria-hidden />
@@ -131,7 +131,7 @@ export default function NewImagePage() {
             }
           />
         )}
-      </main>
+      </div>
     </PageLayout>
   );
 }

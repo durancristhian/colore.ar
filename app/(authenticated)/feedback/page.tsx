@@ -43,7 +43,7 @@ export default function FeedbackPage() {
       title="Enviar feedback"
       leftContent={<BackButton href="/imagenes" />}
     >
-      <main className="flex flex-col gap-4">
+      <div className="flex flex-col gap-4">
         <div className="flex flex-col gap-2">
           <Label htmlFor="feedback-message">¿Qué te gustaría contarnos?</Label>
           <Textarea
@@ -64,7 +64,7 @@ export default function FeedbackPage() {
           )}
           {isSubmitting ? "Enviando..." : "Enviar feedback"}
         </Button>
-      </main>
+      </div>
     </PageLayout>
   );
 }

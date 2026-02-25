@@ -113,7 +113,7 @@ export default function ImageDetailPage() {
       {showConfetti ? (
         <ConfettiFireworks onComplete={handleConfettiComplete} />
       ) : null}
-      <main className="flex flex-col gap-4">
+      <div className="flex flex-col gap-4">
         <div className="flex flex-col gap-2">
           <Label>{image.description ? "Lo que pediste" : "Origen"}</Label>
           <p>
@@ -139,7 +139,7 @@ export default function ImageDetailPage() {
             onDeleteSuccess={() => router.push("/imagenes")}
           />
         </div>
-      </main>
+      </div>
     </PageLayout>
   );
 }

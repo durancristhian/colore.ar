@@ -21,7 +21,9 @@ export default function AuthenticatedLayout({
             <HeaderUserMenu />
           </div>
         </header>
-        <div className="mx-auto w-full max-w-lg flex-1 p-4">{children}</div>
+        <main id="main-content" className="mx-auto w-full max-w-lg flex-1 p-4">
+          {children}
+        </main>
       </div>
     </PrintImageProvider>
   );
