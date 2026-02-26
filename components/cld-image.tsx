@@ -60,53 +60,64 @@ export function CldImage(props: CldImagePropsWithWrapper) {
     Number(height) > 0;
 
   return (
-    <ContextMenu>
-      <ContextMenuTrigger asChild>
-        <div
-          className={clsx(
-            "relative aspect-square w-full overflow-hidden bg-muted/50 print:bg-white",
-            wrapperBackgroundClassName,
-            wrapperClassName,
-          )}
+    <div
+      className="contents"
+      onContextMenu={(e) => {
+        e.preventDefault();
+        e.stopPropagation();
+      }}
+    >
+      <ContextMenu>
+        <ContextMenuTrigger asChild>
+          <div
+            className={clsx(
+              "relative aspect-square w-full overflow-hidden bg-muted/50 print:bg-white",
+              wrapperBackgroundClassName,
+              wrapperClassName,
+            )}
+          >
+            {isThumbnail ? (
+              <CldImageDefault
+                {...rest}
+                src={resolvedSrc}
+                width={width}
+                height={height}
+                crop={crop ?? "fill"}
+                quality={quality ?? DETAIL_QUALITY}
+                style={{ ...rest.style, objectFit }}
+                loading="eager"
+              />
+            ) : (
+              <CldImageDefault
+                {...rest}
+                src={resolvedSrc}
+                fill
+                sizes={DETAIL_SIZES}
+                quality={quality ?? DETAIL_QUALITY}
+                style={{ ...rest.style, objectFit }}
+                loading="eager"
+              />
+            )}
+          </div>
+        </ContextMenuTrigger>
+        <ContextMenuContent
+          onClick={(e) => e.stopPropagation()}
+          onPointerDown={(e) => e.stopPropagation()}
         >
-          {isThumbnail ? (
-            <CldImageDefault
-              {...rest}
-              src={resolvedSrc}
-              width={width}
-              height={height}
-              crop={crop ?? "fill"}
-              quality={quality ?? DETAIL_QUALITY}
-              style={{ ...rest.style, objectFit }}
-              loading="eager"
-            />
-          ) : (
-            <CldImageDefault
-              {...rest}
-              src={resolvedSrc}
-              fill
-              sizes={DETAIL_SIZES}
-              quality={quality ?? DETAIL_QUALITY}
-              style={{ ...rest.style, objectFit }}
-              loading="eager"
-            />
-          )}
-        </div>
-      </ContextMenuTrigger>
-      <ContextMenuContent>
-        <ContextMenuItem onSelect={handleDownload}>
-          <DownloadIcon />
-          Descargar
-        </ContextMenuItem>
-        <ContextMenuItem onSelect={handleCopyImage}>
-          <ImageIcon />
-          Copiar imagen
-        </ContextMenuItem>
-        <ContextMenuItem onSelect={handleCopyUrl}>
-          <LinkIcon />
-          Copiar URL de la imagen
-        </ContextMenuItem>
-      </ContextMenuContent>
-    </ContextMenu>
+          <ContextMenuItem onSelect={handleDownload}>
+            <DownloadIcon />
+            Descargar
+          </ContextMenuItem>
+          <ContextMenuItem onSelect={handleCopyImage}>
+            <ImageIcon />
+            Copiar imagen
+          </ContextMenuItem>
+          <ContextMenuItem onSelect={handleCopyUrl}>
+            <LinkIcon />
+            Copiar URL de la imagen
+          </ContextMenuItem>
+        </ContextMenuContent>
+      </ContextMenu>
+    </div>
   );
 }
