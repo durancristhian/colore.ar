@@ -47,8 +47,8 @@ export async function getUserById(
     sql: "SELECT user_id, role FROM users WHERE user_id = ?",
     args: [userId],
   });
-  if (rs.rows.length === 0) return null;
   const row = rs.rows[0];
+  if (!row) return null;
   return {
     userId: String(row.user_id),
     role: assertRole(row.role),

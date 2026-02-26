@@ -76,8 +76,8 @@ export async function getImageByIdAndUserId(
     sql: `SELECT id, description, image_url, source_image_url, created_at FROM images WHERE id = ? AND user_id = ?`,
     args: [id, userId],
   });
-  if (rs.rows.length === 0) return null;
   const row = rs.rows[0];
+  if (!row) return null;
   return {
     id: String(row.id),
     description: row.description != null ? String(row.description) : null,
