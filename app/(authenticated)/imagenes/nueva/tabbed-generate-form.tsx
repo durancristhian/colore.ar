@@ -14,6 +14,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { DescriptionPromptField } from "@/components/description-prompt-field";
 import {
   ALLOWED_IMAGE_TYPES,
+  isDescriptionLengthValid,
   isImageFileValid,
   isImageSizeValid,
   isImageTypeAllowed,
@@ -43,7 +44,7 @@ export function TabbedGenerateForm({
   const canGenerate =
     activeTab === "image"
       ? selectedFile != null && isImageFileValid(selectedFile)
-      : description.trim() !== "";
+      : description.trim() !== "" && isDescriptionLengthValid(description);
 
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];

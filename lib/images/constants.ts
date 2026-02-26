@@ -16,6 +16,9 @@ export const ALLOWED_IMAGE_TYPES = [
 /** Max size in bytes; used by isImageSizeValid and the images API. */
 export const MAX_IMAGE_SIZE_BYTES = 10 * 1024 * 1024;
 
+/** Max length in characters for the image prompt/description; used by UI and API. */
+export const MAX_DESCRIPTION_LENGTH = 500;
+
 /** True if type is in ALLOWED_IMAGE_TYPES. */
 export function isImageTypeAllowed(type: string): boolean {
   return (ALLOWED_IMAGE_TYPES as readonly string[]).includes(type);
@@ -24,6 +27,11 @@ export function isImageTypeAllowed(type: string): boolean {
 /** True if size is within MAX_IMAGE_SIZE_BYTES. */
 export function isImageSizeValid(size: number): boolean {
   return size <= MAX_IMAGE_SIZE_BYTES;
+}
+
+/** True if description length is within MAX_DESCRIPTION_LENGTH (trimmed). */
+export function isDescriptionLengthValid(value: string): boolean {
+  return value.trim().length <= MAX_DESCRIPTION_LENGTH;
 }
 
 export function isImageFileValid(file: File): boolean {

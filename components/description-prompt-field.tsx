@@ -1,9 +1,14 @@
 // description-prompt-field.tsx
 //
 // Controlled textarea for image prompt; used in new-image and tabbed form.
+// Shows destructive state and validation message only when over MAX_DESCRIPTION_LENGTH.
 //
 "use client";
 
+import {
+  MAX_DESCRIPTION_LENGTH,
+  isDescriptionLengthValid,
+} from "@/lib/images/constants";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 
@@ -20,6 +25,8 @@ export function DescriptionPromptField({
   disabled = false,
   id = "prompt",
 }: DescriptionPromptFieldProps) {
+  const overLimit = !isDescriptionLengthValid(value);
+
   return (
     <div className="flex flex-col gap-2">
       <Label htmlFor={id}>¿Qué te gustaría crear?</Label>
@@ -30,8 +37,15 @@ export function DescriptionPromptField({
         value={value}
         onChange={(e) => onChange(e.target.value)}
         disabled={disabled}
+        aria-invalid={overLimit}
         className="min-h-24 w-full"
       />
+      {overLimit && (
+        <p className="text-destructive text-sm" aria-live="polite">
+          La descripción no puede superar los {MAX_DESCRIPTION_LENGTH}{" "}
+          caracteres. Acortá un poco para continuar.
+        </p>
+      )}
     </div>
   );
 }

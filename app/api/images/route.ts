@@ -9,8 +9,10 @@ import { getOrCreateUser } from "@/lib/db/users";
 import { insertImage, listImagesByUserId } from "@/lib/db/images";
 import {
   ALLOWED_IMAGE_TYPES,
+  isDescriptionLengthValid,
   isImageSizeValid,
   isImageTypeAllowed,
+  MAX_DESCRIPTION_LENGTH,
 } from "@/lib/images/constants";
 import { getImageGenerationOptions } from "@/lib/images/generation-mode";
 import {
@@ -140,6 +142,14 @@ export async function POST(request: NextRequest) {
     }
 
     const trimmedDescription = (description as string).trim();
+    if (!isDescriptionLengthValid(trimmedDescription)) {
+      return NextResponse.json(
+        {
+          error: `La descripción no puede superar los ${MAX_DESCRIPTION_LENGTH} caracteres. Acortá un poco para continuar.`,
+        },
+        { status: 400 },
+      );
+    }
     const buffer = usePaid
       ? await generateImage(trimmedDescription)
       : await generateImageWithPollinations(trimmedDescription);

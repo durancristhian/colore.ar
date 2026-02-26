@@ -21,6 +21,7 @@ import { BackButton } from "@/components/back-button";
 import { DescriptionPromptField } from "@/components/description-prompt-field";
 import { TabbedGenerateForm } from "./tabbed-generate-form";
 import { createImage, getCurrentUser } from "@/lib/api";
+import { isDescriptionLengthValid } from "@/lib/images/constants";
 import { queryKeys } from "@/lib/query-keys";
 
 export default function NewImagePage() {
@@ -103,7 +104,11 @@ export default function NewImagePage() {
                   usePaidModel: false,
                 })
               }
-              disabled={isGenerating || description.trim() === ""}
+              disabled={
+                isGenerating ||
+                description.trim() === "" ||
+                !isDescriptionLengthValid(description)
+              }
             >
               {isGenerating ? (
                 <Spinner data-icon="inline-start" />
