@@ -1,3 +1,8 @@
+// layout.tsx
+//
+// Layout for authenticated routes. Provides header (logo, HeaderUserMenu), PrintImageProvider,
+// and main content area. Used by all routes under (authenticated).
+//
 import Link from "next/link";
 import { HeaderUserMenu } from "@/components/header-user-menu";
 import { PrintImageProvider } from "@/components/print-image-provider";

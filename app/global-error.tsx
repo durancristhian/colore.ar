@@ -1,15 +1,11 @@
+// global-error.tsx
+//
+// Catches errors in the root layout (e.g. ClerkProvider, font, body). Replaces the entire
+// document — no app styles or fonts. Must render full <html> and <body>. To test: throw
+// in app/layout.tsx, restart dev server, open /.
+//
 "use client";
 
-/**
- * Catches errors in the root layout (e.g. ClerkProvider, font, body).
- * Replaces the entire document — no app styles or fonts.
- * Must include <html> and <body>.
- *
- * How to test:
- * 1. Temporarily throw in app/layout.tsx (e.g. inside RootLayout: throw new Error("test")).
- * 2. Restart dev server and open /. You should see this page.
- * 3. Remove the throw and verify the app works again.
- */
 export default function GlobalError({
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   error,

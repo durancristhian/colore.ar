@@ -1,5 +1,8 @@
+// error.tsx
+//
+// Error boundary UI for route-level errors. Shows a message and "Intentar de nuevo" / "Volver al inicio".
+//
 "use client";
-
 import Link from "next/link";
 import { HouseIcon, ArrowClockwiseIcon } from "@phosphor-icons/react";
 import { Button } from "@/components/ui/button";

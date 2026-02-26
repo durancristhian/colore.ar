@@ -1,3 +1,9 @@
+// page.tsx
+//
+// New image page. Role-based: standard users get text-only form; admin/vip get switch for paid model
+// and optional TabbedGenerateForm (image or description). On success, stores id in localStorage for
+// confetti on detail page and redirects to /imagenes/:id.
+//
 "use client";
 
 import { useMutation, useQuery } from "@tanstack/react-query";
@@ -40,7 +46,7 @@ export default function NewImagePage() {
         try {
           localStorage.setItem("show-confetti", data.id);
         } catch {
-          // ignore localStorage errors
+          // Ignore localStorage errors (e.g. private mode).
         }
         router.push(`/imagenes/${data.id}`);
       }

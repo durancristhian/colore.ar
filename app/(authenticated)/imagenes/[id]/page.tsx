@@ -1,3 +1,7 @@
+// page.tsx
+//
+// Image detail page. Fetches image by id; shows confetti once when arriving from create (SHOW_CONFETTI_KEY in localStorage). Delete redirects to /imagenes.
+//
 "use client";
 
 import { useQuery } from "@tanstack/react-query";
@@ -35,23 +39,21 @@ export default function ImageDetailPage() {
     enabled: !!id,
   });
 
-  // When we have the image and came from the new page, show confetti once then unmount
+  // Show confetti once when coming from new-image flow (key set on create success).
   useEffect(() => {
     if (!id || !image) return;
     try {
       if (localStorage.getItem(SHOW_CONFETTI_KEY) === id) {
         queueMicrotask(() => setShowConfetti(true));
       }
-    } catch {
-      // ignore localStorage errors
-    }
+    } catch {}
   }, [id, image]);
 
   const handleConfettiComplete = () => {
     try {
       localStorage.removeItem(SHOW_CONFETTI_KEY);
     } catch {
-      // ignore
+      // Ignore localStorage errors (e.g. private mode).
     }
     setShowConfetti(false);
   };

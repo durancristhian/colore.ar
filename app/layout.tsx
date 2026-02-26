@@ -1,3 +1,8 @@
+// layout.tsx
+//
+// Root layout. Wraps the app with ClerkProvider (esES), DM Sans font, metadata,
+// Providers, and Toaster. Renders the stats script and main content area.
+//
 import type { Metadata } from "next";
 import Script from "next/script";
 import { DM_Sans } from "next/font/google";

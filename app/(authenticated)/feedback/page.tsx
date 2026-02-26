@@ -1,3 +1,7 @@
+// page.tsx
+//
+// Feedback form page. Uses submitFeedback (lib/api) via React Query mutation; toast on success/error.
+//
 "use client";
 
 import { useMutation } from "@tanstack/react-query";

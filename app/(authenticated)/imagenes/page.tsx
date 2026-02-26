@@ -1,3 +1,7 @@
+// page.tsx
+//
+// List of user images. Fetches via listImages; shows empty state or ImageCard list; "Nueva imagen" links to /imagenes/nueva.
+//
 "use client";
 
 import { useQuery } from "@tanstack/react-query";

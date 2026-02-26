@@ -1,3 +1,8 @@
+// tabbed-generate-form.tsx
+//
+// Tabbed form for "Desde una foto" (file upload, HEIC→JPEG for preview) and "Desde texto". Validates
+// with lib/images/constants; calls onGenerate with { description, image }. Used only when paid model is on.
+//
 "use client";
 
 import { useId, useRef, useState } from "react";
@@ -17,6 +22,7 @@ import { ErrorMessage } from "@/components/error-message";
 
 type Tab = "image" | "description";
 
+/** onGenerate receives { description, image }; disabled blocks submit and file picker. */
 export interface TabbedGenerateFormProps {
   onGenerate: (payload: { description: string; image: File | null }) => void;
   disabled?: boolean;
@@ -49,6 +55,7 @@ export function TabbedGenerateForm({
     const isHeic = file.type === "image/heic" || file.type === "image/heif";
     let url: string;
     if (isHeic) {
+      // HEIC not supported for object URL preview; convert to JPEG for createObjectURL.
       const heic2any = (await import("heic2any")).default;
       const result = await heic2any({ blob: file, toType: "image/jpeg" });
       const blob = Array.isArray(result) ? result[0] : result;
@@ -120,7 +127,7 @@ export function TabbedGenerateForm({
           <>
             <div className="flex items-center gap-2 rounded-md border border-border bg-background p-2">
               {previewUrl && (
-                /* eslint-disable-next-line @next/next/no-img-element */
+                // eslint-disable-next-line @next/next/no-img-element -- blob URL preview; next/image not used for object URLs
                 <img
                   src={previewUrl}
                   alt={selectedFile.name}

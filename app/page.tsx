@@ -1,3 +1,7 @@
+// page.tsx
+//
+// Home page. Redirects signed-in users to /imagenes; otherwise renders LandingContent.
+//
 import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 import { LandingContent } from "@/components/landing-content";

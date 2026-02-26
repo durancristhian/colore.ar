@@ -1,5 +1,8 @@
+// not-found.tsx
+//
+// 404 page. Renders "Página no encontrada" and a link back to home.
+//
 "use client";
-
 import Link from "next/link";
 import { HouseIcon } from "@phosphor-icons/react";
 import { Button } from "@/components/ui/button";
