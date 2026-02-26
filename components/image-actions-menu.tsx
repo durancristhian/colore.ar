@@ -115,7 +115,10 @@ export function ImageActionsMenu({
               <DotsThreeIcon className="size-4" />
             </Button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent align="end" className="w-40">
+          <DropdownMenuContent
+            align="end"
+            className="w-fit **:data-[slot=dropdown-menu-item]:whitespace-nowrap"
+          >
             <DropdownMenuGroup>
               <DropdownMenuItem onSelect={handleDownload}>
                 <DownloadIcon />
