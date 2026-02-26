@@ -1,36 +1,94 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# colore.ar
+
+AI-powered coloring book page generator. Users describe a scene or upload a photo and the app generates a printable coloring page. Built with Next.js, uses Clerk for auth, Turso for storage, Cloudinary for images, and OpenRouter/Pollinations for AI generation.
 
 ## Getting Started
 
-First, run the development server:
-
 ```bash
+git clone git@github.com:<your-user>/colore.ar.git
+cd colore.ar
+nvm install
+npm install
+cp .env.template .env.local  # fill in the values
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) to see the app.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Available Scripts
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+| Command                | Description              |
+| ---------------------- | ------------------------ |
+| `npm run dev`          | Start dev server         |
+| `npm run build`        | Production build         |
+| `npm start`            | Start production server  |
+| `npm run lint`         | Run ESLint               |
+| `npm run lint:fix`     | Run ESLint with auto-fix |
+| `npm run format`       | Format with Prettier     |
+| `npm run format:check` | Check formatting         |
+| `npm run typecheck`    | Run TypeScript checks    |
 
-## Learn More
+## Editor
 
-To learn more about Next.js, take a look at the following resources:
+We recommend [VS Code](https://code.visualstudio.com) or [Cursor](https://cursor.com). The repo ships with:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- `.vscode/settings.json` -- Prettier as default formatter, format on save, ESLint auto-fix on save
+- `.vscode/extensions.json` -- Recommended extensions (Prettier, ESLint, EditorConfig)
+- `.editorconfig` -- Consistent indentation, line endings, and trimming
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Tech Stack
 
-## Deploy on Vercel
+### Services
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+| Name                                    | Role                      | Key concepts to learn                                                  |
+| --------------------------------------- | ------------------------- | ---------------------------------------------------------------------- |
+| [Clerk](https://clerk.com)              | Authentication            | `clerkMiddleware`, server/client auth, protected routes, localizations |
+| [Turso](https://turso.tech)             | Database                  | libSQL client, raw SQL queries, singleton connection pattern           |
+| [Cloudinary](https://cloudinary.com)    | Image hosting             | Upload presets, image transformations, `next-cloudinary` component     |
+| [OpenRouter](https://openrouter.ai)     | AI generation             | Vercel AI SDK provider, text-to-image, image-to-image                  |
+| [Pollinations](https://pollinations.ai) | AI generation (free tier) | REST API image generation                                              |
+| [Umami](https://umami.is)               | Analytics                 | Proxy rewrite pattern in `next.config.ts`                              |
+| [Vercel](https://vercel.com)            | Deployment                | Next.js hosting, environment variables                                 |
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### Framework and Language
+
+| Name                                       | Role            | Key concepts to learn                                                                      |
+| ------------------------------------------ | --------------- | ------------------------------------------------------------------------------------------ |
+| [Next.js](https://nextjs.org) 16           | React framework | App Router, Server Components, Server Actions, middleware, `next/font`, image optimization |
+| [React](https://react.dev) 19              | UI library      | Hooks, Suspense, transitions                                                               |
+| [TypeScript](https://typescriptlang.org) 5 | Type safety     | Strict mode, `noUncheckedIndexedAccess`, path aliases (`@/*`)                              |
+
+### Styling and UI
+
+| Name                                                      | Role                | Key concepts to learn                                             |
+| --------------------------------------------------------- | ------------------- | ----------------------------------------------------------------- |
+| [Tailwind CSS](https://tailwindcss.com) 4                 | Utility-first CSS   | PostCSS plugin, `tailwind-merge`, `clsx`                          |
+| [shadcn/ui](https://ui.shadcn.com)                        | Component library   | Radix UI primitives, `class-variance-authority`, "new-york" style |
+| [Phosphor Icons](https://phosphoricons.com)               | Icon set            | Tree-shakeable React icon components                              |
+| [Motion](https://motion.dev)                              | Animations          | Layout animations, variants, transitions                          |
+| [next-themes](https://github.com/pacocoursey/next-themes) | Dark mode           | Theme provider, system preference detection                       |
+| [Sonner](https://sonner.emilkowal.ski)                    | Toast notifications | `toast()` API                                                     |
+
+### Data and State
+
+| Name                                         | Role           | Key concepts to learn                          |
+| -------------------------------------------- | -------------- | ---------------------------------------------- |
+| [TanStack Query](https://tanstack.com/query) | Server state   | Query keys, mutations, cache invalidation      |
+| [Vercel AI SDK](https://sdk.vercel.ai)       | AI integration | `@openrouter/ai-sdk-provider`, `generateImage` |
+
+### Utilities
+
+| Name                                                                   | Role             | Key concepts to learn                |
+| ---------------------------------------------------------------------- | ---------------- | ------------------------------------ |
+| [canvas-confetti](https://github.com/catdad/canvas-confetti)           | Confetti effects | Trigger on image creation            |
+| [heic2any](https://github.com/nicolo-ribaudo/heic2any)                 | Image conversion | HEIC/HEIF to JPEG/PNG in the browser |
+| [relative-time](https://github.com/yairEO/relative-time)               | Date formatting  | Human-readable relative dates        |
+| [sanitize-filename](https://github.com/parshap/node-sanitize-filename) | File safety      | Sanitize user input for downloads    |
+
+### Dev Tooling
+
+| Name                                                  | Role       | Key concepts to learn                                       |
+| ----------------------------------------------------- | ---------- | ----------------------------------------------------------- |
+| [ESLint](https://eslint.org) 9                        | Linting    | Flat config, `eslint-config-next`, `eslint-config-prettier` |
+| [Prettier](https://prettier.io) 3                     | Formatting | Tailwind CSS plugin, `.prettierrc`                          |
+| [GitHub Actions](https://github.com/features/actions) | CI         | Format check, lint, and typecheck jobs                      |
