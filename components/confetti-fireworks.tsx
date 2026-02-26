@@ -1,5 +1,8 @@
+// confetti-fireworks.tsx
+//
+// Runs canvas-confetti animation on mount for DURATION_MS, then calls onComplete so parent can unmount.
+//
 "use client";
-
 import confetti from "canvas-confetti";
 import { useEffect, useRef } from "react";
 
@@ -9,14 +12,11 @@ const DEFAULTS = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 0 };
 const randomInRange = (min: number, max: number) =>
   Math.random() * (max - min) + min;
 
+/** onComplete is called when the animation ends so the parent can unmount. */
 export interface ConfettiFireworksProps {
   onComplete?: () => void;
 }
 
-/**
- * Runs a fireworks confetti animation on mount for 5 seconds, then calls onComplete
- * so the parent can unmount (stop rendering) this component.
- */
 export function ConfettiFireworks({ onComplete }: ConfettiFireworksProps) {
   const onCompleteRef = useRef(onComplete);
 

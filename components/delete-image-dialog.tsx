@@ -1,3 +1,7 @@
+// delete-image-dialog.tsx
+//
+// Confirmation dialog for delete; calls deleteImage (lib/api), invalidates query cache, toast, onSuccess.
+//
 "use client";
 
 import { useMutation, useQueryClient } from "@tanstack/react-query";

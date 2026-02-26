@@ -1,7 +1,7 @@
-/**
- * Centralized React Query keys for cache lookups and invalidation.
- * Use these instead of ad-hoc string arrays to avoid typos and keep invalidation in sync.
- */
+// query-keys.ts
+//
+// Centralized React Query keys for cache and invalidation. Use instead of ad-hoc string arrays.
+//
 export const queryKeys = {
   images: {
     all: ["images"] as const,

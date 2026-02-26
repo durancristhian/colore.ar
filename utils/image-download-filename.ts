@@ -1,3 +1,7 @@
+// image-download-filename.ts
+//
+// Builds a safe download filename from prompt and date. Used by download action.
+//
 import sanitize from "sanitize-filename";
 
 function formatHMS(date: Date): string {
@@ -7,6 +11,7 @@ function formatHMS(date: Date): string {
   return `${hours}-${minutes}-${seconds}`;
 }
 
+/** Sanitized prompt prefix + time; returns .png filename. */
 export function buildImageDownloadFilename(prompt: string, date: Date): string {
   const prefix = sanitize(prompt).slice(0, 20) || "image";
   return `${prefix}-${formatHMS(date)}.png`;

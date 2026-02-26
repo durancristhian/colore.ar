@@ -1,3 +1,7 @@
+// delete-image-button.tsx
+//
+// Button that opens DeleteImageDialog.
+//
 "use client";
 
 import { useState } from "react";

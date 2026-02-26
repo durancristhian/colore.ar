@@ -1,3 +1,7 @@
+// header-user-menu.tsx
+//
+// Avatar dropdown with theme switcher, feedback link, sign-out. Shows role badge from getCurrentUser.
+//
 "use client";
 
 import Link from "next/link";

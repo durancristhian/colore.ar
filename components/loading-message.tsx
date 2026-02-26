@@ -1,3 +1,7 @@
+// loading-message.tsx
+//
+// Centered spinner + label for loading states.
+//
 import { Spinner } from "@/components/ui/spinner";
 
 type LoadingMessageProps = {

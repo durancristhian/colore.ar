@@ -1,3 +1,7 @@
+// relative-time.tsx
+//
+// Shows relative time (e.g. "hace 2 horas") with hover card for exact date. Uses lib/format-date.
+//
 "use client";
 
 import {
@@ -9,7 +13,7 @@ import { formatRawDate, getRelative } from "@/lib/format-date";
 import { ClockIcon } from "@phosphor-icons/react";
 
 interface RelativeTimeProps {
-  /** ISO date string (e.g. createdAt from API) */
+  /** ISO date string from API (e.g. createdAt). */
   date: string;
 }
 

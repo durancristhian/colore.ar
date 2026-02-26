@@ -1,3 +1,7 @@
+// providers.tsx
+//
+// Root providers: ThemeProvider (next-themes) and QueryClientProvider (staleTime/gcTime as per constants).
+//
 "use client";
 
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";

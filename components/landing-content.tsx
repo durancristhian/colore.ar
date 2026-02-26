@@ -1,3 +1,7 @@
+// landing-content.tsx
+//
+// Home hero and CTA. Shows sign-in button when loaded; placeholder while auth loads.
+//
 "use client";
 
 import { SignInButton, SignedOut, useAuth } from "@clerk/nextjs";

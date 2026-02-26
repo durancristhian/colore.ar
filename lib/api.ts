@@ -1,3 +1,7 @@
+// api.ts
+//
+// Client for app API routes. Exposes createImage, listImages, getImage, deleteImage, getCurrentUser, submitFeedback. Throws with server error message when res.ok is false.
+//
 import type { UserRole } from "@/lib/db/users";
 
 const base = "";
@@ -20,6 +24,7 @@ export type ImageListItem = {
   createdAt: string;
 };
 
+/** POST /api/images. Throws on non-ok with server error message. */
 export async function createImage(payload: {
   description: string;
   image?: File | null;
@@ -46,29 +51,34 @@ export async function createImage(payload: {
   return res.json();
 }
 
+/** GET /api/images. Throws on non-ok. */
 export async function listImages(): Promise<ImageListItem[]> {
   const res = await fetch(`${base}/api/images`);
   if (!res.ok) throw new Error("No se pudieron cargar las imágenes.");
   return res.json();
 }
 
+/** GET /api/images/:id. Throws on non-ok. */
 export async function getImage(id: string): Promise<ImageListItem> {
   const res = await fetch(`${base}/api/images/${id}`);
   if (!res.ok) throw new Error("No se pudo cargar la imagen.");
   return res.json();
 }
 
+/** DELETE /api/images/:id. Throws on non-ok. */
 export async function deleteImage(id: string): Promise<void> {
   const res = await fetch(`${base}/api/images/${id}`, { method: "DELETE" });
   if (!res.ok) throw new Error("No se pudo eliminar la imagen.");
 }
 
+/** GET /api/user/me. Throws on non-ok. */
 export async function getCurrentUser(): Promise<CurrentUser> {
   const res = await fetch(`${base}/api/user/me`);
   if (!res.ok) throw new Error("No se pudo cargar el usuario.");
   return res.json();
 }
 
+/** POST /api/feedback. Throws on non-ok with server error message. */
 export async function submitFeedback(message: string): Promise<void> {
   const res = await fetch(`${base}/api/feedback`, {
     method: "POST",

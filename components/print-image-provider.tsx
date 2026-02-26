@@ -1,3 +1,7 @@
+// print-image-provider.tsx
+//
+// Context that exposes printImage(url, alt). Portals a print-only image to body and triggers window.print on load; clears after CLEAR_PENDING_DELAY_MS.
+//
 "use client";
 
 import {
@@ -63,7 +67,7 @@ export function PrintImageProvider({
   const printOnlyNode = (
     <div className="print-only" aria-hidden>
       {pending ? (
-        /* eslint-disable-next-line @next/next/no-img-element */
+        // eslint-disable-next-line @next/next/no-img-element -- portaled print-only image; next/image not used
         <img
           key={pending.url}
           src={pending.url}
@@ -85,6 +89,7 @@ export function PrintImageProvider({
   );
 }
 
+/** Returns context value or null when used outside provider. */
 export function usePrintImage(): PrintImageContextValue | null {
   return use(PrintImageContext);
 }

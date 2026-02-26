@@ -1,8 +1,8 @@
-/**
- * Extracts the Cloudinary public ID from a full Cloudinary image URL.
- * Handles format: https://res.cloudinary.com/<cloud>/image/upload/<publicId>
- * or with transformations: .../image/upload/<transformations>/<publicId>
- */
+// cloudinary-url.ts
+//
+// Parses Cloudinary image URLs.
+//
+/** Extracts public ID from res.cloudinary.com path; returns null if not Cloudinary or parse fails. */
 export function getPublicIdFromCloudinaryUrl(url: string): string | null {
   try {
     const parsed = new URL(url);

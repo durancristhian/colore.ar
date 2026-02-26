@@ -1,3 +1,7 @@
+// description-prompt-field.tsx
+//
+// Controlled textarea for image prompt; used in new-image and tabbed form.
+//
 "use client";
 
 import { Label } from "@/components/ui/label";

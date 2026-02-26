@@ -1,3 +1,7 @@
+// back-button.tsx
+//
+// Back navigation button (arrow) with configurable href and aria-label.
+//
 import Link from "next/link";
 import { ArrowLeftIcon } from "@phosphor-icons/react";
 import { Button } from "@/components/ui/button";

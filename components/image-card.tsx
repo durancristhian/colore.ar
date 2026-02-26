@@ -1,6 +1,8 @@
+// image-card.tsx
+//
+// Card linking to image detail; shows thumbnail, prompt, relative time, ImageActionsMenu.
+//
 "use client";
-
-import { CldImage } from "@/components/cld-image";
 import {
   Item,
   ItemContent,
@@ -11,6 +13,7 @@ import {
 import { RelativeTime } from "@/components/relative-time";
 import { ImageActionsMenu } from "@/components/image-actions-menu";
 import Link from "next/link";
+import { CldImage } from "@/components/cld-image";
 
 interface ImageCardProps {
   imageId: string;

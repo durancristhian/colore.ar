@@ -1,3 +1,8 @@
+// blob-to-png.ts
+//
+// Converts an image Blob to PNG via canvas (e.g. for clipboard).
+//
+/** Draws blob to canvas, toBlob image/png; rejects on failure. */
 export function blobToPng(blob: Blob): Promise<Blob> {
   return new Promise((resolve, reject) => {
     const url = URL.createObjectURL(blob);

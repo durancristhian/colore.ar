@@ -1,3 +1,7 @@
+// error-message.tsx
+//
+// Renders an Alert with title, description, and optional action. Used for API/load errors.
+//
 import { WarningCircleIcon, WarningIcon } from "@phosphor-icons/react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 

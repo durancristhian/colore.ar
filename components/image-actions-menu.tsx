@@ -1,3 +1,7 @@
+// image-actions-menu.tsx
+//
+// Print button + dropdown (download, copy image, copy URL, delete). Uses printImage context, downloadImage/blobToPng/buildImageDownloadFilename (utils), DeleteImageDialog. Refs for url/prompt to avoid stale closures in print.
+//
 "use client";
 
 import { useEffect, useRef, useState } from "react";
@@ -43,6 +47,7 @@ export function ImageActionsMenu({
 }: ImageActionsMenuProps) {
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const printImage = usePrintImage();
+  // Refs so print handler gets current url/prompt after async mount.
   const imageUrlRef = useRef(imageUrl);
   const promptRef = useRef(prompt);
   useEffect(() => {

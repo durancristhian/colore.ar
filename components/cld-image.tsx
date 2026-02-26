@@ -1,3 +1,7 @@
+// cld-image.tsx
+//
+// Client wrapper for next-cloudinary CldImage. Accepts full Cloudinary URL or public ID; resolves via getPublicIdFromCloudinaryUrl. Aspect-ratio wrapper to avoid layout shift.
+//
 "use client";
 
 import {
@@ -7,21 +11,14 @@ import {
 import { clsx } from "clsx";
 import { getPublicIdFromCloudinaryUrl } from "@/utils/cloudinary-url";
 
+/** CldImage props plus wrapperClassName, wrapperBackgroundClassName, objectFit (contain | cover). */
 export type CldImagePropsWithWrapper = Omit<CldImageProps, "fill" | "sizes"> & {
-  /** Extra classes for the aspect-ratio placeholder wrapper. */
   wrapperClassName?: string;
-  /** Override wrapper background (default: bg-muted). Use e.g. "bg-white" for a white frame. */
   wrapperBackgroundClassName?: string;
-  /** How the image fills the wrapper. Default "contain" shows full image; "cover" fills the cell (may crop). */
   objectFit?: "contain" | "cover";
 };
 
-/**
- * Client wrapper for CldImage so it can be used from App Router pages
- * without marking those pages as client components.
- * Accepts full Cloudinary URLs or public IDs as src; resolves to public ID internally.
- * Always fills its wrapper (aspect-ratio box) to avoid layout shift. Requires src and alt.
- */
+/** Renders CldImage in an aspect-ratio wrapper; resolves full Cloudinary URL to public ID. */
 export function CldImage(props: CldImagePropsWithWrapper) {
   const {
     wrapperClassName,

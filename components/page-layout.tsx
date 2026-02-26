@@ -1,3 +1,7 @@
+// page-layout.tsx
+//
+// Page shell with title and optional left/right slots. Used by all authenticated pages.
+//
 interface PageLayoutProps {
   title: string;
   leftContent?: React.ReactNode;

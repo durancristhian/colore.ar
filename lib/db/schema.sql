@@ -1,4 +1,6 @@
--- Stored dates are UTC in ISO 8601 format (e.g. 2025-02-23T14:30:00.000Z).
+-- Reference schema for images and users tables. Dates UTC ISO 8601.
+-- Actual DDL is in lib/db (CREATE TABLE IF NOT EXISTS).
+--
 CREATE TABLE IF NOT EXISTS images (
   id TEXT PRIMARY KEY,
   user_id TEXT NOT NULL,

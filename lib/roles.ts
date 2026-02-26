@@ -1,3 +1,7 @@
+// roles.ts
+//
+// User-visible labels and badge Tailwind classes per UserRole. Used by header and any role badge.
+//
 import type { UserRole } from "@/lib/db/users";
 
 export const ROLE_LABELS: Record<UserRole, string> = {
