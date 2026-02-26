@@ -44,6 +44,10 @@ export function ImageCard({
           <CldImage
             src={imageUrl}
             alt={prompt}
+            width={288}
+            height={288}
+            crop="fill"
+            quality="auto:good"
             wrapperClassName="!size-36 !w-36 !h-36 rounded-lg"
             objectFit="cover"
           />
