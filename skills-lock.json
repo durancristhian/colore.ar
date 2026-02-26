@@ -6,6 +6,11 @@
       "sourceType": "github",
       "computedHash": "f540cdf890ed9eb3267f136bcd6dfb486de2e05dc09d2cdfce4726fb99b5801c"
     },
+    "code-comments": {
+      "source": "petekp/claude-code-setup",
+      "sourceType": "github",
+      "computedHash": "f2119c255923c9e2673104e352b7be69ab54fde338b1364c3e2db4ac3fc037a3"
+    },
     "code-quality": {
       "source": "tursodatabase/turso",
       "sourceType": "github",
