@@ -1,7 +1,15 @@
+// route.ts
+//
+// Proxies requests to Umami analytics /api/send. Forwards body and Content-Type/User-Agent
+// to avoid CORS and keep the analytics server URL server-side. Returns 503 on fetch failure.
+//
 import { NextRequest, NextResponse } from "next/server";
 
 const UMAMI_SEND_URL = "https://cloud.umami.is/api/send";
 
+/**
+ * Forwards the request to UMAMI_SEND_URL and returns the upstream response; 503 if fetch fails.
+ */
 export async function POST(request: NextRequest) {
   let body: string;
   try {

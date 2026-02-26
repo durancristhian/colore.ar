@@ -1,3 +1,7 @@
+// users.ts
+//
+// Users table (user_id, role). Used for role-based generation options and app/api/user/me.
+//
 import { getDb } from "./client";
 
 export type UserRole = "admin" | "vip" | "standard";
@@ -31,6 +35,9 @@ export interface UserRow {
   role: UserRole;
 }
 
+/**
+ * Returns the user if they exist; otherwise null.
+ */
 export async function getUserById(
   userId: string,
 ): Promise<{ userId: string; role: UserRole } | null> {
@@ -48,6 +55,9 @@ export async function getUserById(
   };
 }
 
+/**
+ * Returns the existing user or inserts one with defaultRole and returns it. Used so the API always has a role.
+ */
 export async function getOrCreateUser(
   userId: string,
   defaultRole: UserRole = "standard",

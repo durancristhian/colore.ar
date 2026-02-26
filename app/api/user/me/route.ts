@@ -1,3 +1,7 @@
+// route.ts
+//
+// Returns the current user's id and role from the DB, creating the user if they don't exist yet.
+//
 import { NextResponse } from "next/server";
 import { auth } from "@clerk/nextjs/server";
 import { getOrCreateUser } from "@/lib/db/users";

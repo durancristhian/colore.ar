@@ -1,15 +1,19 @@
-/** Request body for creating an image */
+// types.ts
+//
+// Request/response and list types for the images API.
+//
+/** POST /api/images body. */
 export interface CreateImageRequest {
   description: string;
 }
 
-/** Success response for POST /api/images */
+/** POST /api/images success. */
 export interface CreateImageResponse {
   id: string;
   url: string;
 }
 
-/** Item returned by GET /api/images (list) and GET /api/images/:id (single) */
+/** GET /api/images list and GET /api/images/:id single item. */
 export interface ImageListItem {
   id: string;
   description: string | null;
@@ -18,7 +22,7 @@ export interface ImageListItem {
   createdAt: string;
 }
 
-/** Error response shape */
+/** Error payload shape. */
 export interface ErrorResponse {
   error: string;
 }

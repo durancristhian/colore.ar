@@ -1,3 +1,7 @@
+// cloudinary-store.ts
+//
+// ImageStore implementation using Cloudinary unsigned upload (preset). save returns public_id for URL building (e.g. in the API).
+//
 import { v2 as cloudinary } from "cloudinary";
 import type { ImageStore } from "./store";
 
@@ -8,7 +12,7 @@ const apiKey = process.env.CLOUDINARY_API_KEY;
 function getConfig() {
   if (!cloudName || !uploadPreset) {
     throw new Error(
-      "Missing Cloudinary env: CLOUDINARY_CLOUD_NAME and CLOUDINARY_UPLOAD_PRESET are required"
+      "Missing Cloudinary env: CLOUDINARY_CLOUD_NAME and CLOUDINARY_UPLOAD_PRESET are required",
     );
   }
   cloudinary.config({
@@ -19,25 +23,25 @@ function getConfig() {
   return { cloudName, uploadPreset };
 }
 
-/**
- * Cloudinary image store using unsigned uploads.
- * save() returns Cloudinary public_id; get() fetches from Cloudinary URL and returns the buffer (proxy).
- */
+/** save returns Cloudinary public_id (use to build public URLs); get fetches by that id and returns the buffer or null. */
 export const cloudinaryStore: ImageStore = {
   async save(buffer: Buffer): Promise<string> {
     const { uploadPreset: preset } = getConfig();
 
-    const result = await new Promise<{ public_id: string }>((resolve, reject) => {
-      const stream = cloudinary.uploader.unsigned_upload_stream(
-        preset,
-        (error, uploadResult) => {
-          if (error) return reject(error);
-          if (!uploadResult?.public_id) return reject(new Error("No public_id in upload response"));
-          resolve({ public_id: uploadResult.public_id });
-        }
-      );
-      stream.end(buffer);
-    });
+    const result = await new Promise<{ public_id: string }>(
+      (resolve, reject) => {
+        const stream = cloudinary.uploader.unsigned_upload_stream(
+          preset,
+          (error, uploadResult) => {
+            if (error) return reject(error);
+            if (!uploadResult?.public_id)
+              return reject(new Error("No public_id in upload response"));
+            resolve({ public_id: uploadResult.public_id });
+          },
+        );
+        stream.end(buffer);
+      },
+    );
 
     return result.public_id;
   },

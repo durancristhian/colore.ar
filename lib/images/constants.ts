@@ -1,4 +1,8 @@
-/** Fallback text when an image has no description (e.g. uploaded from file). */
+// constants.ts
+//
+// Allowed MIME types, max size (MAX_IMAGE_SIZE_BYTES), and validators for the images API.
+//
+/** Fallback when an image has no description (e.g. uploaded from file). */
 export const DEFAULT_IMAGE_DESCRIPTION = "A partir de una imagen";
 
 export const ALLOWED_IMAGE_TYPES = [
@@ -9,12 +13,15 @@ export const ALLOWED_IMAGE_TYPES = [
   "image/heif",
 ] as const;
 
-export const MAX_IMAGE_SIZE_BYTES = 10 * 1024 * 1024; // 10MB
+/** Max size in bytes; used by isImageSizeValid and the images API. */
+export const MAX_IMAGE_SIZE_BYTES = 10 * 1024 * 1024;
 
+/** True if type is in ALLOWED_IMAGE_TYPES. */
 export function isImageTypeAllowed(type: string): boolean {
   return (ALLOWED_IMAGE_TYPES as readonly string[]).includes(type);
 }
 
+/** True if size is within MAX_IMAGE_SIZE_BYTES. */
 export function isImageSizeValid(size: number): boolean {
   return size <= MAX_IMAGE_SIZE_BYTES;
 }

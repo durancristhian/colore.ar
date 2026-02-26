@@ -1,3 +1,7 @@
+// route.ts
+//
+// GET: single image by id. DELETE: delete image by id. Both scoped to the current user.
+//
 import { NextResponse } from "next/server";
 import { auth } from "@clerk/nextjs/server";
 import {

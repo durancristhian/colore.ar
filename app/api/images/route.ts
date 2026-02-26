@@ -1,3 +1,8 @@
+// route.ts
+//
+// GET: lists the current user's images. POST: creates an image from a text description
+// or from an uploaded image (image-to-image). Auth required. Uses lib/db and lib/images.
+//
 import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@clerk/nextjs/server";
 import { getOrCreateUser } from "@/lib/db/users";
@@ -16,6 +21,9 @@ import {
 import { imageStore } from "@/lib/images/store";
 import type { CreateImageResponse, ImageListItem } from "@/lib/images/types";
 
+/**
+ * Builds the public URL for a Cloudinary image from its stored public_id (used after imageStore.save).
+ */
 function getCloudinaryPublicUrl(publicId: string): string {
   const cloudName = process.env.CLOUDINARY_CLOUD_NAME;
   if (!cloudName) throw new Error("CLOUDINARY_CLOUD_NAME is not set");
@@ -31,6 +39,10 @@ export async function GET() {
   return NextResponse.json(images);
 }
 
+/**
+ * Accepts multipart/form-data: description xor image; role and usePaidModel drive which
+ * generator runs. Returns { id, url } on success; 4xx/5xx with error message otherwise.
+ */
 export async function POST(request: NextRequest) {
   const { userId } = await auth();
   if (!userId) {
@@ -70,6 +82,7 @@ export async function POST(request: NextRequest) {
     const hasDescription =
       typeof description === "string" && description.trim() !== "";
 
+    // Require exactly one of description or image so the generation path is unambiguous.
     if (hasImage && hasDescription) {
       return NextResponse.json(
         { error: "Enviá solo descripción o imagen, no ambos." },

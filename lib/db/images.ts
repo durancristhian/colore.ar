@@ -1,3 +1,8 @@
+// images.ts
+//
+// CRUD for the images table. Ensures the table exists on first use.
+// Used by app/api/images and app/api/images/[id].
+//
 import { getDb } from "./client";
 
 const INIT_SQL = `
@@ -28,6 +33,9 @@ export interface InsertImageParams {
   sourceImageUrl?: string | null;
 }
 
+/**
+ * Inserts one image row. ensureTable is called internally.
+ */
 export async function insertImage(params: InsertImageParams): Promise<void> {
   await ensureTable();
   const db = getDb();
@@ -55,6 +63,9 @@ export interface ImageRow {
   createdAt: string;
 }
 
+/**
+ * Returns the image if it exists and is owned by userId; otherwise null.
+ */
 export async function getImageByIdAndUserId(
   id: string,
   userId: string,
@@ -77,6 +88,9 @@ export async function getImageByIdAndUserId(
   };
 }
 
+/**
+ * Returns all images for the user, newest first; empty array if none.
+ */
 export async function listImagesByUserId(userId: string): Promise<ImageRow[]> {
   await ensureTable();
   const db = getDb();
@@ -96,6 +110,9 @@ export async function listImagesByUserId(userId: string): Promise<ImageRow[]> {
   }));
 }
 
+/**
+ * Deletes the image if it exists and is owned by userId. Returns true iff a row was deleted.
+ */
 export async function deleteImageByIdAndUserId(
   id: string,
   userId: string,

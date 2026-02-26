@@ -1,7 +1,16 @@
+// route.ts
+//
+// Receives feedback from signed-in users and forwards it to a Telegram chat.
+// Used by the feedback form. Requires Clerk auth; uses lib/telegram to send.
+//
 import { NextRequest, NextResponse } from "next/server";
 import { auth, currentUser } from "@clerk/nextjs/server";
 import { Telegram } from "@/lib/telegram";
 
+/**
+ * Accepts JSON body with required `message` string. Requires auth. Forwards to Telegram;
+ * returns 503 when TELEGRAM_BOTID/TELEGRAM_CHATID are not set (caller shows "temporarily unavailable").
+ */
 export async function POST(request: NextRequest) {
   const [authResult, user] = await Promise.all([auth(), currentUser()]);
   const userId = authResult.userId;
@@ -55,6 +64,7 @@ export async function POST(request: NextRequest) {
       message.includes("TELEGRAM_BOTID") &&
       message.includes("TELEGRAM_CHATID")
     ) {
+      // Missing env is treated as 503 so the UI can show "temporarily unavailable" instead of a generic error.
       return NextResponse.json(
         { error: "El feedback no está disponible temporalmente." },
         { status: 503 },

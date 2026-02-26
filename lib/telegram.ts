@@ -1,4 +1,12 @@
+// telegram.ts
+//
+// Sends messages to a Telegram chat via the Bot API. Used by app/api/feedback.
+// Requires TELEGRAM_BOTID and TELEGRAM_CHATID; rejects if unset (caller should map to 503).
+//
 export class Telegram {
+  /**
+   * Sends text to the configured chat. Rejects if env vars are missing (caller should return 503).
+   */
   sendMessage(message: string) {
     return new Promise<Response>(async (resolve, reject) => {
       try {

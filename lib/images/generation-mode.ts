@@ -1,3 +1,7 @@
+// generation-mode.ts
+//
+// Maps user role and request flag to whether the paid model and image-from-image are allowed. Used by API and frontend.
+//
 import type { UserRole } from "@/lib/db/users";
 
 export interface ImageGenerationOptions {
@@ -6,8 +10,7 @@ export interface ImageGenerationOptions {
 }
 
 /**
- * Returns whether to use the paid model (Open Router) and whether image-from-image is allowed.
- * Used by both API (with DB role + request body) and frontend (with currentUser.role + switch state).
+ * Returns usePaidModel and allowImageFromImage from role and usePaidModelFromRequest. Standard role always gets false for both.
  */
 export function getImageGenerationOptions(
   role: UserRole,

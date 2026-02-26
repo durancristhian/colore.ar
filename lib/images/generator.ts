@@ -1,9 +1,11 @@
+// generator.ts
+//
+// Text-to-image (Open Router + Pollinations) and image-to-image (Open Router). Each function documents its required env vars.
+//
 import { generateImage as generateImageWithModel, generateText } from "ai";
 import { createOpenRouter } from "@openrouter/ai-sdk-provider";
 
-/**
- * Image generator interface. Implementations can be swapped (e.g. mock → Open Router / Vercel AI).
- */
+/** Implementations can be swapped (e.g. mock, Open Router, Vercel AI). */
 export interface ImageGenerator {
   generate(description: string): Promise<Buffer>;
 }
@@ -18,10 +20,7 @@ function getEnv(name: string): string {
   return value.trim();
 }
 
-/**
- * Builds the full prompt as: optional PROMPT_PREFIX + description + optional PROMPT_SUFFIX.
- * Parts are trimmed and joined with a single space.
- */
+/** Builds prompt from PROMPT_PREFIX + quoted description + PROMPT_SUFFIX (env-driven). */
 function buildPrompt(description: string): string {
   const trimmed = description.trim();
   const prefix = process.env.PROMPT_PREFIX?.trim() ?? "";
@@ -31,10 +30,7 @@ function buildPrompt(description: string): string {
   return parts.join(" ");
 }
 
-/**
- * Builds the prompt for image-to-image: PROMPT_IMAGE_PREFIX + PROMPT_SUFFIX joined with a space.
- * Used when generating from an uploaded image (Open Router image-to-image).
- */
+/** Builds prompt for image-to-image from PROMPT_IMAGE_PREFIX + PROMPT_SUFFIX. */
 function buildPromptFromImage(): string {
   const prefix = process.env.PROMPT_IMAGE_PREFIX?.trim() ?? "";
   const suffix = process.env.PROMPT_SUFFIX?.trim() ?? "";
@@ -43,10 +39,7 @@ function buildPromptFromImage(): string {
 }
 
 /**
- * Generates an image from a text description using the Vercel AI SDK and Open Router.
- * Uses OPEN_ROUTER_IMAGE_MODEL and OPEN_ROUTER_API_KEY (required). Optionally prepends PROMPT_PREFIX and appends PROMPT_SUFFIX to the prompt.
- * OPEN_ROUTER_IMAGE_MODEL must be an image-capable model (e.g. google/gemini-2.5-flash-image).
- * See https://openrouter.ai/models?output_modalities=image
+ * Generates an image from a text description via Open Router. Requires OPEN_ROUTER_API_KEY and OPEN_ROUTER_IMAGE_MODEL. Throws if no image is returned.
  */
 export async function generateImage(description: string): Promise<Buffer> {
   const fullPrompt = buildPrompt(description);
@@ -76,10 +69,7 @@ function getPollinationsApiKey(): string {
 }
 
 /**
- * Generates an image from a text description using Pollinations (flux model).
- * Uses buildPrompt for PROMPT_PREFIX/PROMPT_SUFFIX consistency.
- * Requires POLLINATIONS_API_KEY.
- * See https://gen.pollinations.ai/
+ * Generates an image from a text description via Pollinations (flux). Requires POLLINATIONS_API_KEY. Uses same prompt building as generateImage.
  */
 export async function generateImageWithPollinations(
   description: string,
@@ -100,9 +90,7 @@ export async function generateImageWithPollinations(
 }
 
 /**
- * Generates an image from a source image URL using Open Router (image-to-image).
- * Uses generateText with a chat model that accepts image input and returns image output.
- * Requires OPEN_ROUTER_API_KEY and OPEN_ROUTER_IMAGE_MODEL (image-capable chat model, e.g. google/gemini-3-pro-image-preview).
+ * Generates an image from a source image URL via Open Router (image-to-image). Requires OPEN_ROUTER_API_KEY and OPEN_ROUTER_IMAGE_MODEL. Throws if no image is returned.
  */
 export async function generateImageFromImage(
   sourceImageUrl: string,
