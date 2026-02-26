@@ -1,6 +1,6 @@
 // image-actions-menu.tsx
 //
-// Print button + dropdown (download, copy image, copy URL, delete). Uses printImage context, downloadImage/blobToPng/buildImageDownloadFilename (utils), DeleteImageDialog. Refs for url/prompt to avoid stale closures in print.
+// Print button + dropdown (download, copy image, copy URL, delete). Uses useImageActions hook, printImage context, DeleteImageDialog. Refs for url/prompt to avoid stale closures in print.
 //
 "use client";
 
@@ -13,7 +13,6 @@ import {
   PrinterIcon,
   TrashIcon,
 } from "@phosphor-icons/react";
-import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { ButtonGroup } from "@/components/ui/button-group";
 import { DeleteImageDialog } from "@/components/delete-image-dialog";
@@ -26,9 +25,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { usePrintImage } from "@/components/print-image-provider";
-import { blobToPng } from "@/utils/blob-to-png";
-import { buildImageDownloadFilename } from "@/utils/image-download-filename";
-import { downloadImage } from "@/utils/download-image";
+import { useImageActions } from "@/hooks/use-image-actions";
 
 interface ImageActionsMenuProps {
   imageId: string;
@@ -47,6 +44,10 @@ export function ImageActionsMenu({
 }: ImageActionsMenuProps) {
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const printImage = usePrintImage();
+  const { handleDownload, handleCopyImage, handleCopyUrl } = useImageActions(
+    imageUrl,
+    prompt,
+  );
   // Refs so print handler gets current url/prompt after async mount.
   const imageUrlRef = useRef(imageUrl);
   const promptRef = useRef(prompt);
@@ -62,33 +63,6 @@ export function ImageActionsMenu({
       printImage.printImage(imageUrlRef.current, promptRef.current);
     } else {
       window.print();
-    }
-  }
-
-  function handleDownload() {
-    downloadImage(imageUrl, buildImageDownloadFilename(prompt, new Date()));
-  }
-
-  async function handleCopyImage() {
-    try {
-      const response = await fetch(imageUrl);
-      const blob = await response.blob();
-      const pngBlob = blob.type === "image/png" ? blob : await blobToPng(blob);
-      await navigator.clipboard.write([
-        new ClipboardItem({ "image/png": pngBlob }),
-      ]);
-      toast.success("Imagen copiada al portapapeles");
-    } catch {
-      toast.error("No se pudo copiar la imagen");
-    }
-  }
-
-  async function handleCopyUrl() {
-    try {
-      await navigator.clipboard.writeText(imageUrl);
-      toast.success("URL copiada al portapapeles");
-    } catch {
-      toast.error("No se pudo copiar la URL");
     }
   }
 

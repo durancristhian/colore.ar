@@ -2,6 +2,7 @@
 //
 // Client wrapper for next-cloudinary CldImage. Accepts full Cloudinary URL or public ID; resolves via getPublicIdFromCloudinaryUrl.
 // Supports thumbnail mode (explicit width/height, no fill) and detail mode (fill + 2× container sizes). Forwards crop/quality to next-cloudinary.
+// Right-click context menu: download, copy image, copy URL (useImageActions). Optional promptForDownload for download filename.
 //
 "use client";
 
@@ -9,14 +10,23 @@ import {
   CldImage as CldImageDefault,
   type CldImageProps,
 } from "next-cloudinary";
+import { DownloadIcon, ImageIcon, LinkIcon } from "@phosphor-icons/react";
 import { clsx } from "clsx";
+import {
+  ContextMenu,
+  ContextMenuContent,
+  ContextMenuItem,
+  ContextMenuTrigger,
+} from "@/components/ui/context-menu";
+import { useImageActions } from "@/hooks/use-image-actions";
 import { getPublicIdFromCloudinaryUrl } from "@/utils/cloudinary-url";
 
-/** CldImage props plus wrapperClassName, wrapperBackgroundClassName, objectFit (contain | cover). */
+/** CldImage props plus wrapperClassName, wrapperBackgroundClassName, objectFit (contain | cover), promptForDownload (optional, for context menu download filename). */
 export type CldImagePropsWithWrapper = Omit<CldImageProps, "fill" | "sizes"> & {
   wrapperClassName?: string;
   wrapperBackgroundClassName?: string;
   objectFit?: "contain" | "cover";
+  promptForDownload?: string;
 };
 
 const DETAIL_SIZES = "(max-width: 1024px) 100vw, 1024px";
@@ -34,9 +44,14 @@ export function CldImage(props: CldImagePropsWithWrapper) {
     height,
     crop,
     quality,
+    promptForDownload,
     ...rest
   } = props;
   const resolvedSrc = getPublicIdFromCloudinaryUrl(props.src) ?? props.src;
+  const { handleDownload, handleCopyImage, handleCopyUrl } = useImageActions(
+    props.src,
+    promptForDownload ?? props.alt ?? "",
+  );
 
   const isThumbnail =
     width !== undefined &&
@@ -45,35 +60,53 @@ export function CldImage(props: CldImagePropsWithWrapper) {
     Number(height) > 0;
 
   return (
-    <div
-      className={clsx(
-        "relative aspect-square w-full overflow-hidden bg-muted/50 print:bg-white",
-        wrapperBackgroundClassName,
-        wrapperClassName,
-      )}
-    >
-      {isThumbnail ? (
-        <CldImageDefault
-          {...rest}
-          src={resolvedSrc}
-          width={width}
-          height={height}
-          crop={crop ?? "fill"}
-          quality={quality ?? DETAIL_QUALITY}
-          style={{ ...rest.style, objectFit }}
-          loading="eager"
-        />
-      ) : (
-        <CldImageDefault
-          {...rest}
-          src={resolvedSrc}
-          fill
-          sizes={DETAIL_SIZES}
-          quality={quality ?? DETAIL_QUALITY}
-          style={{ ...rest.style, objectFit }}
-          loading="eager"
-        />
-      )}
-    </div>
+    <ContextMenu>
+      <ContextMenuTrigger asChild>
+        <div
+          className={clsx(
+            "relative aspect-square w-full overflow-hidden bg-muted/50 print:bg-white",
+            wrapperBackgroundClassName,
+            wrapperClassName,
+          )}
+        >
+          {isThumbnail ? (
+            <CldImageDefault
+              {...rest}
+              src={resolvedSrc}
+              width={width}
+              height={height}
+              crop={crop ?? "fill"}
+              quality={quality ?? DETAIL_QUALITY}
+              style={{ ...rest.style, objectFit }}
+              loading="eager"
+            />
+          ) : (
+            <CldImageDefault
+              {...rest}
+              src={resolvedSrc}
+              fill
+              sizes={DETAIL_SIZES}
+              quality={quality ?? DETAIL_QUALITY}
+              style={{ ...rest.style, objectFit }}
+              loading="eager"
+            />
+          )}
+        </div>
+      </ContextMenuTrigger>
+      <ContextMenuContent>
+        <ContextMenuItem onSelect={handleDownload}>
+          <DownloadIcon />
+          Descargar
+        </ContextMenuItem>
+        <ContextMenuItem onSelect={handleCopyImage}>
+          <ImageIcon />
+          Copiar imagen
+        </ContextMenuItem>
+        <ContextMenuItem onSelect={handleCopyUrl}>
+          <LinkIcon />
+          Copiar URL de la imagen
+        </ContextMenuItem>
+      </ContextMenuContent>
+    </ContextMenu>
   );
 }
