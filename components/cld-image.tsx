@@ -71,7 +71,7 @@ export function CldImage(props: CldImagePropsWithWrapper) {
         <ContextMenuTrigger asChild>
           <div
             className={clsx(
-              "relative aspect-square w-full overflow-hidden bg-muted/50 print:bg-white",
+              "bg-muted/50 relative aspect-square w-full overflow-hidden print:bg-white",
               wrapperBackgroundClassName,
               wrapperClassName,
             )}

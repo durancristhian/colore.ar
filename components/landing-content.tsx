@@ -12,8 +12,8 @@ import { SparklesText } from "@/components/ui/sparkles-text";
 export function LandingContent() {
   const { isLoaded } = useAuth();
   return (
-    <div className="min-h-[calc(100dvh-2rem)] flex flex-col items-center justify-center gap-8">
-      <div className="text-center space-y-2">
+    <div className="flex min-h-[calc(100dvh-2rem)] flex-col items-center justify-center gap-8">
+      <div className="space-y-2 text-center">
         <div>
           <SparklesText>
             <h1>Colore.ar</h1>

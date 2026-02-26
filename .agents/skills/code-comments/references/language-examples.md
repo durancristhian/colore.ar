@@ -37,7 +37,9 @@ Concrete examples for each language you work with.
  * @throws {ApiError} 401 if not authenticated
  * @throws {ApiError} 403 if caller lacks user:read permission
  */
-export async function getUsers(options: GetUsersOptions): Promise<PaginatedUsers>
+export async function getUsers(
+  options: GetUsersOptions,
+): Promise<PaginatedUsers>;
 ```
 
 ### React Component Documentation
@@ -92,7 +94,7 @@ export function UserAvatar({ user, size = 'md', showStatus, onClick }: UserAvata
  *   if (debouncedSearch) fetchResults(debouncedSearch);
  * }, [debouncedSearch]);
  */
-export function useDebounce<T>(value: T, delay = 300): T
+export function useDebounce<T>(value: T, delay = 300): T;
 ```
 
 ---
@@ -311,17 +313,23 @@ export default async function DashboardPage() {
 // The provider handles SSR hydration mismatch by defaulting to system theme
 // on first render, then applying stored preference after hydration.
 
-'use client';
+"use client";
 
-import { createContext, useContext, useEffect, useState, ReactNode } from 'react';
+import {
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+  ReactNode,
+} from "react";
 
-type Theme = 'light' | 'dark' | 'system';
+type Theme = "light" | "dark" | "system";
 
 interface ThemeContextValue {
   /** Current theme setting (what user chose) */
   theme: Theme;
   /** Resolved theme (what's actually displayed—never 'system') */
-  resolvedTheme: 'light' | 'dark';
+  resolvedTheme: "light" | "dark";
   /** Update theme preference */
   setTheme: (theme: Theme) => void;
 }

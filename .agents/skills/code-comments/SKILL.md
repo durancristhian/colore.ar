@@ -5,18 +5,19 @@ description: Write clear, plain-spoken code comments and documentation that live
 
 # Code Comments
 
-Write documentation that lives with the code it describes. Plain language. No jargon. Explain the *why*, not the *what*.
+Write documentation that lives with the code it describes. Plain language. No jargon. Explain the _why_, not the _what_.
 
 ## Core Philosophy
 
 **Co-location wins.** Documentation in separate files drifts out of sync. Comments next to code stay accurate because they're updated together.
 
 **Write for three audiences:**
+
 1. Future you, six months from now
 2. Teammates reading unfamiliar code
 3. AI assistants (Claude, Copilot) who see one file at a time
 
-**The "why" test:** Before writing a comment, ask: "Does this explain *why* this code exists or *why* it works this way?" If it only restates *what* the code does, skip it.
+**The "why" test:** Before writing a comment, ask: "Does this explain _why_ this code exists or _why_ it works this way?" If it only restates _what_ the code does, skip it.
 
 ## Documentation Levels
 
@@ -47,6 +48,7 @@ Every file should open with a brief explanation of its purpose and how it fits i
 ```
 
 **Include:**
+
 - What this file/module is responsible for
 - Why it exists (if not obvious from the name)
 - Key relationships to other parts of the codebase
@@ -67,7 +69,7 @@ Document the contract, not the implementation.
  * throwing—caller should check `canShipTo()` first if they
  * need to distinguish "free shipping" from "can't ship."
  */
-function calculateShipping(weightLbs: number, zipCode: string): number
+function calculateShipping(weightLbs: number, zipCode: string): number;
 ```
 
 ```python
@@ -84,6 +86,7 @@ def sync_user_preferences(user_id: str, prefs: dict) -> SyncResult:
 ```
 
 **Include:**
+
 - What the function accomplishes (not how)
 - Non-obvious parameter constraints or edge cases
 - What the return value means, especially for ambiguous cases
@@ -100,7 +103,7 @@ Use sparingly. When you need them, explain the reasoning.
 // 300ms feels responsive while cutting API calls by ~80% in user testing.
 const debouncedSearch = useMemo(
   () => debounce(executeSearch, 300),
-  [executeSearch]
+  [executeSearch],
 );
 ```
 
@@ -165,6 +168,7 @@ Make them actionable and traceable.
 ## Language-Specific Patterns
 
 See [references/language-examples.md](references/language-examples.md) for detailed examples in:
+
 - TypeScript/JavaScript (JSDoc, TSDoc patterns)
 - Swift (documentation comments, MARK pragmas)
 - Python (docstrings, type hint documentation)

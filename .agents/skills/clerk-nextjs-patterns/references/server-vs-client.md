@@ -19,17 +19,17 @@ const { userId } = await auth();
 
 ```tsx
 // Server Components
-import { auth, currentUser } from '@clerk/nextjs/server';
+import { auth, currentUser } from "@clerk/nextjs/server";
 
 // Client Components
-'use client';
-import { useAuth, useUser } from '@clerk/nextjs';
+("use client");
+import { useAuth, useUser } from "@clerk/nextjs";
 ```
 
 ## Server Component
 
 ```tsx
-import { auth, currentUser } from '@clerk/nextjs/server';
+import { auth, currentUser } from "@clerk/nextjs/server";
 
 export default async function DashboardPage() {
   const { userId } = await auth();
@@ -43,8 +43,8 @@ export default async function DashboardPage() {
 ## Client Component
 
 ```tsx
-'use client';
-import { useUser, useAuth } from '@clerk/nextjs';
+"use client";
+import { useUser, useAuth } from "@clerk/nextjs";
 
 export function UserDashboard() {
   const { isLoaded, isSignedIn, user } = useUser();
@@ -66,8 +66,8 @@ export function UserDashboard() {
 
 ```tsx
 // Server: fetch initial data
-import { currentUser } from '@clerk/nextjs/server';
-import { ProfileForm } from './ProfileForm';
+import { currentUser } from "@clerk/nextjs/server";
+import { ProfileForm } from "./ProfileForm";
 
 export default async function ProfilePage() {
   const user = await currentUser();
@@ -76,8 +76,8 @@ export default async function ProfilePage() {
 }
 
 // Client: handle interactions
-'use client';
-import { useUser } from '@clerk/nextjs';
+("use client");
+import { useUser } from "@clerk/nextjs";
 
 export function ProfileForm({ initialData }) {
   const { user } = useUser();

@@ -2,6 +2,7 @@
 name: code-quality
 description: General Correctness rules, Rust patterns, comments, avoiding over-engineering. When writing code always take these into account
 ---
+
 # Code Quality Guide
 
 ## Core Principle
@@ -26,6 +27,7 @@ Production database. Correctness paramount. Crash > corrupt.
 ## If-Statements
 
 Wrong:
+
 ```rust
 if condition {
     // happy path
@@ -35,6 +37,7 @@ if condition {
 ```
 
 Right:
+
 ```rust
 // If only one branch should ever be hit:
 assert!(condition, "invariant violated: ...");
@@ -49,11 +52,13 @@ Use if-statements only when both branches are expected paths.
 ## Comments
 
 **Do:**
+
 - Document WHY, not what
 - Document functions, structs, enums, variants
 - Focus on why something is necessary
 
 **Don't:**
+
 - Comments that repeat code
 - References to AI conversations ("This test should trigger the bug")
 - Temporal markers ("added", "existing code", "Phase 1")

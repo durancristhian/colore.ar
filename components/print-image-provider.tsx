@@ -72,7 +72,7 @@ export function PrintImageProvider({
           key={pending.url}
           src={pending.url}
           alt={pending.alt}
-          className="border-2 rounded-md"
+          className="rounded-md border-2"
           onLoad={handleImageLoad}
         />
       ) : null}

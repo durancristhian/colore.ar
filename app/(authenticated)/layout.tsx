@@ -16,7 +16,7 @@ export default function AuthenticatedLayout({
   return (
     <PrintImageProvider>
       <div className="flex min-h-dvh flex-col">
-        <header className="border-b border-border bg-muted/50">
+        <header className="border-border bg-muted/50 border-b">
           <div className="mx-auto flex w-full max-w-lg items-center justify-between px-4 py-4">
             <Link href="/imagenes">
               <SparklesText className="text-xl">

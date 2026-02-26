@@ -73,7 +73,7 @@ export function ImageActionsMenu({
   return (
     <>
       <ButtonGroup
-        className="flex-1 w-full"
+        className="w-full flex-1"
         onClick={(e) => {
           e.preventDefault();
           e.stopPropagation();

@@ -29,18 +29,18 @@ export function RelativeTime({ date }: RelativeTimeProps) {
       <HoverCardTrigger asChild>
         <time
           dateTime={date}
-          className="inline-flex items-center gap-1.5 hover:underline focus:underline underline-offset-2 cursor-default outline-none focus:rounded"
+          className="inline-flex cursor-default items-center gap-1.5 underline-offset-2 outline-none hover:underline focus:rounded focus:underline"
           tabIndex={0}
         >
           <ClockIcon
-            className="size-4 shrink-0 text-muted-foreground"
+            className="text-muted-foreground size-4 shrink-0"
             aria-hidden
           />
           {display}
         </time>
       </HoverCardTrigger>
       <HoverCardContent side="top" align="start" className="w-auto">
-        <p className="text-sm text-muted-foreground">Generada el {raw}.</p>
+        <p className="text-muted-foreground text-sm">Generada el {raw}.</p>
       </HoverCardContent>
     </HoverCard>
   );

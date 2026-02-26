@@ -16,16 +16,16 @@ export default function Error({
   reset: () => void;
 }) {
   return (
-    <div className="mx-auto w-full max-w-lg p-4 min-h-dvh flex flex-col items-center justify-center">
-      <div className="min-h-[calc(100dvh-2rem)] flex flex-col items-center justify-center gap-8">
-        <div className="text-center space-y-2">
+    <div className="mx-auto flex min-h-dvh w-full max-w-lg flex-col items-center justify-center p-4">
+      <div className="flex min-h-[calc(100dvh-2rem)] flex-col items-center justify-center gap-8">
+        <div className="space-y-2 text-center">
           <h1 className="text-6xl font-bold">Algo salió mal</h1>
-          <p className="text-muted-foreground max-w-sm mx-auto">
+          <p className="text-muted-foreground mx-auto max-w-sm">
             Ocurrió un error inesperado. No te preocupes: podés intentar de
             nuevo o volver al inicio y seguir desde ahí.
           </p>
         </div>
-        <div className="flex flex-col sm:flex-row items-center gap-3">
+        <div className="flex flex-col items-center gap-3 sm:flex-row">
           <Button onClick={() => reset()} className="flex items-center gap-2">
             <ArrowClockwiseIcon className="size-4" />
             Intentar de nuevo

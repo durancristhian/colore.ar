@@ -52,7 +52,7 @@ export function ImageCard({
             objectFit="cover"
           />
         </ItemMedia>
-        <ItemContent className="min-w-0 h-36 flex-1 gap-2">
+        <ItemContent className="h-36 min-w-0 flex-1 gap-2">
           <ItemTitle title={prompt} className="line-clamp-2 text-base">
             {prompt}
           </ItemTitle>

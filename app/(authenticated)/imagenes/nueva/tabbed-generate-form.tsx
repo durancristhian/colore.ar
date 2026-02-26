@@ -100,7 +100,7 @@ export function TabbedGenerateForm({
         <TabsTrigger value="description">Desde texto</TabsTrigger>
       </TabsList>
 
-      <TabsContent value="image" className="flex flex-col gap-2 mt-4">
+      <TabsContent value="image" className="mt-4 flex flex-col gap-2">
         {!selectedFile && (
           <>
             <Label htmlFor={fileInputId}>Elegí una imagen</Label>
@@ -126,7 +126,7 @@ export function TabbedGenerateForm({
         )}
         {selectedFile && (
           <>
-            <div className="flex items-center gap-2 rounded-md border border-border bg-background p-2">
+            <div className="border-border bg-background flex items-center gap-2 rounded-md border p-2">
               {previewUrl && (
                 // eslint-disable-next-line @next/next/no-img-element -- blob URL preview; next/image not used for object URLs
                 <img
@@ -168,7 +168,7 @@ export function TabbedGenerateForm({
         )}
       </TabsContent>
 
-      <TabsContent value="description" className="flex flex-col gap-2 mt-4">
+      <TabsContent value="description" className="mt-4 flex flex-col gap-2">
         <DescriptionPromptField
           value={description}
           onChange={setDescription}
@@ -177,7 +177,7 @@ export function TabbedGenerateForm({
       </TabsContent>
 
       <Button
-        className="w-full mt-4"
+        className="mt-4 w-full"
         onClick={handleSubmit}
         disabled={disabled || !canGenerate}
       >

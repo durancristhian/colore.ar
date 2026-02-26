@@ -73,18 +73,14 @@ export function ReactQueryProvider({ children }: { children: React.ReactNode }) 
 ### Basic Query Hook
 
 ```typescript
-import { useQuery } from 'react-query';
-import { fetchUser, User } from '@/services/api/users';
+import { useQuery } from "react-query";
+import { fetchUser, User } from "@/services/api/users";
 
 export function useUser(userId: string) {
-  return useQuery<User, Error>(
-    ['user', userId],
-    () => fetchUser(userId),
-    {
-      enabled: !!userId,
-      staleTime: 1000 * 60 * 10, // 10 minutes
-    }
-  );
+  return useQuery<User, Error>(["user", userId], () => fetchUser(userId), {
+    enabled: !!userId,
+    staleTime: 1000 * 60 * 10, // 10 minutes
+  });
 }
 ```
 
@@ -122,13 +118,9 @@ function UserProfile({ userId }: { userId: string }) {
 function useUserWithPosts(userId: string) {
   const userQuery = useUser(userId);
 
-  const postsQuery = useQuery(
-    ['posts', userId],
-    () => fetchUserPosts(userId),
-    {
-      enabled: !!userQuery.data,
-    }
-  );
+  const postsQuery = useQuery(["posts", userId], () => fetchUserPosts(userId), {
+    enabled: !!userQuery.data,
+  });
 
   return { userQuery, postsQuery };
 }
@@ -139,11 +131,11 @@ function useUserWithPosts(userId: string) {
 ```typescript
 function usePaginatedUsers(page: number, limit: number = 10) {
   return useQuery(
-    ['users', 'list', { page, limit }],
+    ["users", "list", { page, limit }],
     () => fetchUsers({ page, limit }),
     {
       keepPreviousData: true,
-    }
+    },
   );
 }
 ```
@@ -151,15 +143,15 @@ function usePaginatedUsers(page: number, limit: number = 10) {
 ### Infinite Scroll
 
 ```typescript
-import { useInfiniteQuery } from 'react-query';
+import { useInfiniteQuery } from "react-query";
 
 function useInfiniteUsers() {
   return useInfiniteQuery(
-    ['users', 'infinite'],
+    ["users", "infinite"],
     ({ pageParam = 1 }) => fetchUsers({ page: pageParam }),
     {
       getNextPageParam: (lastPage) => lastPage.nextPage ?? undefined,
-    }
+    },
   );
 }
 ```
@@ -169,14 +161,14 @@ function useInfiniteUsers() {
 ### Basic Mutation
 
 ```typescript
-import { useMutation, useQueryClient } from 'react-query';
+import { useMutation, useQueryClient } from "react-query";
 
 function useCreateUser() {
   const queryClient = useQueryClient();
 
   return useMutation(createUser, {
     onSuccess: () => {
-      queryClient.invalidateQueries(['users']);
+      queryClient.invalidateQueries(["users"]);
     },
     onError: (error: Error) => {
       toast.error(error.message);
@@ -193,21 +185,24 @@ function useUpdateUser() {
 
   return useMutation(updateUser, {
     onMutate: async (updatedUser) => {
-      await queryClient.cancelQueries(['user', updatedUser.id]);
+      await queryClient.cancelQueries(["user", updatedUser.id]);
 
-      const previousUser = queryClient.getQueryData(['user', updatedUser.id]);
+      const previousUser = queryClient.getQueryData(["user", updatedUser.id]);
 
-      queryClient.setQueryData(['user', updatedUser.id], updatedUser);
+      queryClient.setQueryData(["user", updatedUser.id], updatedUser);
 
       return { previousUser };
     },
     onError: (err, updatedUser, context) => {
       if (context?.previousUser) {
-        queryClient.setQueryData(['user', updatedUser.id], context.previousUser);
+        queryClient.setQueryData(
+          ["user", updatedUser.id],
+          context.previousUser,
+        );
       }
     },
     onSettled: (data, error, updatedUser) => {
-      queryClient.invalidateQueries(['user', updatedUser.id]);
+      queryClient.invalidateQueries(["user", updatedUser.id]);
     },
   });
 }
@@ -273,10 +268,10 @@ function App() {
 // Structured query keys
 const queryKeys = {
   users: {
-    all: ['users'] as const,
-    lists: () => [...queryKeys.users.all, 'list'] as const,
+    all: ["users"] as const,
+    lists: () => [...queryKeys.users.all, "list"] as const,
     list: (filters: Filters) => [...queryKeys.users.lists(), filters] as const,
-    details: () => [...queryKeys.users.all, 'detail'] as const,
+    details: () => [...queryKeys.users.all, "detail"] as const,
     detail: (id: string) => [...queryKeys.users.details(), id] as const,
   },
 };
@@ -324,7 +319,7 @@ const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
       onError: (error: Error) => {
-        console.error('Query error:', error);
+        console.error("Query error:", error);
       },
     },
     mutations: {
