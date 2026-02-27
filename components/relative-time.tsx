@@ -29,7 +29,7 @@ export function RelativeTime({ date }: RelativeTimeProps) {
       <HoverCardTrigger asChild>
         <time
           dateTime={date}
-          className="inline-flex cursor-default items-center gap-1.5 underline-offset-2 outline-none hover:underline focus:rounded focus:underline"
+          className="inline-flex cursor-default items-center gap-1.5 font-mono text-[0.9em] underline-offset-2 outline-none hover:underline focus:rounded focus:underline"
           tabIndex={0}
         >
           <ClockIcon
