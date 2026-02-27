@@ -91,4 +91,5 @@ We recommend [VS Code](https://code.visualstudio.com) or [Cursor](https://cursor
 | ----------------------------------------------------- | ---------- | ----------------------------------------------------------- |
 | [ESLint](https://eslint.org) 9                        | Linting    | Flat config, `eslint-config-next`, `eslint-config-prettier` |
 | [Prettier](https://prettier.io) 3                     | Formatting | Tailwind CSS plugin, `.prettierrc`                          |
+| [Husky](https://typicode.github.io/husky/)            | Git hooks  | Pre-commit formatting and lint-staged                       |
 | [GitHub Actions](https://github.com/features/actions) | CI         | Format check, lint, and typecheck jobs                      |
