@@ -169,6 +169,15 @@
     @apply bg-background text-foreground tabular-nums;
     letter-spacing: var(--tracking-normal);
   }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply font-serif;
+  }
 }
 
 /* Print-only container: hidden on screen, shown when printing */
@@ -178,6 +187,7 @@
 
 /* Print: show only .print-only (portaled to body); hide rest so only one page prints */
 @media print {
+
   html,
   body {
     height: 100%;
@@ -185,7 +195,7 @@
     padding: 0;
   }
 
-  body > *:not(.print-only) {
+  body>*:not(.print-only) {
     display: none !important;
   }
 
