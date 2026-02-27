@@ -17,7 +17,7 @@ export default function AuthenticatedLayout({
     <PrintImageProvider>
       <div className="flex min-h-dvh flex-col">
         <header className="border-border bg-muted/50 border-b">
-          <div className="mx-auto flex w-full max-w-lg items-center justify-between px-4 py-4">
+          <div className="mx-auto flex w-full max-w-3xl items-center justify-between px-4 py-4">
             <Link href="/imagenes">
               <SparklesText className="font-serif text-xl">
                 <p>Colore.ar</p>
@@ -26,7 +26,7 @@ export default function AuthenticatedLayout({
             <HeaderUserMenu />
           </div>
         </header>
-        <main id="main-content" className="mx-auto w-full max-w-lg flex-1 p-4">
+        <main id="main-content" className="mx-auto w-full max-w-3xl flex-1 p-4">
           {children}
         </main>
       </div>
