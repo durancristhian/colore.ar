@@ -187,7 +187,6 @@
 
 /* Print: show only .print-only (portaled to body); hide rest so only one page prints */
 @media print {
-
   html,
   body {
     height: 100%;
@@ -195,7 +194,7 @@
     padding: 0;
   }
 
-  body>*:not(.print-only) {
+  body > *:not(.print-only) {
     display: none !important;
   }
 
