@@ -33,7 +33,7 @@ export function ImageCard({
       asChild
       variant="outline"
       size="sm"
-      className="items-start rounded-xl"
+      className="group items-start rounded-xl"
     >
       <Link
         href={`/imagenes/${imageId}`}
@@ -49,6 +49,7 @@ export function ImageCard({
             crop="fill"
             quality="auto:good"
             wrapperClassName="!size-36 !w-36 !h-36 rounded-lg"
+            className="transition-transform duration-500 group-hover:scale-105"
             objectFit="cover"
           />
         </ItemMedia>
