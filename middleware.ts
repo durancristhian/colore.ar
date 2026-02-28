@@ -1,6 +1,5 @@
 import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
 
-const isPublicRoute = createRouteMatcher(["/", "/api/send"]);
 // Any route not in public list is protected by default, or explicitly list (authenticated)
 const isProtectedRoute = createRouteMatcher([
   "/imagenes(.*)",
