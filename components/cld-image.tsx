@@ -23,7 +23,7 @@ import {
   ContextMenuTrigger,
 } from "@/components/ui/context-menu";
 import { useImageActions } from "@/hooks/use-image-actions";
-import { getPublicIdFromCloudinaryUrl } from "@/lib/cloudinary-url";
+import { getPublicIdFromCloudinaryUrl } from "@/lib/shared/cloudinary-url";
 
 /** CldImage props plus wrapperClassName, wrapperBackgroundClassName, objectFit (contain | cover), promptForDownload (optional, for context menu download filename). */
 export type CldImagePropsWithWrapper = Omit<CldImageProps, "fill" | "sizes"> & {

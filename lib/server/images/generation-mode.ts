@@ -2,7 +2,7 @@
 //
 // Maps user role and request flag to whether the paid model and image-from-image are allowed. Used by API and frontend.
 //
-import type { UserRole } from "@/lib/db/users";
+import type { UserRole } from "@/lib/server/db/users";
 
 export interface ImageGenerationOptions {
   usePaidModel: boolean;

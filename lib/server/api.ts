@@ -6,28 +6,28 @@
 
 import { auth, currentUser } from "@clerk/nextjs/server";
 import { revalidatePath } from "next/cache";
-import { getOrCreateUser, type UserRole } from "@/lib/db/users";
+import { getOrCreateUser, type UserRole } from "@/lib/server/db/users";
 import {
   insertImage,
   listImagesByUserId,
   getImageByIdAndUserId,
   deleteImageByIdAndUserId,
-} from "@/lib/db/images";
+} from "@/lib/server/db/images";
 import {
   ALLOWED_IMAGE_TYPES,
   isDescriptionLengthValid,
   isImageSizeValid,
   isImageTypeAllowed,
   MAX_DESCRIPTION_LENGTH,
-} from "@/lib/images/constants";
-import { getImageGenerationOptions } from "@/lib/images/generation-mode";
+} from "@/lib/server/images/constants";
+import { getImageGenerationOptions } from "@/lib/server/images/generation-mode";
 import {
   generateImage,
   generateImageFromImage,
   generateImageWithPollinations,
-} from "@/lib/images/generator";
-import { imageStore } from "@/lib/images/store";
-import { Telegram } from "@/lib/telegram";
+} from "@/lib/server/images/generator";
+import { imageStore } from "@/lib/server/images/store";
+import { Telegram } from "@/lib/server/telegram";
 
 export type CurrentUser = {
   id: string;

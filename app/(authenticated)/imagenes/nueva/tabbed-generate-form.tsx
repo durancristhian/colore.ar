@@ -22,7 +22,7 @@ import {
   isImageFileValid,
   isImageSizeValid,
   isImageTypeAllowed,
-} from "@/lib/images/constants";
+} from "@/lib/server/images/constants";
 import { ErrorMessage } from "@/components/error-message";
 
 type Tab = "image" | "description";

@@ -13,7 +13,7 @@ import { Spinner } from "@/components/ui/spinner";
 import { Textarea } from "@/components/ui/textarea";
 import { PageLayout } from "@/components/page-layout";
 import { BackButton } from "@/components/back-button";
-import { submitFeedback } from "@/lib/api";
+import { submitFeedback } from "@/lib/server/api";
 
 export default function FeedbackPage() {
   const [message, setMessage] = useState("");

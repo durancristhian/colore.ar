@@ -18,9 +18,9 @@ import { ErrorMessage } from "@/components/error-message";
 import { ImageCard } from "@/components/image-card";
 import { LoadingMessage } from "@/components/loading-message";
 import { PageLayout } from "@/components/page-layout";
-import { listImages } from "@/lib/api";
-import { DEFAULT_IMAGE_DESCRIPTION } from "@/lib/images/constants";
-import type { ImageListItem } from "@/lib/api";
+import { listImages } from "@/lib/server/api";
+import { DEFAULT_IMAGE_DESCRIPTION } from "@/lib/server/images/constants";
+import type { ImageListItem } from "@/lib/server/api";
 
 async function ImagesList() {
   let images: ImageListItem[] | null = null;

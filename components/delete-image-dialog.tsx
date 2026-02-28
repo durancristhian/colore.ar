@@ -19,7 +19,7 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import { Spinner } from "@/components/ui/spinner";
-import { deleteImage } from "@/lib/api";
+import { deleteImage } from "@/lib/server/api";
 
 interface DeleteImageDialogProps {
   imageId: string;

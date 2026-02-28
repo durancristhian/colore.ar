@@ -29,8 +29,8 @@ import {
   SunIcon,
 } from "@phosphor-icons/react/dist/ssr";
 import { Skeleton } from "@/components/ui/skeleton";
-import { type CurrentUser } from "@/lib/api";
-import { ROLE_BADGE_CLASSES, ROLE_LABELS } from "@/lib/roles";
+import { type CurrentUser } from "@/lib/server/api";
+import { ROLE_BADGE_CLASSES, ROLE_LABELS } from "@/lib/shared/roles";
 
 const themes = [
   { value: "system", label: "Como el sistema", icon: MonitorIcon },

@@ -11,9 +11,9 @@ import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Label } from "@/components/ui/label";
 import { DescriptionPromptField } from "@/components/description-prompt-field";
 import { TabbedGenerateForm } from "./tabbed-generate-form";
-import { createImage } from "@/lib/api";
-import { isDescriptionLengthValid } from "@/lib/images/constants";
-import type { CurrentUser } from "@/lib/api";
+import { createImage } from "@/lib/server/api";
+import { isDescriptionLengthValid } from "@/lib/server/images/constants";
+import type { CurrentUser } from "@/lib/server/api";
 
 export function NewImageForm({
   currentUser,

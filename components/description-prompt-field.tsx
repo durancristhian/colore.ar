@@ -8,7 +8,7 @@
 import {
   MAX_DESCRIPTION_LENGTH,
   isDescriptionLengthValid,
-} from "@/lib/images/constants";
+} from "@/lib/server/images/constants";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 

@@ -4,9 +4,9 @@
 //
 
 import { toast } from "sonner";
-import { blobToPng } from "@/lib/blob-to-png";
-import { buildImageDownloadFilename } from "@/lib/image-download-filename";
-import { downloadImage } from "@/lib/download-image";
+import { blobToPng } from "@/lib/client/blob-to-png";
+import { buildImageDownloadFilename } from "@/lib/shared/image-download-filename";
+import { downloadImage } from "@/lib/client/download-image";
 
 export function useImageActions(imageUrl: string, prompt: string) {
   function handleDownload() {

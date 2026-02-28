@@ -6,7 +6,7 @@
 //
 import { PageLayout } from "@/components/page-layout";
 import { BackButton } from "@/components/back-button";
-import { getCurrentUser } from "@/lib/api";
+import { getCurrentUser } from "@/lib/server/api";
 import { NewImageForm } from "./new-image-form";
 
 export default async function NewImagePage() {

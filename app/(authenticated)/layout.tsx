@@ -8,7 +8,7 @@ import { Suspense } from "react";
 import { HeaderUserMenu } from "@/components/header-user-menu";
 import { PrintImageProvider } from "@/components/print-image-provider";
 import { SparklesText } from "@/components/ui/sparkles-text";
-import { getCurrentUser } from "@/lib/api";
+import { getCurrentUser } from "@/lib/server/api";
 
 export default async function AuthenticatedLayout({
   children,
