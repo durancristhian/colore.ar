@@ -128,9 +128,14 @@ interface SparklesTextProps {
   };
 }
 
+const DEFAULT_COLORS = {
+  first: "oklch(0.78 0.15 70)",
+  second: "oklch(0.68 0.18 28)",
+};
+
 export const SparklesText: React.FC<SparklesTextProps> = ({
   children,
-  colors = { first: "oklch(0.78 0.15 70)", second: "oklch(0.68 0.18 28)" },
+  colors = DEFAULT_COLORS,
   className,
   sparklesCount = 10,
   ...props
@@ -138,21 +143,28 @@ export const SparklesText: React.FC<SparklesTextProps> = ({
   const [sparkles, dispatch] = useReducer(sparklesReducer, []);
   const shouldReduceMotion = useReducedMotion();
 
+  // Destructure for stable primitive dependencies
+  const { first: color1, second: color2 } = colors;
+
   // Derived state to avoid cascading renders
   const activeSparkles = shouldReduceMotion ? [] : sparkles;
 
   const updateStars = useCallback(() => {
-    dispatch({ type: "UPDATE", colors });
-  }, [colors]);
+    dispatch({ type: "UPDATE", colors: { first: color1, second: color2 } });
+  }, [color1, color2]);
 
   useEffect(() => {
     if (shouldReduceMotion) return;
 
-    dispatch({ type: "INITIALIZE", count: sparklesCount, colors });
+    dispatch({
+      type: "INITIALIZE",
+      count: sparklesCount,
+      colors: { first: color1, second: color2 },
+    });
 
     const interval = setInterval(updateStars, 100);
     return () => clearInterval(interval);
-  }, [colors, sparklesCount, shouldReduceMotion, updateStars]);
+  }, [color1, color2, sparklesCount, shouldReduceMotion, updateStars]);
 
   return (
     <div
