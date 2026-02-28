@@ -2,11 +2,9 @@
 //
 // List of user images. Fetches via listImages; shows empty state or ImageCard list; "Nueva imagen" links to /imagenes/nueva.
 //
-"use client";
-
-import { useQuery } from "@tanstack/react-query";
+import { Suspense } from "react";
 import Link from "next/link";
-import { ImageSquareIcon, PlusIcon } from "@phosphor-icons/react";
+import { ImageSquareIcon, PlusIcon } from "@phosphor-icons/react/dist/ssr";
 import { Button } from "@/components/ui/button";
 import {
   Empty,
@@ -22,18 +20,65 @@ import { LoadingMessage } from "@/components/loading-message";
 import { PageLayout } from "@/components/page-layout";
 import { listImages } from "@/lib/api";
 import { DEFAULT_IMAGE_DESCRIPTION } from "@/lib/images/constants";
-import { queryKeys } from "@/lib/query-keys";
+import type { ImageListItem } from "@/lib/api";
+
+async function ImagesList() {
+  let images: ImageListItem[] | null = null;
+  let isError = false;
+
+  try {
+    images = await listImages();
+  } catch {
+    isError = true;
+  }
+
+  if (isError) {
+    return (
+      <ErrorMessage
+        title="No se pudieron cargar las imágenes"
+        description="Falló la carga. Intentá de nuevo."
+      />
+    );
+  }
+
+  if (!images || images.length === 0) {
+    return (
+      <Empty className="border py-12">
+        <EmptyHeader>
+          <EmptyMedia variant="icon">
+            <ImageSquareIcon className="size-6" />
+          </EmptyMedia>
+          <EmptyTitle>Aún no hay imágenes</EmptyTitle>
+          <EmptyDescription>Creá tu imagen para colorear</EmptyDescription>
+        </EmptyHeader>
+        <EmptyContent>
+          <Button asChild>
+            <Link href="/imagenes/nueva">
+              <PlusIcon className="size-4" />
+              Nueva imagen
+            </Link>
+          </Button>
+        </EmptyContent>
+      </Empty>
+    );
+  }
+
+  return (
+    <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+      {images.map((image) => (
+        <ImageCard
+          key={image.id}
+          imageId={image.id}
+          imageUrl={image.imageUrl}
+          prompt={image.description ?? DEFAULT_IMAGE_DESCRIPTION}
+          createdAt={image.createdAt}
+        />
+      ))}
+    </div>
+  );
+}
 
 export default function ImagesPage() {
-  const {
-    data: images,
-    isLoading,
-    isError,
-  } = useQuery({
-    queryKey: queryKeys.images.all,
-    queryFn: listImages,
-  });
-
   return (
     <PageLayout
       title="Tus imágenes"
@@ -47,48 +92,9 @@ export default function ImagesPage() {
       }
     >
       <div className="flex flex-col gap-4">
-        {isLoading && <LoadingMessage label="Cargando imágenes..." />}
-
-        {isError && (
-          <ErrorMessage
-            title="No se pudieron cargar las imágenes"
-            description="Falló la carga. Intentá de nuevo."
-          />
-        )}
-
-        {!isLoading && !isError && (!images || images.length === 0) && (
-          <Empty className="border py-12">
-            <EmptyHeader>
-              <EmptyMedia variant="icon">
-                <ImageSquareIcon className="size-6" />
-              </EmptyMedia>
-              <EmptyTitle>Aún no hay imágenes</EmptyTitle>
-              <EmptyDescription>Creá tu imagen para colorear</EmptyDescription>
-            </EmptyHeader>
-            <EmptyContent>
-              <Button asChild>
-                <Link href="/imagenes/nueva">
-                  <PlusIcon className="size-4" />
-                  Nueva imagen
-                </Link>
-              </Button>
-            </EmptyContent>
-          </Empty>
-        )}
-
-        {!isLoading && !isError && images && images.length > 0 && (
-          <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-            {images.map((image) => (
-              <ImageCard
-                key={image.id}
-                imageId={image.id}
-                imageUrl={image.imageUrl}
-                prompt={image.description ?? DEFAULT_IMAGE_DESCRIPTION}
-                createdAt={image.createdAt}
-              />
-            ))}
-          </div>
-        )}
+        <Suspense fallback={<LoadingMessage label="Cargando imágenes..." />}>
+          <ImagesList />
+        </Suspense>
       </div>
     </PageLayout>
   );

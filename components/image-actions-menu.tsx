@@ -12,7 +12,7 @@ import {
   LinkIcon,
   PrinterIcon,
   TrashIcon,
-} from "@phosphor-icons/react";
+} from "@phosphor-icons/react/dist/ssr";
 import { Button } from "@/components/ui/button";
 import { ButtonGroup } from "@/components/ui/button-group";
 import { DeleteImageDialog } from "@/components/delete-image-dialog";

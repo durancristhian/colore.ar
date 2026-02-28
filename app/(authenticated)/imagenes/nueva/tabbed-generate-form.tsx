@@ -6,7 +6,11 @@
 "use client";
 
 import { useId, useRef, useState } from "react";
-import { ImageSquareIcon, SparkleIcon, TrashIcon } from "@phosphor-icons/react";
+import {
+  ImageSquareIcon,
+  SparkleIcon,
+  TrashIcon,
+} from "@phosphor-icons/react/dist/ssr";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Spinner } from "@/components/ui/spinner";

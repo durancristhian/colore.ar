@@ -1,13 +1,12 @@
 // page.tsx
 //
-// Feedback form page. Uses submitFeedback (lib/api) via React Query mutation; toast on success/error.
+// Feedback form page. Uses submitFeedback (lib/api).
 //
 "use client";
 
-import { useMutation } from "@tanstack/react-query";
-import { useState } from "react";
+import { useState, useTransition } from "react";
 import { toast } from "sonner";
-import { PaperPlaneRightIcon } from "@phosphor-icons/react";
+import { PaperPlaneRightIcon } from "@phosphor-icons/react/dist/ssr";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Spinner } from "@/components/ui/spinner";
@@ -18,28 +17,24 @@ import { submitFeedback } from "@/lib/api";
 
 export default function FeedbackPage() {
   const [message, setMessage] = useState("");
+  const [isPending, startTransition] = useTransition();
 
-  const feedbackMutation = useMutation({
-    mutationFn: submitFeedback,
-    onSuccess: () => {
-      setMessage("");
-      feedbackMutation.reset();
-      toast.success("Gracias, tu feedback fue enviado.");
-    },
-    onError: (err) => {
-      toast.error(
-        err instanceof Error
-          ? err.message
-          : "Algo salió mal. Por favor, intentá de nuevo.",
-      );
-    },
-  });
-
-  const isSubmitting = feedbackMutation.isPending;
-  const canSubmit = message.trim() !== "" && !isSubmitting;
+  const canSubmit = message.trim() !== "" && !isPending;
 
   const handleSubmit = () => {
-    feedbackMutation.mutateAsync(message.trim());
+    startTransition(async () => {
+      try {
+        await submitFeedback(message.trim());
+        setMessage("");
+        toast.success("Gracias, tu feedback fue enviado.");
+      } catch (err) {
+        toast.error(
+          err instanceof Error
+            ? err.message
+            : "Algo salió mal. Por favor, intentá de nuevo.",
+        );
+      }
+    });
   };
 
   return (
@@ -56,17 +51,17 @@ export default function FeedbackPage() {
             placeholder="Contanos tu experiencia, sugerencias o lo que quieras..."
             value={message}
             onChange={(e) => setMessage(e.target.value)}
-            disabled={isSubmitting}
+            disabled={isPending}
             className="min-h-24 w-full"
           />
         </div>
         <Button className="w-full" onClick={handleSubmit} disabled={!canSubmit}>
-          {isSubmitting ? (
+          {isPending ? (
             <Spinner data-icon="inline-start" />
           ) : (
             <PaperPlaneRightIcon className="size-4" />
           )}
-          {isSubmitting ? "Enviando..." : "Enviar feedback"}
+          {isPending ? "Enviando..." : "Enviar feedback"}
         </Button>
       </div>
     </PageLayout>

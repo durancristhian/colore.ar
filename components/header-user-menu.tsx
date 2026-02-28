@@ -6,7 +6,6 @@
 
 import Link from "next/link";
 import { SignOutButton, useUser } from "@clerk/nextjs";
-import { useQuery } from "@tanstack/react-query";
 import { useTheme } from "next-themes";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
@@ -28,11 +27,10 @@ import {
   MoonIcon,
   SignOutIcon,
   SunIcon,
-} from "@phosphor-icons/react";
+} from "@phosphor-icons/react/dist/ssr";
 import { Skeleton } from "@/components/ui/skeleton";
-import { getCurrentUser } from "@/lib/api";
+import { type CurrentUser } from "@/lib/api";
 import { ROLE_BADGE_CLASSES, ROLE_LABELS } from "@/lib/roles";
-import { queryKeys } from "@/lib/query-keys";
 
 const themes = [
   { value: "system", label: "Como el sistema", icon: MonitorIcon },
@@ -60,13 +58,13 @@ function getInitials(
   return "??";
 }
 
-export function HeaderUserMenu() {
+export function HeaderUserMenu({
+  currentUser,
+}: {
+  currentUser: CurrentUser | null;
+}) {
   const { isLoaded, user } = useUser();
   const { theme, setTheme } = useTheme();
-  const { data: currentUser } = useQuery({
-    queryKey: queryKeys.user.me,
-    queryFn: getCurrentUser,
-  });
 
   const initials = user
     ? getInitials(user.firstName, user.lastName, user.fullName)

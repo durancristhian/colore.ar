@@ -10,7 +10,11 @@ import {
   CldImage as CldImageDefault,
   type CldImageProps,
 } from "next-cloudinary";
-import { DownloadIcon, ImageIcon, LinkIcon } from "@phosphor-icons/react";
+import {
+  DownloadIcon,
+  ImageIcon,
+  LinkIcon,
+} from "@phosphor-icons/react/dist/ssr";
 import { clsx } from "clsx";
 import {
   ContextMenu,

@@ -4,7 +4,7 @@
 //
 "use client";
 import Link from "next/link";
-import { HouseIcon, ArrowClockwiseIcon } from "@phosphor-icons/react";
+import { HouseIcon, ArrowClockwiseIcon } from "@phosphor-icons/react/dist/ssr";
 import { Button } from "@/components/ui/button";
 
 export default function Error({
