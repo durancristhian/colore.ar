@@ -10,7 +10,7 @@ import {
   HoverCardTrigger,
 } from "@/components/ui/hover-card";
 import { formatRawDate, getRelative } from "@/lib/format-date";
-import { ClockIcon } from "@phosphor-icons/react";
+import { ClockIcon } from "@phosphor-icons/react/dist/ssr";
 
 interface RelativeTimeProps {
   /** ISO date string from API (e.g. createdAt). */

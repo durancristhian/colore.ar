@@ -22,7 +22,6 @@
     "@libsql/client": "^0.17.0",
     "@openrouter/ai-sdk-provider": "^2.2.3",
     "@phosphor-icons/react": "^2.1.10",
-    "@tanstack/react-query": "^5.90.21",
     "@yaireo/relative-time": "^1.1.0",
     "ai": "^6.0.86",
     "canvas-confetti": "^1.9.4",

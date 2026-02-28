@@ -2,9 +2,8 @@
 //
 // 404 page. Renders "Página no encontrada" and a link back to home.
 //
-"use client";
 import Link from "next/link";
-import { HouseIcon } from "@phosphor-icons/react";
+import { HouseIcon } from "@phosphor-icons/react/dist/ssr";
 import { Button } from "@/components/ui/button";
 
 export default function NotFound() {

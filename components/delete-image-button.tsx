@@ -5,7 +5,7 @@
 "use client";
 
 import { useState } from "react";
-import { TrashIcon } from "@phosphor-icons/react";
+import { TrashIcon } from "@phosphor-icons/react/dist/ssr";
 import { Button } from "@/components/ui/button";
 import { DeleteImageDialog } from "@/components/delete-image-dialog";
 

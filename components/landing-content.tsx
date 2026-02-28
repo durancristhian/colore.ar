@@ -5,7 +5,7 @@
 "use client";
 
 import { SignInButton, SignedOut, useAuth } from "@clerk/nextjs";
-import { SparkleIcon } from "@phosphor-icons/react";
+import { SparkleIcon } from "@phosphor-icons/react/dist/ssr";
 import { Button } from "@/components/ui/button";
 import { SparklesText } from "@/components/ui/sparkles-text";
 

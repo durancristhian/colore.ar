@@ -1,11 +1,11 @@
 // delete-image-dialog.tsx
 //
-// Confirmation dialog for delete; calls deleteImage (lib/api), invalidates query cache, toast, onSuccess.
+// Confirmation dialog for delete; calls deleteImage (lib/api), toast, onSuccess.
 //
 "use client";
 
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { TrashIcon } from "@phosphor-icons/react";
+import { useTransition } from "react";
+import { TrashIcon } from "@phosphor-icons/react/dist/ssr";
 import { toast } from "sonner";
 import {
   AlertDialog,
@@ -20,7 +20,6 @@ import {
 } from "@/components/ui/alert-dialog";
 import { Spinner } from "@/components/ui/spinner";
 import { deleteImage } from "@/lib/api";
-import { queryKeys } from "@/lib/query-keys";
 
 interface DeleteImageDialogProps {
   imageId: string;
@@ -35,31 +34,26 @@ export function DeleteImageDialog({
   onOpenChange,
   onSuccess,
 }: DeleteImageDialogProps) {
-  const queryClient = useQueryClient();
-  const deleteMutation = useMutation({
-    mutationFn: deleteImage,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: queryKeys.images.all });
-      queryClient.invalidateQueries({
-        queryKey: queryKeys.images.detail(imageId),
-      });
-      onOpenChange(false);
-      onSuccess?.();
-      toast.success("Imagen eliminada.");
-    },
-    onError: (err) => {
-      toast.error(
-        err instanceof Error
-          ? err.message
-          : "Algo salió mal. Por favor, intentá de nuevo.",
-      );
-    },
-  });
+  const [isPending, startTransition] = useTransition();
 
   function handleDelete(e: React.MouseEvent) {
     e.preventDefault();
     e.stopPropagation();
-    deleteMutation.mutateAsync(imageId);
+
+    startTransition(async () => {
+      try {
+        await deleteImage(imageId);
+        onOpenChange(false);
+        onSuccess?.();
+        toast.success("Imagen eliminada.");
+      } catch (err) {
+        toast.error(
+          err instanceof Error
+            ? err.message
+            : "Algo salió mal. Por favor, intentá de nuevo.",
+        );
+      }
+    });
   }
 
   return (
@@ -80,12 +74,10 @@ export function DeleteImageDialog({
           <AlertDialogAction
             variant="destructive"
             onClick={handleDelete}
-            disabled={deleteMutation.isPending}
+            disabled={isPending}
           >
-            {deleteMutation.isPending ? (
-              <Spinner data-icon="inline-start" />
-            ) : null}
-            {deleteMutation.isPending ? "Eliminando..." : "Eliminar"}
+            {isPending ? <Spinner data-icon="inline-start" /> : null}
+            {isPending ? "Eliminando..." : "Eliminar"}
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>
