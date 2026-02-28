@@ -56,20 +56,29 @@ export async function getUserById(
 }
 
 /**
- * Returns the existing user or inserts one with defaultRole and returns it. Used so the API always has a role.
+ * Returns the existing user or inserts one with defaultRole and returns it.
+ * Uses atomic INSERT OR IGNORE to handle concurrent creation requests.
  */
 export async function getOrCreateUser(
   userId: string,
   defaultRole: UserRole = "standard",
 ): Promise<{ userId: string; role: UserRole }> {
+  // 1. Optimistic fetch
   const existing = await getUserById(userId);
   if (existing) return existing;
 
+  // 2. Atomic insert if not exists (handles race conditions)
   await ensureTable();
   const db = getDb();
   await db.execute({
-    sql: "INSERT INTO users (user_id, role) VALUES (?, ?)",
+    sql: "INSERT OR IGNORE INTO users (user_id, role) VALUES (?, ?)",
     args: [userId, defaultRole],
   });
-  return { userId, role: defaultRole };
+
+  // 3. Final fetch to return the actual record (whether we created it or someone else did)
+  const user = await getUserById(userId);
+  if (!user) {
+    throw new Error(`Failed to create or retrieve user ${userId}`);
+  }
+  return user;
 }
