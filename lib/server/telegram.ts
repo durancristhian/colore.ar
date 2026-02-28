@@ -5,32 +5,26 @@
 //
 export class Telegram {
   /**
-   * Sends text to the configured chat. Rejects if env vars are missing (caller should return 503).
+   * Sends text to the configured chat. Throws if env vars are missing or if the API request fails.
    */
-  sendMessage(message: string) {
-    return new Promise<Response>(async (resolve, reject) => {
-      try {
-        const botId = process.env.TELEGRAM_BOTID;
-        const chatId = process.env.TELEGRAM_CHATID;
+  async sendMessage(message: string): Promise<Response> {
+    const botId = process.env.TELEGRAM_BOTID;
+    const chatId = process.env.TELEGRAM_CHATID;
 
-        if (!botId || !chatId) {
-          reject(
-            `'TELEGRAM_BOTID' and 'TELEGRAM_CHATID' env vars are not configured`,
-          );
+    if (!botId || !chatId) {
+      throw new Error("Configuración de Telegram incompleta");
+    }
 
-          return;
-        }
+    const text = encodeURIComponent(message);
+    const url = `https://api.telegram.org/bot${botId}/sendMessage?chat_id=${chatId}&text=${text}`;
 
-        const text = encodeURIComponent(message);
+    const res = await fetch(url);
 
-        const res = await fetch(
-          `https://api.telegram.org/bot${botId}/sendMessage?chat_id=${chatId}&text=${text}`,
-        );
+    if (!res.ok) {
+      console.error(`Telegram API error (${res.status}): ${res.statusText}`);
+      throw new Error("No se pudo enviar el feedback");
+    }
 
-        resolve(res);
-      } catch (error) {
-        reject(error);
-      }
-    });
+    return res;
   }
 }

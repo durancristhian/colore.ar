@@ -244,11 +244,13 @@ export async function submitFeedback(message: string): Promise<void> {
     const telegram = new Telegram();
     await telegram.sendMessage(formattedMessage);
   } catch (error) {
+    console.error("Feedback send failed:", error);
     const msg = error instanceof Error ? error.message : String(error);
-    if (msg.includes("TELEGRAM_BOTID") && msg.includes("TELEGRAM_CHATID")) {
+
+    if (msg.includes("Configuración")) {
       throw new Error("El feedback no está disponible temporalmente.");
     }
-    console.error("Feedback send failed:", error);
+
     throw new Error("Algo salió mal. Por favor, intentá de nuevo.");
   }
 }
