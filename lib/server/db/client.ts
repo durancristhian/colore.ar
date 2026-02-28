@@ -16,7 +16,7 @@ export function getDb(): Client {
   if (!url) throw new Error("TURSO_DATABASE_URL is not set");
   _db = createClient({
     url,
-    authToken: authToken ?? undefined,
+    authToken: authToken || undefined,
   });
   return _db;
 }
