@@ -52,11 +52,11 @@ We recommend [VS Code](https://code.visualstudio.com) or [Cursor](https://cursor
 
 ### Framework and Language
 
-| Name                                       | Role            | Key concepts to learn                                                                      |
-| ------------------------------------------ | --------------- | ------------------------------------------------------------------------------------------ |
-| [Next.js](https://nextjs.org) 16           | React framework | App Router, Server Components, Server Actions, middleware, `next/font`, image optimization |
-| [React](https://react.dev) 19              | UI library      | Hooks, Suspense, transitions                                                               |
-| [TypeScript](https://typescriptlang.org) 5 | Type safety     | Strict mode, `noUncheckedIndexedAccess`, path aliases (`@/*`)                              |
+| Name                                       | Role            | Key concepts to learn                                                                                                      |
+| ------------------------------------------ | --------------- | -------------------------------------------------------------------------------------------------------------------------- |
+| [Next.js](https://nextjs.org) 16           | React framework | App Router, Server Components, Server Actions, Middleware, Parallel & Intercepting Routes, `next/font`, Image Optimization |
+| [React](https://react.dev) 19              | UI library      | Hooks, Suspense, Transitions, Server Components                                                                            |
+| [TypeScript](https://typescriptlang.org) 5 | Type safety     | Strict mode, `noUncheckedIndexedAccess`, path aliases (`@/*`)                                                              |
 
 ### Styling and UI
 
@@ -71,10 +71,7 @@ We recommend [VS Code](https://code.visualstudio.com) or [Cursor](https://cursor
 
 ### Data and State
 
-| Name                                         | Role           | Key concepts to learn                          |
-| -------------------------------------------- | -------------- | ---------------------------------------------- |
-| [TanStack Query](https://tanstack.com/query) | Server state   | Query keys, mutations, cache invalidation      |
-| [Vercel AI SDK](https://sdk.vercel.ai)       | AI integration | `@openrouter/ai-sdk-provider`, `generateImage` |
+| [Vercel AI SDK](https://sdk.vercel.ai) | AI integration | `@openrouter/ai-sdk-provider`, `generateImage` |
 
 ### Utilities
 
