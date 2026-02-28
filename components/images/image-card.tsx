@@ -10,10 +10,10 @@ import {
   ItemMedia,
   ItemTitle,
 } from "@/components/ui/item";
-import { RelativeTime } from "@/components/relative-time";
-import { ImageActionsMenu } from "@/components/image-actions-menu";
+import { RelativeTime } from "@/components/images/relative-time";
+import { ImageActionsMenu } from "@/components/images/image-actions-menu";
 import Link from "next/link";
-import { CldImage } from "@/components/cld-image";
+import { CldImage } from "@/components/images/cld-image";
 
 interface ImageCardProps {
   imageId: string;

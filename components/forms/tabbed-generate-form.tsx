@@ -15,7 +15,7 @@ import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Spinner } from "@/components/ui/spinner";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { DescriptionPromptField } from "@/components/description-prompt-field";
+import { DescriptionPromptField } from "@/components/forms/description-prompt-field";
 import {
   ALLOWED_IMAGE_TYPES,
   isDescriptionLengthValid,
@@ -23,7 +23,7 @@ import {
   isImageSizeValid,
   isImageTypeAllowed,
 } from "@/lib/server/images/constants";
-import { ErrorMessage } from "@/components/error-message";
+import { ErrorMessage } from "@/components/shared/error-message";
 
 type Tab = "image" | "description";
 

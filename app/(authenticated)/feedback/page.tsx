@@ -11,9 +11,9 @@ import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Spinner } from "@/components/ui/spinner";
 import { Textarea } from "@/components/ui/textarea";
-import { PageLayout } from "@/components/page-layout";
-import { BackButton } from "@/components/back-button";
 import { submitFeedback } from "@/lib/server/api";
+import { PageLayout } from "@/components/layout/page-layout";
+import { BackButton } from "@/components/layout/back-button";
 
 export default function FeedbackPage() {
   const [message, setMessage] = useState("");

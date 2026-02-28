@@ -14,10 +14,10 @@ import {
   EmptyMedia,
   EmptyTitle,
 } from "@/components/ui/empty";
-import { ErrorMessage } from "@/components/error-message";
-import { ImageCard } from "@/components/image-card";
-import { LoadingMessage } from "@/components/loading-message";
-import { PageLayout } from "@/components/page-layout";
+import { ErrorMessage } from "@/components/shared/error-message";
+import { ImageCard } from "@/components/images/image-card";
+import { LoadingMessage } from "@/components/shared/loading-message";
+import { PageLayout } from "@/components/layout/page-layout";
 import { listImages } from "@/lib/server/api";
 import { DEFAULT_IMAGE_DESCRIPTION } from "@/lib/server/images/constants";
 import type { ImageListItem } from "@/lib/server/api";

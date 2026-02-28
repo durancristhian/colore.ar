@@ -4,10 +4,10 @@
 // and optional TabbedGenerateForm (image or description). On success, stores id in localStorage for
 // confetti on detail page and redirects to /imagenes/:id.
 //
-import { PageLayout } from "@/components/page-layout";
-import { BackButton } from "@/components/back-button";
+import { PageLayout } from "@/components/layout/page-layout";
+import { BackButton } from "@/components/layout/back-button";
 import { getCurrentUser } from "@/lib/server/api";
-import { NewImageForm } from "./new-image-form";
+import { NewImageForm } from "@/components/forms/new-image-form";
 
 export default async function NewImagePage() {
   const currentUser = await getCurrentUser().catch(() => null);

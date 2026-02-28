@@ -3,14 +3,14 @@
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { InfoIcon, SparkleIcon } from "@phosphor-icons/react/dist/ssr";
-import { ErrorMessage } from "@/components/error-message";
+import { ErrorMessage } from "@/components/shared/error-message";
 import { Button } from "@/components/ui/button";
 import { Spinner } from "@/components/ui/spinner";
 import { Switch } from "@/components/ui/switch";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Label } from "@/components/ui/label";
-import { DescriptionPromptField } from "@/components/description-prompt-field";
-import { TabbedGenerateForm } from "./tabbed-generate-form";
+import { DescriptionPromptField } from "@/components/forms/description-prompt-field";
+import { TabbedGenerateForm } from "@/components/forms/tabbed-generate-form";
 import { createImage } from "@/lib/server/api";
 import { isDescriptionLengthValid } from "@/lib/server/images/constants";
 import type { CurrentUser } from "@/lib/server/api";

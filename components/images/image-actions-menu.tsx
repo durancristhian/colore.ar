@@ -15,7 +15,7 @@ import {
 } from "@phosphor-icons/react/dist/ssr";
 import { Button } from "@/components/ui/button";
 import { ButtonGroup } from "@/components/ui/button-group";
-import { DeleteImageDialog } from "@/components/delete-image-dialog";
+import { DeleteImageDialog } from "@/components/images/delete-image-dialog";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -24,7 +24,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { usePrintImage } from "@/components/print-image-provider";
+import { usePrintImage } from "@/components/layout/print-image-provider";
 import { useImageActions } from "@/hooks/use-image-actions";
 
 interface ImageActionsMenuProps {

@@ -5,8 +5,8 @@
 //
 import Link from "next/link";
 import { Suspense } from "react";
-import { HeaderUserMenu } from "@/components/header-user-menu";
-import { PrintImageProvider } from "@/components/print-image-provider";
+import { HeaderUserMenu } from "@/components/layout/header-user-menu";
+import { PrintImageProvider } from "@/components/layout/print-image-provider";
 import { SparklesText } from "@/components/ui/sparkles-text";
 import { getCurrentUser } from "@/lib/server/api";
 

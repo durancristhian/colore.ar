@@ -4,17 +4,17 @@
 //
 import Link from "next/link";
 import { Suspense } from "react";
-import { CldImage } from "@/components/cld-image";
-import { ErrorMessage } from "@/components/error-message";
+import { CldImage } from "@/components/images/cld-image";
+import { ErrorMessage } from "@/components/shared/error-message";
 import { Label } from "@/components/ui/label";
-import { LoadingMessage } from "@/components/loading-message";
-import { PageLayout } from "@/components/page-layout";
-import { BackButton } from "@/components/back-button";
+import { LoadingMessage } from "@/components/shared/loading-message";
+import { PageLayout } from "@/components/layout/page-layout";
+import { BackButton } from "@/components/layout/back-button";
 import { getImage } from "@/lib/server/api";
 import { DEFAULT_IMAGE_DESCRIPTION } from "@/lib/server/images/constants";
-import { RelativeTime } from "@/components/relative-time";
-import { ConfettiHandler } from "./confetti-handler";
-import { DetailActionsMenu } from "./detail-actions";
+import { RelativeTime } from "@/components/images/relative-time";
+import { ConfettiHandler } from "@/components/shared/confetti-handler";
+import { DetailActionsMenu } from "@/components/images/detail-actions";
 
 async function ImageDetail({ id }: { id: string }) {
   let image;

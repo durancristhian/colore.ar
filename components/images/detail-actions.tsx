@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { ImageActionsMenu } from "@/components/image-actions-menu";
+import { ImageActionsMenu } from "@/components/images/image-actions-menu";
 
 export function DetailActionsMenu({
   imageId,

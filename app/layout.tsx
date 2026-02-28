@@ -9,7 +9,7 @@ import { DM_Sans, Source_Serif_4, IBM_Plex_Mono } from "next/font/google";
 import { ClerkProvider } from "@clerk/nextjs";
 import { esES } from "@clerk/localizations";
 import { Toaster } from "@/components/ui/sonner";
-import { Providers } from "@/components/providers";
+import { Providers } from "@/components/layout/providers";
 import "./globals.css";
 
 const dmSans = DM_Sans({

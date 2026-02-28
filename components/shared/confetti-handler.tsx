@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { ConfettiFireworks } from "@/components/confetti-fireworks";
+import { ConfettiFireworks } from "@/components/shared/confetti-fireworks";
 
 const SHOW_CONFETTI_KEY = "show-confetti";
 
