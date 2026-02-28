@@ -4,17 +4,21 @@
 //
 "use client";
 import Link from "next/link";
+import { useEffect } from "react";
 import { HouseIcon, ArrowClockwiseIcon } from "@phosphor-icons/react/dist/ssr";
 import { Button } from "@/components/ui/button";
 
 export default function Error({
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   error,
   reset,
 }: {
   error: Error & { digest?: string };
   reset: () => void;
 }) {
+  useEffect(() => {
+    // Log the error to an error reporting service
+    console.error(error);
+  }, [error]);
   return (
     <div className="mx-auto flex min-h-dvh w-full max-w-3xl flex-col items-center justify-center p-4">
       <div className="flex min-h-[calc(100dvh-2rem)] flex-col items-center justify-center gap-8">

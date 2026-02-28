@@ -6,14 +6,19 @@
 //
 "use client";
 
+import { useEffect } from "react";
+
 export default function GlobalError({
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   error,
   reset,
 }: {
   error: Error & { digest?: string };
   reset: () => void;
 }) {
+  useEffect(() => {
+    // Log the error to an error reporting service
+    console.error(error);
+  }, [error]);
   return (
     <html lang="es">
       <body
