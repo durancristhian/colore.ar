@@ -1,9 +1,5 @@
-// route.ts
-//
-// Proxies requests to Umami analytics /api/send. Forwards body and Content-Type/User-Agent
-// to avoid CORS and keep the analytics server URL server-side. Returns 503 on fetch failure.
-//
 import { NextRequest, NextResponse } from "next/server";
+import { ErrorCode } from "@/lib/shared/errors";
 
 const UMAMI_SEND_URL = "https://cloud.umami.is/api/send";
 
@@ -16,7 +12,7 @@ export async function POST(request: NextRequest) {
     body = await request.text();
   } catch {
     return NextResponse.json(
-      { error: "Cuerpo de solicitud inválido" },
+      { error: ErrorCode.INVALID_INPUT },
       { status: 400 },
     );
   }
@@ -46,7 +42,7 @@ export async function POST(request: NextRequest) {
   } catch (error) {
     console.error("Error del proxy Umami:", error);
     return NextResponse.json(
-      { error: "Servicio de analytics no disponible" },
+      { error: ErrorCode.UMAMI_PROXY_ERROR },
       { status: 503 },
     );
   }

@@ -20,6 +20,7 @@ import {
 } from "@/components/ui/alert-dialog";
 import { Spinner } from "@/components/ui/spinner";
 import { deleteImage } from "@/lib/server/api";
+import { translateError } from "@/lib/shared/errors";
 
 interface DeleteImageDialogProps {
   imageId: string;
@@ -47,11 +48,7 @@ export function DeleteImageDialog({
         onSuccess?.();
         toast.success("Imagen eliminada.");
       } catch (err) {
-        toast.error(
-          err instanceof Error
-            ? err.message
-            : "Algo salió mal. Por favor, intentá de nuevo.",
-        );
+        toast.error(translateError(err));
       }
     });
   }

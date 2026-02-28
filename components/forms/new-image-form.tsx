@@ -13,6 +13,7 @@ import { DescriptionPromptField } from "@/components/forms/description-prompt-fi
 import { TabbedGenerateForm } from "@/components/forms/tabbed-generate-form";
 import { createImage } from "@/lib/server/api";
 import { isDescriptionLengthValid } from "@/lib/server/images/constants";
+import { translateError } from "@/lib/shared/errors";
 import type { CurrentUser } from "@/lib/server/api";
 
 export function NewImageForm({
@@ -53,7 +54,7 @@ export function NewImageForm({
           router.push(`/imagenes/${data.id}`);
         }
       } catch (err) {
-        setError(err instanceof Error ? err.message : "Algo salió mal.");
+        setError(translateError(err));
       }
     });
   };

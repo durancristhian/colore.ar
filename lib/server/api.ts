@@ -7,6 +7,7 @@
 import { auth, currentUser } from "@clerk/nextjs/server";
 import { revalidatePath } from "next/cache";
 import { getOrCreateUser, type UserRole } from "@/lib/server/db/users";
+import { ErrorCode, ErrorCodeType } from "@/lib/shared/errors";
 import {
   insertImage,
   listImagesByUserId,
@@ -14,11 +15,9 @@ import {
   deleteImageByIdAndUserId,
 } from "@/lib/server/db/images";
 import {
-  ALLOWED_IMAGE_TYPES,
   isDescriptionLengthValid,
   isImageSizeValid,
   isImageTypeAllowed,
-  MAX_DESCRIPTION_LENGTH,
 } from "@/lib/server/images/constants";
 import { getImageGenerationOptions } from "@/lib/server/images/generation-mode";
 import {
@@ -49,7 +48,7 @@ export type ImageListItem = {
 
 function getCloudinaryPublicUrl(publicId: string): string {
   const cloudName = process.env.CLOUDINARY_CLOUD_NAME;
-  if (!cloudName) throw new Error("CLOUDINARY_CLOUD_NAME is not set");
+  if (!cloudName) throw new Error(ErrorCode.SERVICE_UNAVAILABLE);
   return `https://res.cloudinary.com/${cloudName}/image/upload/${publicId}`;
 }
 
@@ -77,10 +76,10 @@ export async function createImage(payload: {
     payload.description.trim() !== "";
 
   if (hasImage && hasDescription) {
-    throw new Error("Enviá solo descripción o imagen, no ambos.");
+    throw new Error(ErrorCode.INVALID_INPUT);
   }
   if (!hasImage && !hasDescription) {
-    throw new Error("Se requiere descripción o imagen.");
+    throw new Error(ErrorCode.INVALID_INPUT);
   }
 
   const id = crypto.randomUUID();
@@ -88,15 +87,13 @@ export async function createImage(payload: {
   try {
     if (hasImage && payload.image instanceof File) {
       if (!allowImageFromImage) {
-        throw new Error("La generación desde imagen no está disponible.");
+        throw new Error(ErrorCode.FORBIDDEN);
       }
       if (!isImageTypeAllowed(payload.image.type)) {
-        throw new Error(
-          `El tipo de imagen debe ser uno de: ${ALLOWED_IMAGE_TYPES.join(", ")}.`,
-        );
+        throw new Error(ErrorCode.INVALID_IMAGE_TYPE);
       }
       if (!isImageSizeValid(payload.image.size)) {
-        throw new Error("La imagen debe pesar como máximo 10MB.");
+        throw new Error(ErrorCode.IMAGE_TOO_LARGE);
       }
 
       const sourceBuffer = Buffer.from(await payload.image.arrayBuffer());
@@ -121,9 +118,7 @@ export async function createImage(payload: {
 
     const trimmedDescription = payload.description.trim();
     if (!isDescriptionLengthValid(trimmedDescription)) {
-      throw new Error(
-        `La descripción no puede superar los ${MAX_DESCRIPTION_LENGTH} caracteres. Acortá un poco para continuar.`,
-      );
+      throw new Error(ErrorCode.DESCRIPTION_TOO_LONG);
     }
     const buffer = usePaid
       ? await generateImage(trimmedDescription)
@@ -144,37 +139,30 @@ export async function createImage(payload: {
     console.error("Image creation failed:", error);
     const message = error instanceof Error ? error.message : String(error);
 
-    // Config errors (env vars missing)
+    // If it's already a known error code, rethrow it
     if (
-      (message.includes("OPEN_ROUTER") &&
-        message.includes("environment variable")) ||
-      (message.includes("POLLINATIONS_API_KEY") &&
-        message.includes("environment variable"))
+      Object.values(ErrorCode).includes(message as unknown as ErrorCodeType)
     ) {
-      throw new Error("La generación no está disponible en este momento.");
-    }
-
-    // Explicit validation messages we threw
-    const knownErrors = [
-      "Enviá",
-      "Se requiere",
-      "La generación desde",
-      "El tipo de",
-      "La imagen debe",
-      "La descripción no",
-    ];
-    if (knownErrors.some((k) => message.includes(k))) {
       throw error;
     }
 
-    throw new Error("Algo salió mal. Por favor, intentá de nuevo.");
+    // Config errors (env vars missing)
+    if (
+      message.includes("OPEN_ROUTER") ||
+      message.includes("POLLINATIONS_API_KEY") ||
+      message.includes("CLOUDINARY")
+    ) {
+      throw new Error(ErrorCode.SERVICE_UNAVAILABLE);
+    }
+
+    throw new Error(ErrorCode.GENERIC_ERROR);
   }
 }
 
 /** SERVER ACTION/COMPONENT HELP: listImages */
 export async function listImages(): Promise<ImageListItem[]> {
   const { userId } = await auth();
-  if (!userId) throw new Error("No autorizado");
+  if (!userId) throw new Error(ErrorCode.UNAUTHORIZED);
 
   const images = await listImagesByUserId(userId);
   return images.map((img) => ({
@@ -186,10 +174,10 @@ export async function listImages(): Promise<ImageListItem[]> {
 /** SERVER ACTION/COMPONENT HELP: getImage */
 export async function getImage(id: string): Promise<ImageListItem> {
   const { userId } = await auth();
-  if (!userId) throw new Error("No autorizado");
+  if (!userId) throw new Error(ErrorCode.UNAUTHORIZED);
 
   const image = await getImageByIdAndUserId(id, userId);
-  if (!image) throw new Error("Imagen no encontrada");
+  if (!image) throw new Error(ErrorCode.NOT_FOUND);
 
   return {
     ...image,
@@ -200,10 +188,10 @@ export async function getImage(id: string): Promise<ImageListItem> {
 /** SERVER ACTION: deleteImage */
 export async function deleteImage(id: string): Promise<void> {
   const { userId } = await auth();
-  if (!userId) throw new Error("No autorizado");
+  if (!userId) throw new Error(ErrorCode.UNAUTHORIZED);
 
   const deleted = await deleteImageByIdAndUserId(id, userId);
-  if (!deleted) throw new Error("Imagen no encontrada");
+  if (!deleted) throw new Error(ErrorCode.NOT_FOUND);
 
   revalidatePath("/imagenes");
 }
@@ -211,7 +199,7 @@ export async function deleteImage(id: string): Promise<void> {
 /** SERVER ACTION/COMPONENT HELP: getCurrentUser */
 export async function getCurrentUser(): Promise<CurrentUser> {
   const { userId } = await auth();
-  if (!userId) throw new Error("No autorizado");
+  if (!userId) throw new Error(ErrorCode.UNAUTHORIZED);
 
   const user = await getOrCreateUser(userId);
   return {
@@ -224,11 +212,10 @@ export async function getCurrentUser(): Promise<CurrentUser> {
 export async function submitFeedback(message: string): Promise<void> {
   const [authResult, clUser] = await Promise.all([auth(), currentUser()]);
   const userId = authResult.userId;
-  if (!userId || !clUser) throw new Error("No autorizado");
+  if (!userId || !clUser) throw new Error(ErrorCode.UNAUTHORIZED);
 
   const trimmedMessage = message.trim();
-  if (!trimmedMessage)
-    throw new Error("message es requerido y debe ser un string no vacío");
+  if (!trimmedMessage) throw new Error(ErrorCode.INVALID_INPUT);
 
   const primaryEmail =
     clUser.emailAddresses.find(({ id }) => id === clUser.primaryEmailAddressId)
@@ -245,12 +232,19 @@ export async function submitFeedback(message: string): Promise<void> {
     await telegram.sendMessage(formattedMessage);
   } catch (error) {
     console.error("Feedback send failed:", error);
-    const msg = error instanceof Error ? error.message : String(error);
+    const message = error instanceof Error ? error.message : String(error);
 
-    if (msg.includes("Configuración")) {
-      throw new Error("El feedback no está disponible temporalmente.");
+    // If it's already a known error code, rethrow it
+    if (
+      Object.values(ErrorCode).includes(message as unknown as ErrorCodeType)
+    ) {
+      throw error;
     }
 
-    throw new Error("Algo salió mal. Por favor, intentá de nuevo.");
+    if (message.includes("Configuración") || message.includes("ERR_")) {
+      throw new Error(ErrorCode.FEEDBACK_UNAVAILABLE);
+    }
+
+    throw new Error(ErrorCode.GENERIC_ERROR);
   }
 }

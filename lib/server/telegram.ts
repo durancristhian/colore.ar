@@ -1,8 +1,5 @@
-// telegram.ts
-//
-// Sends messages to a Telegram chat via the Bot API. Used by app/api/feedback.
-// Requires TELEGRAM_BOTID and TELEGRAM_CHATID; rejects if unset (caller should map to 503).
-//
+import { ErrorCode } from "@/lib/shared/errors";
+
 export class Telegram {
   /**
    * Sends text to the configured chat. Throws if env vars are missing or if the API request fails.
@@ -12,7 +9,7 @@ export class Telegram {
     const chatId = process.env.TELEGRAM_CHATID;
 
     if (!botId || !chatId) {
-      throw new Error("Configuración de Telegram incompleta");
+      throw new Error(ErrorCode.TELEGRAM_NOT_CONFIGURED);
     }
 
     const text = encodeURIComponent(message);
@@ -22,7 +19,7 @@ export class Telegram {
 
     if (!res.ok) {
       console.error(`Telegram API error (${res.status}): ${res.statusText}`);
-      throw new Error("No se pudo enviar el feedback");
+      throw new Error(ErrorCode.FEEDBACK_UNAVAILABLE);
     }
 
     return res;

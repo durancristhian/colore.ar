@@ -14,6 +14,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { submitFeedback } from "@/lib/server/api";
 import { PageLayout } from "@/components/layout/page-layout";
 import { BackButton } from "@/components/layout/back-button";
+import { translateError } from "@/lib/shared/errors";
 
 export default function FeedbackPage() {
   const [message, setMessage] = useState("");
@@ -28,11 +29,7 @@ export default function FeedbackPage() {
         setMessage("");
         toast.success("Gracias, tu feedback fue enviado.");
       } catch (err) {
-        toast.error(
-          err instanceof Error
-            ? err.message
-            : "Algo salió mal. Por favor, intentá de nuevo.",
-        );
+        toast.error(translateError(err));
       }
     });
   };
