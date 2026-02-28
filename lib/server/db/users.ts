@@ -2,7 +2,7 @@
 //
 // Users table (user_id, role). Used for role-based generation options and app/api/user/me.
 //
-import { getDb } from "./client";
+import { getDb, createEnsurer } from "./client";
 
 export type UserRole = "admin" | "vip" | "standard";
 
@@ -22,15 +22,7 @@ CREATE TABLE IF NOT EXISTS users (
 );
 `;
 
-let initPromise: Promise<void> | null = null;
-
-async function ensureTable(): Promise<void> {
-  if (initPromise) return initPromise;
-  initPromise = (async () => {
-    await getDb().execute(INIT_SQL);
-  })();
-  return initPromise;
-}
+const ensureTable = createEnsurer(INIT_SQL);
 
 export interface UserRow {
   userId: string;

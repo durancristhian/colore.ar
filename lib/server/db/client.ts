@@ -20,3 +20,19 @@ export function getDb(): Client {
   });
   return _db;
 }
+
+/**
+ * Simplified factory to create a thread-safe "ensure table" function.
+ * Ensures the provided SQL (usually CREATE TABLE IF NOT EXISTS) is only executed once.
+ */
+export function createEnsurer(initSql: string): () => Promise<void> {
+  let initPromise: Promise<void> | null = null;
+
+  return async function ensureTable(): Promise<void> {
+    if (initPromise) return initPromise;
+    initPromise = (async () => {
+      await getDb().execute(initSql);
+    })();
+    return initPromise;
+  };
+}

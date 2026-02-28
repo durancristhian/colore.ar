@@ -3,7 +3,7 @@
 // CRUD for the images table. Ensures the table exists on first use.
 // Used by app/api/images and app/api/images/[id].
 //
-import { getDb } from "./client";
+import { getDb, createEnsurer } from "./client";
 
 const INIT_SQL = `
 CREATE TABLE IF NOT EXISTS images (
@@ -17,15 +17,7 @@ CREATE TABLE IF NOT EXISTS images (
 );
 `;
 
-let initPromise: Promise<void> | null = null;
-
-async function ensureTable(): Promise<void> {
-  if (initPromise) return initPromise;
-  initPromise = (async () => {
-    await getDb().execute(INIT_SQL);
-  })();
-  return initPromise;
-}
+const ensureTable = createEnsurer(INIT_SQL);
 
 export interface InsertImageParams {
   id: string;
