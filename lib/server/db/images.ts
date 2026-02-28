@@ -17,12 +17,14 @@ CREATE TABLE IF NOT EXISTS images (
 );
 `;
 
-let initialized = false;
+let initPromise: Promise<void> | null = null;
 
 async function ensureTable(): Promise<void> {
-  if (initialized) return;
-  await getDb().execute(INIT_SQL);
-  initialized = true;
+  if (initPromise) return initPromise;
+  initPromise = (async () => {
+    await getDb().execute(INIT_SQL);
+  })();
+  return initPromise;
 }
 
 export interface InsertImageParams {
