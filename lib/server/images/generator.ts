@@ -2,7 +2,7 @@
 //
 // Text-to-image (Open Router + Pollinations) and image-to-image (Open Router). Each function documents its required env vars.
 //
-import { generateImage as generateImageWithModel, generateText } from "ai";
+import { generateImage as generateImageWithModel } from "ai";
 import { createOpenRouter } from "@openrouter/ai-sdk-provider";
 
 /** Implementations can be swapped (e.g. mock, Open Router, Vercel AI). */
@@ -98,29 +98,17 @@ export async function generateImageFromImage(
   const fullPrompt = buildPromptFromImage();
   const apiKey = getEnv("OPEN_ROUTER_API_KEY");
   const modelId = getEnv("OPEN_ROUTER_IMAGE_MODEL");
-  const openrouter = createOpenRouter({ apiKey });
+  const model = createOpenRouter({ apiKey }).imageModel(modelId);
 
-  const result = await generateText({
-    model: openrouter.chat(modelId),
-    messages: [
-      {
-        role: "user",
-        content: [
-          { type: "text", text: fullPrompt },
-          { type: "image", image: new URL(sourceImageUrl) },
-        ],
-      },
-    ],
-    providerOptions: {
-      openrouter: { modalities: ["image", "text"] },
-    },
+  const result = await generateImageWithModel({
+    model,
+    prompt: { text: fullPrompt, images: [sourceImageUrl] },
+    n: 1,
   });
 
-  const imageFile = result.files?.find((f) =>
-    f.mediaType?.startsWith("image/"),
-  );
-  if (!imageFile) {
+  const first = result.images[0];
+  if (!first) {
     throw new Error("No image generated");
   }
-  return Buffer.from(imageFile.uint8Array);
+  return Buffer.from(first.uint8Array);
 }
