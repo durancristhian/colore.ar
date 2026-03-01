@@ -1,5 +1,9 @@
 import type { NextConfig } from "next";
 
+// Validate env at build time so missing/empty required vars fail fast
+import "@/lib/env.server";
+import "@/lib/env.client";
+
 const nextConfig: NextConfig = {
   images: {
     remotePatterns: [{ protocol: "https", hostname: "res.cloudinary.com" }],

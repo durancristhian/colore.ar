@@ -3,6 +3,7 @@
 // Singleton Turso client for all DB access. Used by lib/db/images and lib/db/users.
 //
 import { createClient, type Client } from "@libsql/client";
+import { env } from "@/lib/env.server";
 
 let _db: Client | null = null;
 
@@ -11,12 +12,9 @@ let _db: Client | null = null;
  */
 export function getDb(): Client {
   if (_db) return _db;
-  const url = process.env.TURSO_DATABASE_URL;
-  const authToken = process.env.TURSO_AUTH_TOKEN;
-  if (!url) throw new Error("TURSO_DATABASE_URL is not set");
   _db = createClient({
-    url,
-    authToken: authToken || undefined,
+    url: env.TURSO_DATABASE_URL,
+    authToken: env.TURSO_AUTH_TOKEN,
   });
   return _db;
 }

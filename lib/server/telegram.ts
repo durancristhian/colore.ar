@@ -4,6 +4,7 @@
 // submissions so the team gets notified without running a backend queue.
 // Requires TELEGRAM_BOTID and TELEGRAM_CHATID; throws if unset or API fails.
 //
+import { env } from "@/lib/env.server";
 import { ErrorCode } from "@/lib/shared/errors";
 
 export class Telegram {
@@ -11,15 +12,8 @@ export class Telegram {
    * Sends text to the configured chat. Throws if env vars are missing or if the API request fails.
    */
   async sendMessage(message: string): Promise<Response> {
-    const botId = process.env.TELEGRAM_BOTID;
-    const chatId = process.env.TELEGRAM_CHATID;
-
-    if (!botId || !chatId) {
-      throw new Error(ErrorCode.TELEGRAM_NOT_CONFIGURED);
-    }
-
     const text = encodeURIComponent(message);
-    const url = `https://api.telegram.org/bot${botId}/sendMessage?chat_id=${chatId}&text=${text}`;
+    const url = `https://api.telegram.org/bot${env.TELEGRAM_BOTID}/sendMessage?chat_id=${env.TELEGRAM_CHATID}&text=${text}`;
 
     const res = await fetch(url);
 

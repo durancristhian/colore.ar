@@ -3,40 +3,23 @@
 // ImageStore implementation using Cloudinary unsigned upload (preset). save returns public_id for URL building (e.g. in the API).
 //
 import { v2 as cloudinary } from "cloudinary";
+import { env } from "@/lib/env.server";
 import type { ImageStore } from "./store";
 
-const cloudName = process.env.CLOUDINARY_CLOUD_NAME;
-const uploadPreset = process.env.CLOUDINARY_UPLOAD_PRESET;
-const apiKey = process.env.CLOUDINARY_API_KEY;
-const apiSecret = process.env.CLOUDINARY_API_SECRET;
-
-type ConfigOptions = {
-  /** Require API key and secret (for destroy/delete). */
-  requireAuth?: boolean;
-};
-
 /**
- * Validates env and configures the Cloudinary client.
- * - Default: requires CLOUDINARY_CLOUD_NAME and CLOUDINARY_UPLOAD_PRESET (save/get).
- * - requireAuth: true also requires CLOUDINARY_API_KEY and CLOUDINARY_API_SECRET (delete).
+ * Configures the Cloudinary client from env and returns cloudName and uploadPreset.
  */
-function getConfig(options: ConfigOptions = {}) {
-  if (!cloudName || !uploadPreset) {
-    throw new Error(
-      "Missing Cloudinary env: CLOUDINARY_CLOUD_NAME and CLOUDINARY_UPLOAD_PRESET are required",
-    );
-  }
-  if (options.requireAuth) {
-    if (!apiKey || !apiSecret) {
-      throw new Error(
-        "Missing Cloudinary env: CLOUDINARY_API_KEY and CLOUDINARY_API_SECRET are required for delete (rollback)",
-      );
-    }
-  }
+function getConfig() {
+  const {
+    CLOUDINARY_CLOUD_NAME: cloudName,
+    CLOUDINARY_UPLOAD_PRESET: uploadPreset,
+    CLOUDINARY_API_KEY: apiKey,
+    CLOUDINARY_API_SECRET: apiSecret,
+  } = env;
   cloudinary.config({
     cloud_name: cloudName,
-    api_key: apiKey ?? undefined,
-    api_secret: apiSecret ?? undefined,
+    api_key: apiKey,
+    api_secret: apiSecret,
     secure: true,
   });
   return { cloudName, uploadPreset };
@@ -77,7 +60,7 @@ export const cloudinaryStore: ImageStore = {
   },
 
   async delete(id: string): Promise<void> {
-    getConfig({ requireAuth: true });
+    getConfig();
 
     const result = await new Promise<{ result: string }>((resolve, reject) => {
       cloudinary.uploader.destroy(

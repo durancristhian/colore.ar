@@ -8,6 +8,7 @@ import Script from "next/script";
 import { DM_Sans, Source_Serif_4, IBM_Plex_Mono } from "next/font/google";
 import { ClerkProvider } from "@clerk/nextjs";
 import { esES } from "@clerk/localizations";
+import { envClient } from "@/lib/env.client";
 import { Toaster } from "@/components/ui/sonner";
 import { Providers } from "@/components/layout/providers";
 import "./globals.css";
@@ -55,7 +56,7 @@ export default function RootLayout({
           <Script
             src="/stats.js"
             data-website-id="7dbb19cc-b89c-4b9b-84e6-98df42fc191d"
-            data-host-url={process.env.NEXT_PUBLIC_APP_URL}
+            data-host-url={envClient.NEXT_PUBLIC_APP_URL}
             strategy="afterInteractive"
           />
           <Providers>

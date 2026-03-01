@@ -9,6 +9,7 @@
 
 import { auth, currentUser } from "@clerk/nextjs/server";
 import { revalidatePath } from "next/cache";
+import { env } from "@/lib/env.server";
 import { getOrCreateUser, type UserRole } from "@/lib/server/db/users";
 import { ErrorCode, ErrorCodeType } from "@/lib/shared/errors";
 import {
@@ -51,9 +52,7 @@ export type ImageListItem = {
 
 /** Builds the public CDN URL for a Cloudinary image from its public_id. */
 function getCloudinaryPublicUrl(publicId: string): string {
-  const cloudName = process.env.CLOUDINARY_CLOUD_NAME;
-  if (!cloudName) throw new Error(ErrorCode.SERVICE_UNAVAILABLE);
-  return `https://res.cloudinary.com/${cloudName}/image/upload/${publicId}`;
+  return `https://res.cloudinary.com/${env.CLOUDINARY_CLOUD_NAME}/image/upload/${publicId}`;
 }
 
 /**
