@@ -41,11 +41,6 @@
       "sourceType": "github",
       "computedHash": "0cb0e2f07f6b42fb8974c2ee89ca3ba3a103dfe565f12bc7ca9f41945fc7227a"
     },
-    "react-query": {
-      "source": "mindrally/skills",
-      "sourceType": "github",
-      "computedHash": "7e9543c800d45f1cd9efaeb9f6e5dcc91d3922b768ec41b06a98341840e0b8c7"
-    },
     "setup-pre-commit": {
       "source": "mattpocock/skills",
       "sourceType": "github",
