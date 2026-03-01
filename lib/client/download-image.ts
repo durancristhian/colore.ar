@@ -1,6 +1,7 @@
 // download-image.ts
 //
-// Triggers a download of the image at src with the given filename (client-only).
+// Client-only: fetches the image at src, triggers a browser download with the
+// given filename, then revokes the object URL. Used by the image actions menu.
 //
 /** Fetches image, creates object URL, triggers anchor download, revokes URL. */
 export async function downloadImage(

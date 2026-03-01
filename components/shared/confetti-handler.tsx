@@ -1,3 +1,9 @@
+// confetti-handler.tsx
+//
+// Shows confetti once when the detail page id matches the value stored by the
+// new-image form after a successful create. Uses localStorage so the redirect
+// doesn't lose the "just created" signal; key is cleared after the animation.
+//
 "use client";
 
 import { useEffect, useState } from "react";

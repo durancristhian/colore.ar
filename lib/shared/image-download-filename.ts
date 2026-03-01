@@ -1,6 +1,7 @@
 // image-download-filename.ts
 //
-// Builds a safe download filename from prompt and date. Used by download action.
+// Builds a safe download filename from prompt and date. Sanitizes prompt and
+// truncates to avoid filesystem issues; used by the download action in use-image-actions.
 //
 import sanitize from "sanitize-filename";
 

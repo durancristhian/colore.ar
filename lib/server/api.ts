@@ -1,6 +1,9 @@
 // api.ts
 //
-// Application API/Server Actions. Contains actions for: createImage, listImages, getImage, deleteImage, getCurrentUser, submitFeedback.
+// Server Actions for the app: createImage, listImages, getImage, deleteImage,
+// getCurrentUser, submitFeedback. All image actions are user-scoped (Clerk userId).
+// createImage rolls back Cloudinary uploads on failure; errors are normalized
+// to ErrorCode for the UI (see lib/shared/errors).
 //
 "use server";
 
@@ -46,13 +49,18 @@ export type ImageListItem = {
   createdAt: string; // ISO string representation
 };
 
+/** Builds the public CDN URL for a Cloudinary image from its public_id. */
 function getCloudinaryPublicUrl(publicId: string): string {
   const cloudName = process.env.CLOUDINARY_CLOUD_NAME;
   if (!cloudName) throw new Error(ErrorCode.SERVICE_UNAVAILABLE);
   return `https://res.cloudinary.com/${cloudName}/image/upload/${publicId}`;
 }
 
-/** SERVER ACTION: createImage */
+/**
+ * Creates an image (text-to-image or image-to-image). Role and usePaidModel
+ * determine which backend is used; on failure, any Cloudinary uploads from this
+ * request are deleted for rollback.
+ */
 export async function createImage(payload: {
   description: string;
   image?: File | null;
@@ -83,7 +91,7 @@ export async function createImage(payload: {
   }
 
   const id = crypto.randomUUID();
-  /** Public IDs uploaded to Cloudinary in this request; deleted on failure for rollback. */
+  // Track uploads so we can delete them on failure (rollback).
   const uploadedPublicIds: string[] = [];
 
   try {
@@ -175,7 +183,7 @@ export async function createImage(payload: {
   }
 }
 
-/** SERVER ACTION/COMPONENT HELP: listImages */
+/** Returns all images for the current user, newest first. ISO date strings. */
 export async function listImages(): Promise<ImageListItem[]> {
   const { userId } = await auth();
   if (!userId) throw new Error(ErrorCode.UNAUTHORIZED);
@@ -187,7 +195,7 @@ export async function listImages(): Promise<ImageListItem[]> {
   }));
 }
 
-/** SERVER ACTION/COMPONENT HELP: getImage */
+/** Returns a single image by id if owned by the current user; throws NOT_FOUND otherwise. */
 export async function getImage(id: string): Promise<ImageListItem> {
   const { userId } = await auth();
   if (!userId) throw new Error(ErrorCode.UNAUTHORIZED);
@@ -201,7 +209,7 @@ export async function getImage(id: string): Promise<ImageListItem> {
   };
 }
 
-/** SERVER ACTION: deleteImage */
+/** Deletes the image if owned by the current user; throws NOT_FOUND if missing or not owned. */
 export async function deleteImage(id: string): Promise<void> {
   const { userId } = await auth();
   if (!userId) throw new Error(ErrorCode.UNAUTHORIZED);
@@ -212,7 +220,7 @@ export async function deleteImage(id: string): Promise<void> {
   revalidatePath("/imagenes");
 }
 
-/** SERVER ACTION/COMPONENT HELP: getCurrentUser */
+/** Returns current user id and role (from DB); throws if not signed in. */
 export async function getCurrentUser(): Promise<CurrentUser> {
   const { userId } = await auth();
   if (!userId) throw new Error(ErrorCode.UNAUTHORIZED);
@@ -224,7 +232,7 @@ export async function getCurrentUser(): Promise<CurrentUser> {
   };
 }
 
-/** SERVER ACTION: submitFeedback */
+/** Sends feedback to Telegram (user email, id, message). Throws on missing auth or send failure. */
 export async function submitFeedback(message: string): Promise<void> {
   const [authResult, clUser] = await Promise.all([auth(), currentUser()]);
   const userId = authResult.userId;

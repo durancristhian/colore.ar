@@ -60,7 +60,7 @@ export function TabbedGenerateForm({
     const isHeic = file.type === "image/heic" || file.type === "image/heif";
     let url: string;
     if (isHeic) {
-      // HEIC not supported for object URL preview; convert to JPEG for createObjectURL.
+      // Browsers can't preview HEIC via object URL; convert to JPEG for the preview thumbnail.
       const heic2any = (await import("heic2any")).default;
       const result = await heic2any({ blob: file, toType: "image/jpeg" });
       const first = Array.isArray(result) ? result[0] : result;

@@ -1,8 +1,9 @@
 // cloudinary-url.ts
 //
-// Parses Cloudinary image URLs.
+// Parses Cloudinary CDN URLs. Used when we need the public_id from a stored
+// image URL (e.g. for delete or URL building). Only handles res.cloudinary.com paths.
 //
-/** Extracts public ID from res.cloudinary.com path; returns null if not Cloudinary or parse fails. */
+/** Extracts public_id from res.cloudinary.com path; null if host/path don't match or parse fails. */
 export function getPublicIdFromCloudinaryUrl(url: string): string | null {
   try {
     const parsed = new URL(url);

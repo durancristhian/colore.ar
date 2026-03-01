@@ -1,6 +1,11 @@
+// middleware.ts
+//
+// Clerk auth: routes under /imagenes, /feedback, and /api/images, /api/user, /api/feedback
+// require sign-in. All other routes (e.g. landing) are public. Matcher skips _next and
+// static assets so we don't run auth on every image/CSS request.
+//
 import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
 
-// Any route not in public list is protected by default, or explicitly list (authenticated)
 const isProtectedRoute = createRouteMatcher([
   "/imagenes(.*)",
   "/feedback(.*)",

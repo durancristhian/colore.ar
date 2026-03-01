@@ -1,6 +1,7 @@
 // use-image-actions.ts
 //
-// Shared handlers for download, copy image, and copy URL. Used by ImageActionsMenu and CldImage context menu.
+// Shared handlers for download, copy image, and copy URL. Used by ImageActionsMenu
+// and CldImage context menu. Copy image converts to PNG for clipboard compatibility.
 //
 
 import { toast } from "sonner";
@@ -17,6 +18,7 @@ export function useImageActions(imageUrl: string, prompt: string) {
     try {
       const response = await fetch(imageUrl);
       const blob = await response.blob();
+      // ClipboardItem expects PNG for reliable paste in most apps.
       const pngBlob = blob.type === "image/png" ? blob : await blobToPng(blob);
       await navigator.clipboard.write([
         new ClipboardItem({ "image/png": pngBlob }),

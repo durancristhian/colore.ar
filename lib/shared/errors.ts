@@ -1,8 +1,8 @@
 // errors.ts
 //
-// Centralized Error Codes and Spanish Translations.
-// This allows the server to return abstract codes (or English messages)
-// while the UI displays user-friendly Spanish messages.
+// Centralized error codes and Spanish translations. Server code throws ErrorCode
+// values; the UI uses translateError() with ERROR_TRANSLATIONS to show
+// user-friendly messages. Keeps i18n in one place and avoids leaking internal messages.
 //
 
 export const ErrorCode = {

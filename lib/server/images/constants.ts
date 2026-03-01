@@ -34,6 +34,7 @@ export function isDescriptionLengthValid(value: string): boolean {
   return value.trim().length <= MAX_DESCRIPTION_LENGTH;
 }
 
+/** True if file type is in ALLOWED_IMAGE_TYPES and size ≤ MAX_IMAGE_SIZE_BYTES. */
 export function isImageFileValid(file: File): boolean {
   return isImageTypeAllowed(file.type) && isImageSizeValid(file.size);
 }

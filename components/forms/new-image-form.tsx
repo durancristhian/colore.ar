@@ -1,3 +1,9 @@
+// new-image-form.tsx
+//
+// Main form for creating a new image. Standard users see only the text prompt;
+// admin/vip can toggle "paid model" to get the tabbed form (text + image-from-file).
+// Success: stores id in localStorage for confetti on the detail page, then redirects.
+//
 "use client";
 
 import { useState, useTransition } from "react";
@@ -33,6 +39,7 @@ export function NewImageForm({
   const [usePaidModel, setUsePaidModel] = useState(false);
   const [description, setDescription] = useState("");
 
+  // Standard: text only. Admin/VIP: text by default; tabbed (text + image upload) when paid model is on.
   const showTextOnlyForm = treatAsStandard || (isAdminOrVip && !usePaidModel);
   const showTabbedForm = isAdminOrVip && usePaidModel;
 

@@ -20,6 +20,7 @@ type PrintImageContextValue = {
 
 const PrintImageContext = createContext<PrintImageContextValue | null>(null);
 
+// Delay before clearing the portaled image so the print dialog can capture it.
 const CLEAR_PENDING_DELAY_MS = 600;
 
 export function PrintImageProvider({

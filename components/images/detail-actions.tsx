@@ -1,3 +1,8 @@
+// detail-actions.tsx
+//
+// Wraps ImageActionsMenu for the image detail page. Redirects to /imagenes
+// after successful delete so the user doesn't stay on a removed resource.
+//
 "use client";
 
 import { useRouter } from "next/navigation";

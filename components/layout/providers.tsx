@@ -1,6 +1,8 @@
 // providers.tsx
 //
-// Root providers: ThemeProvider (next-themes).
+// Root client providers: theme (next-themes) and motion (Motion). LazyMotion loads
+// only domAnimation to keep the bundle small; reducedMotion="user" respects
+// prefers-reduced-motion for accessibility.
 //
 "use client";
 

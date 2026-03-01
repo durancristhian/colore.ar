@@ -1,3 +1,9 @@
+// telegram.ts
+//
+// Sends messages to a Telegram chat via the Bot API. Used for feedback form
+// submissions so the team gets notified without running a backend queue.
+// Requires TELEGRAM_BOTID and TELEGRAM_CHATID; throws if unset or API fails.
+//
 import { ErrorCode } from "@/lib/shared/errors";
 
 export class Telegram {
