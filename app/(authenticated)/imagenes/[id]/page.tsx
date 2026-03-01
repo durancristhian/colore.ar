@@ -1,11 +1,11 @@
 // page.tsx
 //
 // Image detail page. Fetches image by id; shows confetti once when arriving from create (SHOW_CONFETTI_KEY in localStorage). Delete redirects to /imagenes.
+// Calls notFound() when the image is missing so the response is 404 and app/not-found.tsx is used.
 //
-import Link from "next/link";
+import { notFound } from "next/navigation";
 import { Suspense } from "react";
 import { CldImage } from "@/components/images/cld-image";
-import { ErrorMessage } from "@/components/shared/error-message";
 import { Label } from "@/components/ui/label";
 import { LoadingMessage } from "@/components/shared/loading-message";
 import { PageLayout } from "@/components/layout/page-layout";
@@ -21,31 +21,11 @@ async function ImageDetail({ id }: { id: string }) {
   try {
     image = await getImage(id);
   } catch {
-    return (
-      <ErrorMessage
-        title="Imagen no encontrada"
-        description="No encontramos la imagen que buscás."
-        action={
-          <Link href="/imagenes" className="text-sm underline">
-            Volver a imágenes
-          </Link>
-        }
-      />
-    );
+    notFound();
   }
 
   if (!image) {
-    return (
-      <ErrorMessage
-        title="Imagen no encontrada"
-        description="No encontramos la imagen que buscás."
-        action={
-          <Link href="/imagenes" className="text-sm underline">
-            Volver a imágenes
-          </Link>
-        }
-      />
-    );
+    notFound();
   }
 
   return (
@@ -90,22 +70,7 @@ export default async function ImageDetailPage({
   const id = resolvedParams.id;
 
   if (!id) {
-    return (
-      <PageLayout
-        title="Detalles de la imagen"
-        leftContent={<BackButton href="/imagenes" />}
-      >
-        <ErrorMessage
-          title="Imagen no encontrada"
-          description="No encontramos la imagen que buscás."
-          action={
-            <Link href="/imagenes" className="text-sm underline">
-              Volver a imágenes
-            </Link>
-          }
-        />
-      </PageLayout>
-    );
+    notFound();
   }
 
   return (
