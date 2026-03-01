@@ -8,16 +8,35 @@ import type { ImageStore } from "./store";
 const cloudName = process.env.CLOUDINARY_CLOUD_NAME;
 const uploadPreset = process.env.CLOUDINARY_UPLOAD_PRESET;
 const apiKey = process.env.CLOUDINARY_API_KEY;
+const apiSecret = process.env.CLOUDINARY_API_SECRET;
 
-function getConfig() {
+type ConfigOptions = {
+  /** Require API key and secret (for destroy/delete). */
+  requireAuth?: boolean;
+};
+
+/**
+ * Validates env and configures the Cloudinary client.
+ * - Default: requires CLOUDINARY_CLOUD_NAME and CLOUDINARY_UPLOAD_PRESET (save/get).
+ * - requireAuth: true also requires CLOUDINARY_API_KEY and CLOUDINARY_API_SECRET (delete).
+ */
+function getConfig(options: ConfigOptions = {}) {
   if (!cloudName || !uploadPreset) {
     throw new Error(
       "Missing Cloudinary env: CLOUDINARY_CLOUD_NAME and CLOUDINARY_UPLOAD_PRESET are required",
     );
   }
+  if (options.requireAuth) {
+    if (!apiKey || !apiSecret) {
+      throw new Error(
+        "Missing Cloudinary env: CLOUDINARY_API_KEY and CLOUDINARY_API_SECRET are required for delete (rollback)",
+      );
+    }
+  }
   cloudinary.config({
     cloud_name: cloudName,
     api_key: apiKey ?? undefined,
+    api_secret: apiSecret ?? undefined,
     secure: true,
   });
   return { cloudName, uploadPreset };
@@ -55,5 +74,26 @@ export const cloudinaryStore: ImageStore = {
     if (!res.ok) return null;
     const arrayBuffer = await res.arrayBuffer();
     return Buffer.from(arrayBuffer);
+  },
+
+  async delete(id: string): Promise<void> {
+    getConfig({ requireAuth: true });
+
+    const result = await new Promise<{ result: string }>((resolve, reject) => {
+      cloudinary.uploader.destroy(
+        id,
+        { resource_type: "image", invalidate: true },
+        (error, destroyResult) => {
+          if (error) return reject(error);
+          resolve(destroyResult as { result: string });
+        },
+      );
+    });
+
+    // Idempotent: treat "not found" as success so rollback is safe.
+    if (result.result === "not found") return;
+    if (result.result !== "ok") {
+      throw new Error(`Cloudinary destroy failed: ${result.result}`);
+    }
   },
 };

@@ -83,6 +83,8 @@ export async function createImage(payload: {
   }
 
   const id = crypto.randomUUID();
+  /** Public IDs uploaded to Cloudinary in this request; deleted on failure for rollback. */
+  const uploadedPublicIds: string[] = [];
 
   try {
     if (hasImage && payload.image instanceof File) {
@@ -98,10 +100,12 @@ export async function createImage(payload: {
 
       const sourceBuffer = Buffer.from(await payload.image.arrayBuffer());
       const sourcePublicId = await imageStore.save(sourceBuffer);
+      uploadedPublicIds.push(sourcePublicId);
       const sourceImageUrl = getCloudinaryPublicUrl(sourcePublicId);
 
       const buffer = await generateImageFromImage(sourceImageUrl);
       const publicId = await imageStore.save(buffer);
+      uploadedPublicIds.push(publicId);
       const url = getCloudinaryPublicUrl(publicId);
 
       await insertImage({
@@ -124,6 +128,7 @@ export async function createImage(payload: {
       ? await generateImage(trimmedDescription)
       : await generateImageWithPollinations(trimmedDescription);
     const publicId = await imageStore.save(buffer);
+    uploadedPublicIds.push(publicId);
     const url = getCloudinaryPublicUrl(publicId);
 
     await insertImage({
@@ -136,6 +141,17 @@ export async function createImage(payload: {
     revalidatePath("/imagenes");
     return { id, url };
   } catch (error) {
+    for (const publicId of uploadedPublicIds) {
+      try {
+        await imageStore.delete(publicId);
+      } catch (deleteErr) {
+        console.error(
+          "Rollback: failed to delete uploaded image:",
+          publicId,
+          deleteErr,
+        );
+      }
+    }
     console.error("Image creation failed:", error);
     const message = error instanceof Error ? error.message : String(error);
 
