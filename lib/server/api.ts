@@ -256,16 +256,21 @@ export async function submitFeedback(message: string): Promise<void> {
     await telegram.sendMessage(formattedMessage);
   } catch (error) {
     console.error("Feedback send failed:", error);
-    const message = error instanceof Error ? error.message : String(error);
+    const errorMessage = error instanceof Error ? error.message : String(error);
 
     // If it's already a known error code, rethrow it
     if (
-      Object.values(ErrorCode).includes(message as unknown as ErrorCodeType)
+      Object.values(ErrorCode).includes(
+        errorMessage as unknown as ErrorCodeType,
+      )
     ) {
       throw error;
     }
 
-    if (message.includes("Configuración") || message.includes("ERR_")) {
+    if (
+      errorMessage.includes("Configuración") ||
+      errorMessage.includes("ERR_")
+    ) {
       throw new Error(ErrorCode.FEEDBACK_UNAVAILABLE);
     }
 
