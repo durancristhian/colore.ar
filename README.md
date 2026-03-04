@@ -1,6 +1,6 @@
 # colore.ar
 
-AI-powered coloring book page generator. Users describe a scene or upload a photo and the app generates a printable coloring page. Built with Next.js, uses Clerk for auth, Turso for storage, Cloudinary for images, and OpenRouter/Pollinations for AI generation.
+AI-powered coloring book page generator. Users describe a scene or upload a photo and the app generates a printable coloring page. Built with Next.js, uses Clerk for auth, Turso for storage, Cloudinary for images, and OpenRouter/Pollinations for AI generation. kiki
 
 ## Getting Started
 
