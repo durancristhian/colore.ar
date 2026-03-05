@@ -34,7 +34,7 @@ export default async function AuthenticatedLayout({
                   <div className="bg-muted size-8 animate-pulse rounded-full" />
                 }
               >
-                <HeaderUserMenu currentUser={currentUser} />
+                <HeaderUserMenu />
               </Suspense>
             </div>
           </header>

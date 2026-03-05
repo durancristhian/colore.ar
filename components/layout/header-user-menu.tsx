@@ -60,11 +60,7 @@ function getInitials(
   return "??";
 }
 
-export function HeaderUserMenu({
-  currentUser: initialUser,
-}: {
-  currentUser: CurrentUser | null;
-}) {
+export function HeaderUserMenu() {
   const { user: currentUser } = useUserContext();
   const { isLoaded, user } = useUser();
   const { theme, setTheme } = useTheme();
