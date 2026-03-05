@@ -56,9 +56,7 @@ export function ImageActionsMenu({
     promptRef.current = prompt;
   }, [imageUrl, prompt]);
 
-  function handlePrint(e: React.MouseEvent) {
-    e.preventDefault();
-    e.stopPropagation();
+  function handlePrint() {
     if (printImage) {
       printImage.printImage(imageUrlRef.current, promptRef.current);
     } else {
@@ -79,9 +77,9 @@ export function ImageActionsMenu({
           e.stopPropagation();
         }}
       >
-        <Button className="flex-1" variant={variant} onClick={handlePrint}>
-          <PrinterIcon className="size-4" />
-          Imprimir
+        <Button className="flex-1" variant={variant} onClick={handleDownload}>
+          <DownloadIcon className="size-4" />
+          Descargar
         </Button>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
@@ -94,9 +92,9 @@ export function ImageActionsMenu({
             className="w-fit **:data-[slot=dropdown-menu-item]:whitespace-nowrap"
           >
             <DropdownMenuGroup>
-              <DropdownMenuItem onSelect={handleDownload}>
-                <DownloadIcon />
-                Descargar
+              <DropdownMenuItem onSelect={handlePrint}>
+                <PrinterIcon />
+                Imprimir
               </DropdownMenuItem>
               <DropdownMenuItem onSelect={handleCopyImage}>
                 <ImageIcon />
