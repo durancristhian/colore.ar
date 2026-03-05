@@ -17,17 +17,14 @@ import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Label } from "@/components/ui/label";
 import { DescriptionPromptField } from "@/components/forms/description-prompt-field";
 import { TabbedGenerateForm } from "@/components/forms/tabbed-generate-form";
+import { useUserContext } from "@/components/providers/user-provider";
 import { createImage } from "@/lib/server/api";
 import { isDescriptionLengthValid } from "@/lib/server/images/constants";
 import { translateError } from "@/lib/shared/errors";
-import type { CurrentUser } from "@/lib/server/api";
 
-export function NewImageForm({
-  currentUser,
-}: {
-  currentUser: CurrentUser | null;
-}) {
+export function NewImageForm() {
   const router = useRouter();
+  const { user: currentUser, refreshUser } = useUserContext();
   const [isPending, startTransition] = useTransition();
   const [error, setError] = useState<string | null>(null);
 
@@ -55,8 +52,10 @@ export function NewImageForm({
         if (data.id) {
           try {
             localStorage.setItem("show-confetti", data.id);
+            // Refresh user to update credits in the header immediately.
+            await refreshUser();
           } catch {
-            // Ignore localStorage errors.
+            // Ignore errors.
           }
           router.push(`/imagenes/${data.id}`);
         }

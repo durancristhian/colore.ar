@@ -10,14 +10,12 @@ import { getCurrentUser } from "@/lib/server/api";
 import { NewImageForm } from "@/components/forms/new-image-form";
 
 export default async function NewImagePage() {
-  const currentUser = await getCurrentUser().catch(() => null);
-
   return (
     <PageLayout
       title="Nueva imagen"
       leftContent={<BackButton href="/imagenes" />}
     >
-      <NewImageForm currentUser={currentUser} />
+      <NewImageForm />
     </PageLayout>
   );
 }
