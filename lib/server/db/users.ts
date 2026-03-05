@@ -1,8 +1,8 @@
 // users.ts
 //
-// Users table (user_id, role, credits). Used for role-based generation options and app/api/user/me.
+// Users table (user_id, role). Used for role-based generation options and app/api/user/me.
 //
-import { getDb } from "./client";
+import { getDb, createEnsurer } from "./client";
 
 export type UserRole = "admin" | "vip" | "standard";
 
@@ -15,45 +15,30 @@ function assertRole(value: unknown): UserRole {
   return "standard";
 }
 
-let initPromise: Promise<void> | null = null;
-async function ensureTable(): Promise<void> {
-  if (initPromise) return initPromise;
-  initPromise = (async () => {
-    const db = getDb();
-    await db.execute(`
-      CREATE TABLE IF NOT EXISTS users (
-        user_id TEXT PRIMARY KEY,
-        role TEXT NOT NULL,
-        credits INTEGER NOT NULL DEFAULT 0
-      );
-    `);
+const INIT_SQL = `
+CREATE TABLE IF NOT EXISTS users (
+  user_id TEXT PRIMARY KEY,
+  role TEXT NOT NULL
+);
+`;
 
-    // Dynamically add the 'credits' column if migrating an existing local or prod DB
-    const rs = await db.execute("PRAGMA table_info(users)");
-    const hasCredits = rs.rows.some((row) => row.name === "credits");
-    if (!hasCredits) {
-      await db.execute(
-        "ALTER TABLE users ADD COLUMN credits INTEGER NOT NULL DEFAULT 0",
-      );
-    }
-  })();
-  return initPromise;
-}
+const ensureTable = createEnsurer(INIT_SQL);
 
 export interface UserRow {
   userId: string;
   role: UserRole;
-  credits: number;
 }
 
 /**
  * Returns the user if they exist; otherwise null.
  */
-export async function getUserById(userId: string): Promise<UserRow | null> {
+export async function getUserById(
+  userId: string,
+): Promise<{ userId: string; role: UserRole } | null> {
   await ensureTable();
   const db = getDb();
   const rs = await db.execute({
-    sql: "SELECT user_id, role, credits FROM users WHERE user_id = ?",
+    sql: "SELECT user_id, role FROM users WHERE user_id = ?",
     args: [userId],
   });
   const row = rs.rows[0];
@@ -61,7 +46,6 @@ export async function getUserById(userId: string): Promise<UserRow | null> {
   return {
     userId: String(row.user_id),
     role: assertRole(row.role),
-    credits: Number(row.credits),
   };
 }
 
@@ -72,12 +56,12 @@ export async function getUserById(userId: string): Promise<UserRow | null> {
 export async function getOrCreateUser(
   userId: string,
   defaultRole: UserRole = "standard",
-): Promise<UserRow> {
+): Promise<{ userId: string; role: UserRole }> {
   // 1. Optimistic fetch
   const existing = await getUserById(userId);
   if (existing) return existing;
 
-  // 2. Atomic insert if not exists (handles race conditions, defaults credits to 0)
+  // 2. Atomic insert if not exists (handles race conditions)
   await ensureTable();
   const db = getDb();
   await db.execute({
