@@ -26,7 +26,7 @@ export function Credits({ initialBalance = 0 }: { initialBalance?: number }) {
   return (
     <div className="mx-auto flex max-w-4xl flex-col gap-4 md:flex-row md:items-start md:justify-center">
       {/* Balance Card */}
-      <Card className="flex-1 border-indigo-100 bg-gradient-to-br from-indigo-50/50 to-purple-50/50 text-center dark:border-indigo-900 dark:from-indigo-950/20 dark:to-purple-950/20">
+      <Card className="flex-1 gap-4 border-indigo-100 bg-gradient-to-br from-indigo-50/50 to-purple-50/50 text-center dark:border-indigo-900 dark:from-indigo-950/20 dark:to-purple-950/20">
         <CardHeader>
           <CardTitle className="text-muted-foreground flex items-center justify-center gap-2 text-xl">
             <CoinVerticalIcon
@@ -47,7 +47,7 @@ export function Credits({ initialBalance = 0 }: { initialBalance?: number }) {
       </Card>
 
       {/* Purchase Card */}
-      <Card className="flex-1">
+      <Card className="flex-1 gap-4">
         <CardHeader>
           <CardTitle>Comprar créditos</CardTitle>
           <CardDescription>
