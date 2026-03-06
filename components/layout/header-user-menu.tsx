@@ -23,7 +23,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import {
   ChatCircleIcon,
-  CoinIcon,
+  CoinVerticalIcon,
   MonitorIcon,
   MoonIcon,
   SignOutIcon,
@@ -32,7 +32,7 @@ import {
 import { Skeleton } from "@/components/ui/skeleton";
 import { type CurrentUser } from "@/lib/server/api";
 import { ROLE_BADGE_CLASSES, ROLE_LABELS } from "@/lib/shared/roles";
-import { isCreditsEnabled } from "@/lib/credits/config";
+import { areCreditsEnabled } from "@/lib/credits/config";
 
 const themes = [
   { value: "system", label: "Como el sistema", icon: MonitorIcon },
@@ -110,10 +110,10 @@ export function HeaderUserMenu({
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
-          {isStandard && isCreditsEnabled() && (
+          {isStandard && areCreditsEnabled() && (
             <DropdownMenuItem asChild>
               <Link href="/creditos">
-                <CoinIcon className="size-4" />
+                <CoinVerticalIcon className="size-4" />
                 Créditos
               </Link>
             </DropdownMenuItem>

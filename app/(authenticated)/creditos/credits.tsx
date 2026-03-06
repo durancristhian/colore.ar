@@ -16,11 +16,7 @@ import {
   CREDITS_PER_PURCHASE,
 } from "@/lib/credits/config";
 
-export function DashboardCreditos({
-  initialBalance = 0,
-}: {
-  initialBalance?: number;
-}) {
+export function Credits({ initialBalance = 0 }: { initialBalance?: number }) {
   // Mock current balance since DB integration is not yet done
   const [currentBalance] = useState(initialBalance);
 
@@ -28,16 +24,16 @@ export function DashboardCreditos({
   const maxBalance = getCreditsMaxBalance();
 
   return (
-    <div className="mx-auto flex max-w-4xl flex-col gap-6 md:flex-row md:items-start md:justify-center">
+    <div className="mx-auto flex max-w-4xl flex-col gap-4 md:flex-row md:items-start md:justify-center">
       {/* Balance Card */}
       <Card className="flex-1 border-indigo-100 bg-gradient-to-br from-indigo-50/50 to-purple-50/50 text-center dark:border-indigo-900 dark:from-indigo-950/20 dark:to-purple-950/20">
         <CardHeader>
           <CardTitle className="text-muted-foreground flex items-center justify-center gap-2 text-xl">
             <CoinVerticalIcon
-              className="size-6 text-indigo-500"
-              weight="fill"
+              className="size-6 text-amber-500"
+              weight="duotone"
             />
-            Saldo Actual
+            Saldo actual
           </CardTitle>
         </CardHeader>
         <CardContent className="flex flex-col items-center gap-2 pb-8">
@@ -45,7 +41,7 @@ export function DashboardCreditos({
             {currentBalance}
           </span>
           <span className="text-muted-foreground text-sm font-medium">
-            / {maxBalance} máximo permitidos
+            ({maxBalance} máximo permitidos)
           </span>
         </CardContent>
       </Card>
@@ -53,15 +49,15 @@ export function DashboardCreditos({
       {/* Purchase Card */}
       <Card className="flex-1">
         <CardHeader>
-          <CardTitle>Comprar Créditos</CardTitle>
+          <CardTitle>Comprar créditos</CardTitle>
           <CardDescription>
             Obtené créditos adicionales para seguir generando imágenes con los
             modelos premium de Inteligencia Artificial.
           </CardDescription>
         </CardHeader>
-        <CardContent className="flex flex-col gap-6">
+        <CardContent className="flex flex-col gap-4">
           <div className="bg-muted/50 flex items-center justify-between rounded-xl border p-4">
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-2">
               <div className="bg-background rounded-lg p-2 shadow-sm">
                 <CoinVerticalIcon
                   className="size-6 text-amber-500"
@@ -70,7 +66,7 @@ export function DashboardCreditos({
               </div>
               <div>
                 <h4 className="text-foreground font-semibold">
-                  Pack de {CREDITS_PER_PURCHASE} Créditos
+                  Pack de {CREDITS_PER_PURCHASE} créditos
                 </h4>
                 <p className="text-muted-foreground text-sm">
                   Generaciones premium
@@ -82,13 +78,9 @@ export function DashboardCreditos({
             </div>
           </div>
 
-          <Button
-            size="lg"
-            className="h-14 w-full text-base"
-            disabled={!isPurchaseAllowed}
-          >
+          <Button size="lg" disabled={!isPurchaseAllowed}>
             <PlusIcon className="mr-2 size-5" weight="bold" />
-            Comprar Ahora
+            Comprar ahora
           </Button>
 
           {!isPurchaseAllowed && (

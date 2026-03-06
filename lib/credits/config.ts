@@ -3,17 +3,18 @@
 // Credits system configuration. Feature flag, max balance cap, and purchase
 // amount. Importable from both server and client code.
 //
+import { envClient } from "@/lib/env.client";
 
-const DEFAULT_MAX_BALANCE = 6;
-
-export function isCreditsEnabled(): boolean {
-  return process.env.NEXT_PUBLIC_CREDITS_ENABLED === "true";
+export function areCreditsEnabled(): boolean {
+  return envClient.NEXT_PUBLIC_CREDITS_ENABLED === "true";
 }
 
 export function getCreditsMaxBalance(): number {
-  const raw = process.env.NEXT_PUBLIC_CREDITS_MAX_BALANCE;
+  const raw = envClient.NEXT_PUBLIC_CREDITS_MAX_BALANCE;
   const parsed = raw ? parseInt(raw, 10) : NaN;
-  return Number.isFinite(parsed) && parsed > 0 ? parsed : DEFAULT_MAX_BALANCE;
+  return Number.isFinite(parsed) && parsed > 0
+    ? parsed
+    : Number(envClient.NEXT_PUBLIC_CREDITS_MAX_BALANCE);
 }
 
 /** Number of credits added per purchase. Hardcoded for now; easy to change later. */
