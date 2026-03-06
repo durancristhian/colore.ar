@@ -24,7 +24,7 @@ import {
 import {
   ChatCircleIcon,
   MonitorIcon,
-  CoinIcon,
+  CoinVerticalIcon,
   MoonIcon,
   SignOutIcon,
   SunIcon,
@@ -90,7 +90,7 @@ export function HeaderUserMenu() {
             title="Credits balance"
             className="flex items-center gap-1 bg-zinc-800 px-2 py-0.5 font-mono text-zinc-200"
           >
-            <CoinIcon className="size-4 text-amber-400" />
+            <CoinVerticalIcon className="size-4 text-amber-400" />
             {currentUser.credits}
           </Badge>
         )}
