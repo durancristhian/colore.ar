@@ -35,6 +35,7 @@ import { Telegram } from "@/lib/server/telegram";
 export type CurrentUser = {
   id: string;
   role: UserRole;
+  credits: number | null;
 };
 
 export type CreateImageResponse = {
@@ -228,6 +229,7 @@ export async function getCurrentUser(): Promise<CurrentUser> {
   return {
     id: user.userId,
     role: user.role,
+    credits: user.role === "standard" ? user.credits : null,
   };
 }
 
