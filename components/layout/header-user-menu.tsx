@@ -23,6 +23,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import {
   ChatCircleIcon,
+  CoinVerticalIcon,
   MonitorIcon,
   MoonIcon,
   SignOutIcon,
@@ -31,6 +32,7 @@ import {
 import { Skeleton } from "@/components/ui/skeleton";
 import { type CurrentUser } from "@/lib/server/api";
 import { ROLE_BADGE_CLASSES, ROLE_LABELS } from "@/lib/shared/roles";
+import { areCreditsEnabled } from "@/lib/credits/config";
 
 const themes = [
   { value: "system", label: "Como el sistema", icon: MonitorIcon },
@@ -73,6 +75,9 @@ export function HeaderUserMenu({
   const ThemeIcon =
     themes.find((t) => t.value === (theme ?? "system"))?.icon ?? MonitorIcon;
 
+  // Treat as standard. Non-logged users defaults to standard rules
+  const isStandard = !currentUser || currentUser.role === "standard";
+
   return (
     <div className="flex items-center gap-2">
       {currentUser && currentUser.role !== "standard" && (
@@ -105,6 +110,14 @@ export function HeaderUserMenu({
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
+          {isStandard && areCreditsEnabled() && (
+            <DropdownMenuItem asChild>
+              <Link href="/creditos">
+                <CoinVerticalIcon className="size-4" />
+                Créditos
+              </Link>
+            </DropdownMenuItem>
+          )}
           <DropdownMenuItem asChild>
             <Link href="/feedback">
               <ChatCircleIcon className="size-4" />
