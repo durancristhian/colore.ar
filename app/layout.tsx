@@ -42,6 +42,16 @@ export const metadata: Metadata = {
   },
 };
 
+// In preview deployments, NEXT_PUBLIC_VERCEL_URL holds the deploy-specific URL
+// (e.g. myapp-abc123.vercel.app). Using it as the Umami host URL keeps the
+// analytics request same-origin, avoiding CORS errors. In dev/prod we always
+// use NEXT_PUBLIC_APP_URL since NEXT_PUBLIC_VERCEL_URL is also set there.
+const isPreview = process.env.NEXT_PUBLIC_VERCEL_ENV === "preview";
+const statsHostUrl =
+  isPreview && process.env.NEXT_PUBLIC_VERCEL_URL
+    ? `https://${process.env.NEXT_PUBLIC_VERCEL_URL}`
+    : envClient.NEXT_PUBLIC_APP_URL;
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -56,7 +66,7 @@ export default function RootLayout({
           <Script
             src="/stats.js"
             data-website-id="7dbb19cc-b89c-4b9b-84e6-98df42fc191d"
-            data-host-url={envClient.NEXT_PUBLIC_APP_URL}
+            data-host-url={statsHostUrl}
             strategy="afterInteractive"
           />
           <Providers>
