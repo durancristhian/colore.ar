@@ -4,7 +4,7 @@
 // to mathematically update the users.credits balance.
 //
 import { randomUUID } from "crypto";
-import { getDb } from "./client";
+import { createEnsurer, getDb } from "./client";
 
 export type TransactionType = "purchase" | "usage" | "refund" | "grant";
 
@@ -36,15 +36,7 @@ BEGIN
 END;
 `;
 
-let initPromise: Promise<void> | null = null;
-async function ensureTable(): Promise<void> {
-  if (initPromise) return initPromise;
-  initPromise = (async () => {
-    const db = getDb();
-    await db.executeMultiple(INIT_SQL);
-  })();
-  return initPromise;
-}
+const ensureTable = createEnsurer(INIT_SQL);
 
 /**
  * Records a new credit transaction. The total balance is derived automatically
