@@ -18,6 +18,7 @@ import {
   getImageByIdAndUserId,
   deleteImageByIdAndUserId,
 } from "@/lib/server/db/images";
+import { recordTransaction } from "@/lib/server/db/credits";
 import {
   isDescriptionLengthValid,
   isImageSizeValid,
@@ -125,6 +126,16 @@ export async function createImage(payload: {
       });
 
       revalidatePath("/imagenes");
+
+      if (usePaid) {
+        await recordTransaction({
+          userId,
+          amount: -1,
+          type: "usage",
+          description: `Generación Pro (ID: ${id})`,
+        });
+      }
+
       return { id, url };
     }
 
@@ -147,6 +158,16 @@ export async function createImage(payload: {
     });
 
     revalidatePath("/imagenes");
+
+    if (usePaid) {
+      await recordTransaction({
+        userId,
+        amount: -1,
+        type: "usage",
+        description: `Generación Pro (ID: ${id})`,
+      });
+    }
+
     return { id, url };
   } catch (error) {
     for (const publicId of uploadedPublicIds) {
