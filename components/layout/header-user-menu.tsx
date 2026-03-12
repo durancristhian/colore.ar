@@ -25,14 +25,12 @@ import {
   ChatCircleIcon,
   CoinVerticalIcon,
   MonitorIcon,
-  CoinVerticalIcon,
   MoonIcon,
   SignOutIcon,
   SunIcon,
 } from "@phosphor-icons/react/dist/ssr";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useUserContext } from "@/components/providers/user-provider";
-import { type CurrentUser } from "@/lib/server/api";
 import { ROLE_BADGE_CLASSES, ROLE_LABELS } from "@/lib/shared/roles";
 import { areCreditsEnabled } from "@/lib/credits/config";
 

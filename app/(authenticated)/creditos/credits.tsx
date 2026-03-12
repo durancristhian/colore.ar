@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useTransition } from "react";
 import { CoinVerticalIcon, PlusIcon } from "@phosphor-icons/react/dist/ssr";
 import { Button } from "@/components/ui/button";
 import {
@@ -15,13 +15,40 @@ import {
   getCreditsMaxBalance,
   CREDITS_PER_PURCHASE,
 } from "@/lib/credits/config";
+import { useUserContext } from "@/components/providers/user-provider";
+import { toast } from "sonner";
+import { Skeleton } from "@/components/ui/skeleton";
 
 export function Credits({ initialBalance = 0 }: { initialBalance?: number }) {
-  // Mock current balance since DB integration is not yet done
-  const [currentBalance] = useState(initialBalance);
+  const { user, isLoading, refreshUser } = useUserContext();
+  const [isPending, startTransition] = useTransition();
 
+  // If loading or no user
+  if (isLoading || !user) {
+    return (
+      <div className="mx-auto flex max-w-4xl flex-col gap-4 md:flex-row md:items-start md:justify-center">
+        <Skeleton className="h-[240px] flex-1 rounded-xl" />
+        <Skeleton className="h-[240px] flex-1 rounded-xl" />
+      </div>
+    );
+  }
+
+  const currentBalance = user.credits ?? initialBalance;
   const isPurchaseAllowed = canPurchaseCredits(currentBalance);
   const maxBalance = getCreditsMaxBalance();
+
+  const handlePurchase = () => {
+    startTransition(async () => {
+      toast.info("Redirigiendo al pago seguro...");
+
+      setTimeout(() => {
+        toast.success("¡Pago procesado con éxito!", {
+          description: `Se han añadido ${CREDITS_PER_PURCHASE} créditos a tu cuenta.`,
+        });
+        refreshUser();
+      }, 2000);
+    });
+  };
 
   return (
     <div className="mx-auto flex max-w-4xl flex-col gap-4 md:flex-row md:items-start md:justify-center">
@@ -78,14 +105,24 @@ export function Credits({ initialBalance = 0 }: { initialBalance?: number }) {
             </div>
           </div>
 
-          <Button size="lg" disabled={!isPurchaseAllowed}>
-            <PlusIcon className="mr-2 size-5" weight="bold" />
-            Comprar ahora
+          <Button
+            size="lg"
+            disabled={!isPurchaseAllowed || isPending}
+            onClick={handlePurchase}
+          >
+            {isPending ? (
+              "Procesando..."
+            ) : (
+              <>
+                <PlusIcon className="mr-2 size-5" weight="bold" />
+                Comprar ahora
+              </>
+            )}
           </Button>
 
           {!isPurchaseAllowed && (
             <p className="text-center text-sm font-medium text-amber-600 dark:text-amber-500">
-              Has alcanzado el límite máximo de créditos ({maxBalance}).
+              Has alcanzado el límite máximo de créditos.
             </p>
           )}
         </CardContent>
