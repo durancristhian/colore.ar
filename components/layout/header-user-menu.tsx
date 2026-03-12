@@ -30,7 +30,7 @@ import {
   SunIcon,
 } from "@phosphor-icons/react/dist/ssr";
 import { Skeleton } from "@/components/ui/skeleton";
-import { type CurrentUser } from "@/lib/server/api";
+import { useUserContext } from "@/components/providers/user-provider";
 import { ROLE_BADGE_CLASSES, ROLE_LABELS } from "@/lib/shared/roles";
 import { areCreditsEnabled } from "@/lib/credits/config";
 
@@ -60,11 +60,8 @@ function getInitials(
   return "??";
 }
 
-export function HeaderUserMenu({
-  currentUser,
-}: {
-  currentUser: CurrentUser | null;
-}) {
+export function HeaderUserMenu() {
+  const { user: currentUser } = useUserContext();
   const { isLoaded, user } = useUser();
   const { theme, setTheme } = useTheme();
 
@@ -88,6 +85,18 @@ export function HeaderUserMenu({
           {ROLE_LABELS[currentUser.role]}
         </Badge>
       )}
+      {currentUser &&
+        currentUser.role === "standard" &&
+        currentUser.credits !== null && (
+          <Badge
+            variant="secondary"
+            title="Credits balance"
+            className="flex items-center gap-1 bg-zinc-800 px-2 py-0.5 font-mono text-zinc-200"
+          >
+            <CoinVerticalIcon className="size-4 text-amber-400" />
+            {currentUser.credits}
+          </Badge>
+        )}
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button

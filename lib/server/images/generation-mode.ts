@@ -10,17 +10,19 @@ export interface ImageGenerationOptions {
 }
 
 /**
- * Returns usePaidModel and allowImageFromImage from role and usePaidModelFromRequest. Standard role always gets false for both.
+ * Returns usePaidModel and allowImageFromImage from role and isProRequest.
+ * Standard role always gets false for both if credits are insufficient.
  */
 export function getImageGenerationOptions(
   role: UserRole,
-  usePaidModelFromRequest: boolean,
+  credits: number,
+  isProRequest: boolean,
 ): ImageGenerationOptions {
-  if (role === "standard") {
+  if (role === "standard" && credits <= 0) {
     return { usePaidModel: false, allowImageFromImage: false };
   }
   return {
-    usePaidModel: usePaidModelFromRequest,
-    allowImageFromImage: usePaidModelFromRequest,
+    usePaidModel: isProRequest,
+    allowImageFromImage: isProRequest,
   };
 }

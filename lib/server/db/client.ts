@@ -22,14 +22,22 @@ export function getDb(): Client {
 /**
  * Simplified factory to create a thread-safe "ensure table" function.
  * Ensures the provided SQL (usually CREATE TABLE IF NOT EXISTS) is only executed once.
+ * Supports multiple statements if provided as an array.
  */
-export function createEnsurer(initSql: string): () => Promise<void> {
+export function createEnsurer(initSql: string | string[]): () => Promise<void> {
   let initPromise: Promise<void> | null = null;
 
   return async function ensureTable(): Promise<void> {
     if (initPromise) return initPromise;
     initPromise = (async () => {
-      await getDb().execute(initSql);
+      const db = getDb();
+      if (Array.isArray(initSql)) {
+        for (const sql of initSql) {
+          await db.execute(sql);
+        }
+      } else {
+        await db.execute(initSql);
+      }
     })();
     return initPromise;
   };
