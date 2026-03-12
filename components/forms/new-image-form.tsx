@@ -28,17 +28,19 @@ export function NewImageForm() {
   const [isPending, startTransition] = useTransition();
   const [error, setError] = useState<string | null>(null);
 
-  const treatAsStandard = !currentUser || currentUser.role === "standard";
   const isAdminOrVip =
     !!currentUser &&
     (currentUser.role === "admin" || currentUser.role === "vip");
+  const hasCredits = !!currentUser && (currentUser.credits ?? 0) > 0;
+  const canUsePro = isAdminOrVip || hasCredits;
 
   const [usePaidModel, setUsePaidModel] = useState(false);
   const [description, setDescription] = useState("");
 
-  // Standard: text only. Admin/VIP: text by default; tabbed (text + image upload) when paid model is on.
-  const showTextOnlyForm = treatAsStandard || (isAdminOrVip && !usePaidModel);
-  const showTabbedForm = isAdminOrVip && usePaidModel;
+  // Standard with no credits: text only.
+  // canUsePro: text by default; tabbed (text + image upload) when paid model is on.
+  const showTextOnlyForm = !canUsePro || !usePaidModel;
+  const showTabbedForm = canUsePro && usePaidModel;
 
   const handleGenerate = (payload: {
     description: string;
@@ -67,7 +69,7 @@ export function NewImageForm() {
 
   return (
     <div className="flex flex-col gap-4">
-      {isAdminOrVip && (
+      {canUsePro && (
         <Alert>
           <InfoIcon className="size-4 shrink-0" aria-hidden />
           <AlertTitle>¿Usar modelo de pago?</AlertTitle>

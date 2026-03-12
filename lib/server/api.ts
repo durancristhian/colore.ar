@@ -73,7 +73,7 @@ export async function createImage(payload: {
   const role = user.role;
 
   const { usePaidModel: usePaid, allowImageFromImage } =
-    getImageGenerationOptions(role, !!payload.usePaidModel);
+    getImageGenerationOptions(role, user.credits, !!payload.usePaidModel);
 
   const hasImage =
     payload.image instanceof File &&

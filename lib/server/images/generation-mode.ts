@@ -14,9 +14,10 @@ export interface ImageGenerationOptions {
  */
 export function getImageGenerationOptions(
   role: UserRole,
+  credits: number,
   usePaidModelFromRequest: boolean,
 ): ImageGenerationOptions {
-  if (role === "standard") {
+  if (role === "standard" && credits <= 0) {
     return { usePaidModel: false, allowImageFromImage: false };
   }
   return {
