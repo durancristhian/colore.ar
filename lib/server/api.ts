@@ -20,7 +20,8 @@ import {
   deleteImageByIdAndUserId,
   ensureImagesTable,
 } from "@/lib/server/db/images";
-import { ensureCreditsTable } from "@/lib/server/db/credits";
+import { ensureCreditsTable, recordTransaction } from "@/lib/server/db/credits";
+import { canPurchaseCredits, CREDITS_PER_PURCHASE } from "@/lib/credits/config";
 import {
   isDescriptionLengthValid,
   isImageSizeValid,
@@ -317,4 +318,30 @@ export async function submitFeedback(message: string): Promise<void> {
 
     throw new Error(ErrorCode.GENERIC_ERROR);
   }
+}
+
+/**
+ * Purchases credits for the current user. Validates that the user can purchase
+ * more credits according to max balance rules.
+ */
+export async function purchaseCredits(): Promise<void> {
+  const { userId } = await auth();
+  if (!userId) throw new Error(ErrorCode.UNAUTHORIZED);
+
+  const user = await getOrCreateUser(userId);
+  const currentBalance = user.credits ?? 0;
+
+  if (!canPurchaseCredits(currentBalance)) {
+    throw new Error(ErrorCode.FORBIDDEN);
+  }
+
+  await recordTransaction({
+    userId,
+    amount: CREDITS_PER_PURCHASE,
+    type: "purchase",
+    description: "Compra de pack de créditos",
+  });
+
+  revalidatePath("/creditos");
+  revalidatePath("/imagenes");
 }

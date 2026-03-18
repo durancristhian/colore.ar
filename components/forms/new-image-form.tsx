@@ -54,11 +54,11 @@ export function NewImageForm() {
         if (data.id) {
           try {
             localStorage.setItem("show-confetti", data.id);
-            // Refresh user to update credits in the header immediately.
-            await refreshUser();
           } catch {
             // Ignore errors.
           }
+          // Refresh user to update credits in the header immediately.
+          await refreshUser();
           router.push(`/imagenes/${data.id}`);
         }
       } catch (err) {

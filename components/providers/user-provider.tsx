@@ -33,14 +33,14 @@ export function UserProvider({
   const [isRefreshing, startTransition] = useTransition();
 
   async function refreshUser() {
-    startTransition(async () => {
-      try {
-        const updatedUser = await getCurrentUser();
+    try {
+      const updatedUser = await getCurrentUser();
+      startTransition(() => {
         setUser(updatedUser);
-      } catch (error) {
-        console.error("Failed to refresh user:", error);
-      }
-    });
+      });
+    } catch (error) {
+      console.error("Failed to refresh user:", error);
+    }
   }
 
   // Update local state if initialUser changes (e.g. on navigation)

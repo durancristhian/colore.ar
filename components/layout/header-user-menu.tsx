@@ -123,7 +123,7 @@ export function HeaderUserMenu() {
             <DropdownMenuItem asChild>
               <Link href="/creditos">
                 <CoinVerticalIcon className="size-4" />
-                Créditos
+                Mis créditos
               </Link>
             </DropdownMenuItem>
           )}

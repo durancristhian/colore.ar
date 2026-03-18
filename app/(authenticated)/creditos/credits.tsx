@@ -18,6 +18,7 @@ import {
 import { useUserContext } from "@/components/providers/user-provider";
 import { toast } from "sonner";
 import { Skeleton } from "@/components/ui/skeleton";
+import { purchaseCredits } from "@/lib/server/api";
 
 export function Credits({ initialBalance = 0 }: { initialBalance?: number }) {
   const { user, isLoading, refreshUser } = useUserContext();
@@ -39,14 +40,20 @@ export function Credits({ initialBalance = 0 }: { initialBalance?: number }) {
 
   const handlePurchase = () => {
     startTransition(async () => {
-      toast.info("Redirigiendo al pago seguro...");
-
-      setTimeout(() => {
+      try {
+        await purchaseCredits();
         toast.success("¡Pago procesado con éxito!", {
           description: `Se han añadido ${CREDITS_PER_PURCHASE} créditos a tu cuenta.`,
         });
-        refreshUser();
-      }, 2000);
+        await refreshUser();
+      } catch (error) {
+        toast.error("Error al procesar la compra", {
+          description:
+            error instanceof Error
+              ? error.message
+              : "Intenta nuevamente más tarde.",
+        });
+      }
     });
   };
 
