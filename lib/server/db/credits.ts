@@ -42,11 +42,13 @@ export const ensureCreditsTable = createEnsurer(INIT_SQL);
  * by the database trigger \`update_user_credits_after_insert\`.
  */
 export async function recordTransaction({
+  id,
   userId,
   amount,
   type,
   description = null,
 }: {
+  id?: string;
   userId: string;
   amount: number;
   type: TransactionType;
@@ -54,14 +56,14 @@ export async function recordTransaction({
 }) {
   await ensureCreditsTable();
   const db = getDb();
-  const id = randomUUID();
+  const txId = id || randomUUID();
 
   await db.execute({
     sql: "INSERT INTO credit_transactions (id, user_id, amount, type, description) VALUES (?, ?, ?, ?, ?)",
-    args: [id, userId, amount, type, description],
+    args: [txId, userId, amount, type, description],
   });
 
-  return id;
+  return txId;
 }
 
 /**
@@ -85,4 +87,21 @@ export async function getUserTransactions(
     description: row.description ? String(row.description) : null,
     createdAt: String(row.created_at),
   }));
+}
+
+/**
+ * Checks if a transaction with the given description already exists.
+ * Useful for ensuring idempotency when processing webhooks.
+ */
+export async function hasTransactionWithDescription(
+  description: string,
+): Promise<boolean> {
+  await ensureCreditsTable();
+  const db = getDb();
+  const rs = await db.execute({
+    sql: "SELECT 1 FROM credit_transactions WHERE description = ? LIMIT 1",
+    args: [description],
+  });
+
+  return rs.rows.length > 0;
 }

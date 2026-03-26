@@ -20,8 +20,9 @@ import {
   deleteImageByIdAndUserId,
   ensureImagesTable,
 } from "@/lib/server/db/images";
-import { ensureCreditsTable, recordTransaction } from "@/lib/server/db/credits";
+import { ensureCreditsTable } from "@/lib/server/db/credits";
 import { canPurchaseCredits, CREDITS_PER_PURCHASE } from "@/lib/credits/config";
+import { createPaymentLink } from "@/lib/credits/galio";
 import {
   isDescriptionLengthValid,
   isImageSizeValid,
@@ -321,10 +322,10 @@ export async function submitFeedback(message: string): Promise<void> {
 }
 
 /**
- * Purchases credits for the current user. Validates that the user can purchase
- * more credits according to max balance rules.
+ * Generates a Galio payment link for purchasing credits.
+ * Validates that the user can purchase more credits according to max balance rules.
  */
-export async function purchaseCredits(): Promise<void> {
+export async function createCreditPurchaseLink(): Promise<string> {
   const { userId } = await auth();
   if (!userId) throw new Error(ErrorCode.UNAUTHORIZED);
 
@@ -335,13 +336,17 @@ export async function purchaseCredits(): Promise<void> {
     throw new Error(ErrorCode.FORBIDDEN);
   }
 
-  await recordTransaction({
-    userId,
-    amount: CREDITS_PER_PURCHASE,
-    type: "purchase",
-    description: "Compra de pack de créditos",
+  const response = await createPaymentLink({
+    items: [
+      {
+        title: `Pack de ${CREDITS_PER_PURCHASE} créditos`,
+        quantity: 1,
+        unitPrice: 1000,
+        currencyId: "ARS",
+      },
+    ],
+    referenceId: userId,
   });
 
-  revalidatePath("/creditos");
-  revalidatePath("/imagenes");
+  return response.url;
 }

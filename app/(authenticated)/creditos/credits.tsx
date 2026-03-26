@@ -1,6 +1,7 @@
 "use client";
 
-import { useTransition } from "react";
+import { useTransition, useEffect } from "react";
+import { useSearchParams } from "next/navigation";
 import { CoinVerticalIcon, PlusIcon } from "@phosphor-icons/react/dist/ssr";
 import { Button } from "@/components/ui/button";
 import {
@@ -18,11 +19,29 @@ import {
 import { useUserContext } from "@/components/providers/user-provider";
 import { toast } from "sonner";
 import { Skeleton } from "@/components/ui/skeleton";
-import { purchaseCredits } from "@/lib/server/api";
+import { createCreditPurchaseLink } from "@/lib/server/api";
 
 export function Credits({ initialBalance = 0 }: { initialBalance?: number }) {
   const { user, isLoading, refreshUser } = useUserContext();
   const [isPending, startTransition] = useTransition();
+
+  const searchParams = useSearchParams();
+
+  useEffect(() => {
+    if (searchParams.get("payment") === "success") {
+      toast.success("¡Pago procesado con éxito!", {
+        description: `Se están acreditando ${CREDITS_PER_PURCHASE} créditos a tu cuenta.`,
+      });
+      refreshUser();
+      // Remove query param to prevent showing the toast again on reload
+      window.history.replaceState(null, "", "/creditos");
+    } else if (searchParams.get("payment") === "failure") {
+      toast.error("Error en el pago", {
+        description: "El pago no pudo ser completado.",
+      });
+      window.history.replaceState(null, "", "/creditos");
+    }
+  }, [searchParams, refreshUser]);
 
   // If loading or no user
   if (isLoading || !user) {
@@ -41,13 +60,10 @@ export function Credits({ initialBalance = 0 }: { initialBalance?: number }) {
   const handlePurchase = () => {
     startTransition(async () => {
       try {
-        await purchaseCredits();
-        toast.success("¡Pago procesado con éxito!", {
-          description: `Se han añadido ${CREDITS_PER_PURCHASE} créditos a tu cuenta.`,
-        });
-        await refreshUser();
+        const url = await createCreditPurchaseLink();
+        window.location.href = url;
       } catch (error) {
-        toast.error("Error al procesar la compra", {
+        toast.error("Error al generar el link de pago", {
           description:
             error instanceof Error
               ? error.message
@@ -129,7 +145,8 @@ export function Credits({ initialBalance = 0 }: { initialBalance?: number }) {
 
           {!isPurchaseAllowed && (
             <p className="text-center text-sm font-medium text-amber-600 dark:text-amber-500">
-              Has alcanzado el límite máximo de créditos.
+              No podes comprar más créditos porque el pack supera el limite
+              maximo.
             </p>
           )}
         </CardContent>

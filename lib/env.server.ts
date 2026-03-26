@@ -25,6 +25,9 @@ export const env = createEnv({
     PROMPT_PREFIX: nonEmptyString,
     PROMPT_SUFFIX: nonEmptyString,
     PROMPT_IMAGE_PREFIX: nonEmptyString,
+    GALIOPAY_API_BASE: z.string().url().default("https://pay.galio.app/api"),
+    GALIOPAY_API_KEY: nonEmptyString,
+    GALIOPAY_CLIENT_ID: nonEmptyString,
   },
   experimental__runtimeEnv: process.env,
 });
