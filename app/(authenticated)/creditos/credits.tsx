@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { useTransition, useEffect } from "react";
+import { useSearchParams } from "next/navigation";
 import { CoinVerticalIcon, PlusIcon } from "@phosphor-icons/react/dist/ssr";
 import { Button } from "@/components/ui/button";
 import {
@@ -15,13 +16,62 @@ import {
   getCreditsMaxBalance,
   CREDITS_PER_PURCHASE,
 } from "@/lib/credits/config";
+import { useUserContext } from "@/components/providers/user-provider";
+import { toast } from "sonner";
+import { Skeleton } from "@/components/ui/skeleton";
+import { createCreditPurchaseLink } from "@/lib/server/api";
 
 export function Credits({ initialBalance = 0 }: { initialBalance?: number }) {
-  // Mock current balance since DB integration is not yet done
-  const [currentBalance] = useState(initialBalance);
+  const { user, isLoading, refreshUser } = useUserContext();
+  const [isPending, startTransition] = useTransition();
 
+  const searchParams = useSearchParams();
+
+  useEffect(() => {
+    if (searchParams.get("payment") === "success") {
+      toast.success("¡Pago procesado con éxito!", {
+        description: `Se están acreditando ${CREDITS_PER_PURCHASE} créditos a tu cuenta.`,
+      });
+      refreshUser();
+      // Remove query param to prevent showing the toast again on reload
+      window.history.replaceState(null, "", "/creditos");
+    } else if (searchParams.get("payment") === "failure") {
+      toast.error("Error en el pago", {
+        description: "El pago no pudo ser completado.",
+      });
+      window.history.replaceState(null, "", "/creditos");
+    }
+  }, [searchParams, refreshUser]);
+
+  // If loading or no user
+  if (isLoading || !user) {
+    return (
+      <div className="mx-auto flex max-w-4xl flex-col gap-4 md:flex-row md:items-start md:justify-center">
+        <Skeleton className="h-[240px] flex-1 rounded-xl" />
+        <Skeleton className="h-[240px] flex-1 rounded-xl" />
+      </div>
+    );
+  }
+
+  const currentBalance = user.credits ?? initialBalance;
   const isPurchaseAllowed = canPurchaseCredits(currentBalance);
   const maxBalance = getCreditsMaxBalance();
+
+  const handlePurchase = () => {
+    startTransition(async () => {
+      try {
+        const url = await createCreditPurchaseLink();
+        window.location.href = url;
+      } catch (error) {
+        toast.error("Error al generar el link de pago", {
+          description:
+            error instanceof Error
+              ? error.message
+              : "Intenta nuevamente más tarde.",
+        });
+      }
+    });
+  };
 
   return (
     <div className="mx-auto flex max-w-4xl flex-col gap-4 md:flex-row md:items-start md:justify-center">
@@ -78,14 +128,25 @@ export function Credits({ initialBalance = 0 }: { initialBalance?: number }) {
             </div>
           </div>
 
-          <Button size="lg" disabled={!isPurchaseAllowed}>
-            <PlusIcon className="mr-2 size-5" weight="bold" />
-            Comprar ahora
+          <Button
+            size="lg"
+            disabled={!isPurchaseAllowed || isPending}
+            onClick={handlePurchase}
+          >
+            {isPending ? (
+              "Procesando..."
+            ) : (
+              <>
+                <PlusIcon className="mr-2 size-5" weight="bold" />
+                Comprar ahora
+              </>
+            )}
           </Button>
 
           {!isPurchaseAllowed && (
             <p className="text-center text-sm font-medium text-amber-600 dark:text-amber-500">
-              Has alcanzado el límite máximo de créditos ({maxBalance}).
+              No podes comprar más créditos porque el pack supera el limite
+              maximo.
             </p>
           )}
         </CardContent>

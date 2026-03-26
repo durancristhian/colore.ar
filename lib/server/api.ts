@@ -12,12 +12,17 @@ import { revalidatePath } from "next/cache";
 import { env } from "@/lib/env.server";
 import { getOrCreateUser, type UserRole } from "@/lib/server/db/users";
 import { ErrorCode, ErrorCodeType } from "@/lib/shared/errors";
+import { getDb } from "@/lib/server/db/client";
 import {
   insertImage,
   listImagesByUserId,
   getImageByIdAndUserId,
   deleteImageByIdAndUserId,
+  ensureImagesTable,
 } from "@/lib/server/db/images";
+import { ensureCreditsTable } from "@/lib/server/db/credits";
+import { canPurchaseCredits, CREDITS_PER_PURCHASE } from "@/lib/credits/config";
+import { createPaymentLink } from "@/lib/credits/galio";
 import {
   isDescriptionLengthValid,
   isImageSizeValid,
@@ -35,6 +40,7 @@ import { Telegram } from "@/lib/server/telegram";
 export type CurrentUser = {
   id: string;
   role: UserRole;
+  credits: number | null;
 };
 
 export type CreateImageResponse = {
@@ -68,11 +74,15 @@ export async function createImage(payload: {
   const { userId } = await auth();
   if (!userId) throw new Error("No autorizado");
 
+  // Ensure tables exist before the batch
+  await Promise.all([ensureImagesTable(), ensureCreditsTable()]);
+
   const user = await getOrCreateUser(userId);
   const role = user.role;
+  const isPro = !!payload.usePaidModel;
 
   const { usePaidModel: usePaid, allowImageFromImage } =
-    getImageGenerationOptions(role, !!payload.usePaidModel);
+    getImageGenerationOptions(role, user.credits ?? 0, isPro);
 
   const hasImage =
     payload.image instanceof File &&
@@ -115,13 +125,29 @@ export async function createImage(payload: {
       uploadedPublicIds.push(publicId);
       const url = getCloudinaryPublicUrl(publicId);
 
-      await insertImage({
-        id,
-        userId,
-        description: null,
-        imageUrl: url,
-        sourceImageUrl,
-      });
+      const now = new Date().toISOString();
+      const db = getDb();
+      await db.batch([
+        {
+          sql: `INSERT INTO images (id, user_id, description, image_url, source_image_url, created_at, updated_at)
+                VALUES (?, ?, ?, ?, ?, ?, ?)`,
+          args: [id, userId, null, url, sourceImageUrl, now, now],
+        },
+        ...(usePaid
+          ? [
+              {
+                sql: "INSERT INTO credit_transactions (id, user_id, amount, type, description) VALUES (?, ?, ?, ?, ?)",
+                args: [
+                  crypto.randomUUID(),
+                  userId,
+                  -1,
+                  "usage",
+                  `Generación Pro (ID: ${id})`,
+                ],
+              },
+            ]
+          : []),
+      ]);
 
       revalidatePath("/imagenes");
       return { id, url };
@@ -138,12 +164,29 @@ export async function createImage(payload: {
     uploadedPublicIds.push(publicId);
     const url = getCloudinaryPublicUrl(publicId);
 
-    await insertImage({
-      id,
-      userId,
-      description: trimmedDescription,
-      imageUrl: url,
-    });
+    const now = new Date().toISOString();
+    const db = getDb();
+    await db.batch([
+      {
+        sql: `INSERT INTO images (id, user_id, description, image_url, source_image_url, created_at, updated_at)
+              VALUES (?, ?, ?, ?, ?, ?, ?)`,
+        args: [id, userId, trimmedDescription, url, null, now, now],
+      },
+      ...(usePaid
+        ? [
+            {
+              sql: "INSERT INTO credit_transactions (id, user_id, amount, type, description) VALUES (?, ?, ?, ?, ?)",
+              args: [
+                crypto.randomUUID(),
+                userId,
+                -1,
+                "usage",
+                `Generación Pro (ID: ${id})`,
+              ],
+            },
+          ]
+        : []),
+    ]);
 
     revalidatePath("/imagenes");
     return { id, url };
@@ -228,6 +271,7 @@ export async function getCurrentUser(): Promise<CurrentUser> {
   return {
     id: user.userId,
     role: user.role,
+    credits: user.role === "standard" ? user.credits : null,
   };
 }
 
@@ -275,4 +319,34 @@ export async function submitFeedback(message: string): Promise<void> {
 
     throw new Error(ErrorCode.GENERIC_ERROR);
   }
+}
+
+/**
+ * Generates a Galio payment link for purchasing credits.
+ * Validates that the user can purchase more credits according to max balance rules.
+ */
+export async function createCreditPurchaseLink(): Promise<string> {
+  const { userId } = await auth();
+  if (!userId) throw new Error(ErrorCode.UNAUTHORIZED);
+
+  const user = await getOrCreateUser(userId);
+  const currentBalance = user.credits ?? 0;
+
+  if (!canPurchaseCredits(currentBalance)) {
+    throw new Error(ErrorCode.FORBIDDEN);
+  }
+
+  const response = await createPaymentLink({
+    items: [
+      {
+        title: `Pack de ${CREDITS_PER_PURCHASE} créditos`,
+        quantity: 1,
+        unitPrice: 1000,
+        currencyId: "ARS",
+      },
+    ],
+    referenceId: userId,
+  });
+
+  return response.url;
 }

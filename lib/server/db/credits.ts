@@ -17,52 +17,53 @@ export interface CreditTransaction {
   createdAt: string;
 }
 
-const INIT_SQL = `
-CREATE TABLE IF NOT EXISTS credit_transactions (
-  id TEXT PRIMARY KEY,
-  user_id TEXT NOT NULL,
-  amount INTEGER NOT NULL,
-  type TEXT NOT NULL,
-  description TEXT,
-  created_at TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))
-);
+const INIT_SQL = [
+  `CREATE TABLE IF NOT EXISTS credit_transactions (
+    id TEXT PRIMARY KEY,
+    user_id TEXT NOT NULL,
+    amount INTEGER NOT NULL,
+    type TEXT NOT NULL,
+    description TEXT,
+    created_at TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))
+  );`,
+  `CREATE TRIGGER IF NOT EXISTS update_user_credits_after_insert
+  AFTER INSERT ON credit_transactions
+  BEGIN
+    UPDATE users 
+    SET credits = credits + NEW.amount 
+    WHERE user_id = NEW.user_id;
+  END;`,
+];
 
-CREATE TRIGGER IF NOT EXISTS update_user_credits_after_insert
-AFTER INSERT ON credit_transactions
-BEGIN
-  UPDATE users 
-  SET credits = credits + NEW.amount 
-  WHERE user_id = NEW.user_id;
-END;
-`;
-
-const ensureTable = createEnsurer(INIT_SQL);
+export const ensureCreditsTable = createEnsurer(INIT_SQL);
 
 /**
  * Records a new credit transaction. The total balance is derived automatically
  * by the database trigger \`update_user_credits_after_insert\`.
  */
 export async function recordTransaction({
+  id,
   userId,
   amount,
   type,
   description = null,
 }: {
+  id?: string;
   userId: string;
   amount: number;
   type: TransactionType;
   description?: string | null;
 }) {
-  await ensureTable();
+  await ensureCreditsTable();
   const db = getDb();
-  const id = randomUUID();
+  const txId = id || randomUUID();
 
   await db.execute({
     sql: "INSERT INTO credit_transactions (id, user_id, amount, type, description) VALUES (?, ?, ?, ?, ?)",
-    args: [id, userId, amount, type, description],
+    args: [txId, userId, amount, type, description],
   });
 
-  return id;
+  return txId;
 }
 
 /**
@@ -71,7 +72,7 @@ export async function recordTransaction({
 export async function getUserTransactions(
   userId: string,
 ): Promise<CreditTransaction[]> {
-  await ensureTable();
+  await ensureCreditsTable();
   const db = getDb();
   const rs = await db.execute({
     sql: "SELECT id, user_id, amount, type, description, created_at FROM credit_transactions WHERE user_id = ? ORDER BY created_at DESC",
@@ -86,4 +87,21 @@ export async function getUserTransactions(
     description: row.description ? String(row.description) : null,
     createdAt: String(row.created_at),
   }));
+}
+
+/**
+ * Checks if a transaction with the given description already exists.
+ * Useful for ensuring idempotency when processing webhooks.
+ */
+export async function hasTransactionWithDescription(
+  description: string,
+): Promise<boolean> {
+  await ensureCreditsTable();
+  const db = getDb();
+  const rs = await db.execute({
+    sql: "SELECT 1 FROM credit_transactions WHERE description = ? LIMIT 1",
+    args: [description],
+  });
+
+  return rs.rows.length > 0;
 }

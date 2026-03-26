@@ -17,7 +17,7 @@ CREATE TABLE IF NOT EXISTS images (
 );
 `;
 
-const ensureTable = createEnsurer(INIT_SQL);
+export const ensureImagesTable = createEnsurer(INIT_SQL);
 
 export interface InsertImageParams {
   id: string;
@@ -31,7 +31,7 @@ export interface InsertImageParams {
  * Inserts one image row. ensureTable is called internally.
  */
 export async function insertImage(params: InsertImageParams): Promise<void> {
-  await ensureTable();
+  await ensureImagesTable();
   const db = getDb();
   const now = new Date().toISOString();
   await db.execute({
@@ -64,7 +64,7 @@ export async function getImageByIdAndUserId(
   id: string,
   userId: string,
 ): Promise<ImageRow | null> {
-  await ensureTable();
+  await ensureImagesTable();
   const db = getDb();
   const rs = await db.execute({
     sql: `SELECT id, description, image_url, source_image_url, created_at FROM images WHERE id = ? AND user_id = ?`,
@@ -86,7 +86,7 @@ export async function getImageByIdAndUserId(
  * Returns all images for the user, newest first; empty array if none.
  */
 export async function listImagesByUserId(userId: string): Promise<ImageRow[]> {
-  await ensureTable();
+  await ensureImagesTable();
   const db = getDb();
   const rs = await db.execute({
     sql: `SELECT id, description, image_url, source_image_url, created_at FROM images
@@ -111,7 +111,7 @@ export async function deleteImageByIdAndUserId(
   id: string,
   userId: string,
 ): Promise<boolean> {
-  await ensureTable();
+  await ensureImagesTable();
   const db = getDb();
   const rs = await db.execute({
     sql: "DELETE FROM images WHERE id = ? AND user_id = ?",
